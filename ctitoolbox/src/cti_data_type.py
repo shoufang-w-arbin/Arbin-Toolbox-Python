@@ -5,9 +5,19 @@ import ArbinCTI.Core as ArbinCTI
 from System.Collections.Generic import List # type: ignore
 from ctitoolbox.src.cs_type_converter import CSTypeConverter
 
-"""""""""""""""""""""""""""
-CTI DATA TYPE
-"""""""""""""""""""""""""""
+"""
+CTI DATA TYPE WRAPPERS
+Classes:
+- TE_DATA_TYPE
+- Enum_MvUd
+- EReadWriteMode
+- StartResumeEx
+- MetaVariableInfo
+- MetaVariableInfoEx
+- TimeSensitiveSetMV
+- TimeSensitiveSetMVArgs
+- CMetavariableDataCodeApply
+"""
 class TE_DATA_TYPE(IntEnum):
     MP_DATA_TYPE_MetaValue = 1
     MP_DATA_TYPE_AuxTemperature = 10
