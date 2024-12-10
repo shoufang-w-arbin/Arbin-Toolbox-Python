@@ -1,8 +1,9 @@
 from enum import IntEnum
 from dataclasses import dataclass, field
 
-import ArbinCTI.Core as ArbinCTI
-from System.Collections.Generic import List # type: ignore
+import ArbinCTI.Core as ArbinCTI                # type: ignore
+from System.Collections.Generic import List     # type: ignore
+
 from ctitoolbox.src.cs_type_converter import CSTypeConverter
 
 """
@@ -43,7 +44,7 @@ class TE_DATA_TYPE(IntEnum):
     MP_DATA_TYPE_EQ = 31
     MP_DATA_TYPE_CELL = 32
 
-class Enum_MvUd(IntEnum):
+class EMVUD(IntEnum):
     MVUD1 = 52
     MVUD2 = 53
     MVUD3 = 54
@@ -121,8 +122,8 @@ class StartResumeEx:
     MVUD15                : float  = 0.0
     MVUD16                : float  = 0.0
 
-    def to_cs(self) -> ArbinCTI.StartResumeEx:    # type: ignore
-        instance = ArbinCTI.StartResumeEx()       # type: ignore
+    def to_cs(self) -> ArbinCTI.StartResumeEx:    
+        instance = ArbinCTI.StartResumeEx()     
         self._set_basic_fields(instance)
         self._set_tc_fields(instance)
         self._set_mv_fields(instance)
@@ -194,14 +195,14 @@ class MetaVariableInfo:
         m_MV_DataType:  TE_DATA_TYPE
     """
     channel_index : int          = 0
-    m_MV_MetaCode : int          = 0
-    m_MV_DataType : TE_DATA_TYPE = 1
+    mv_meta_code  : int          = 0
+    mv_data_type  : TE_DATA_TYPE = 1
 
-    def to_cs(self) -> ArbinCTI.ArbinCommandGetMetaVariablesFeed.MetaVariableInfo:            # type: ignore
-        instance               = ArbinCTI.ArbinCommandGetMetaVariablesFeed.MetaVariableInfo() # type: ignore
-        instance.m_Channel     = CSTypeConverter.to_cs_ushort(self.m_Channel)
-        instance.m_MV_MetaCode = CSTypeConverter.to_cs_ushort(self.m_MV_MetaCode)
-        instance.m_MV_DataType = ArbinCTI.TE_DATA_TYPE(self.m_MV_DataType.value)              # type: ignore
+    def to_cs(self) -> ArbinCTI.ArbinCommandGetMetaVariablesFeed.MetaVariableInfo:           
+        instance               = ArbinCTI.ArbinCommandGetMetaVariablesFeed.MetaVariableInfo()
+        instance.m_Channel     = CSTypeConverter.to_cs_ushort(self.channel_index)
+        instance.m_MV_MetaCode = CSTypeConverter.to_cs_ushort(self.mv_meta_code)
+        instance.m_MV_DataType = ArbinCTI.TE_DATA_TYPE(self.mv_data_type.value)
         return instance
 
 @dataclass
@@ -209,13 +210,14 @@ class MetaVariableInfoEx:
     """
     Python wrapper of 'ArbinCTI.Core.ArbinCommandUpdateMetaVariableFeed.UpdateMV_MetaVariableInfoEX'
     """
-    DataType : TE_DATA_TYPE = TE_DATA_TYPE.MP_DATA_TYPE_MetaValue
-    Error    : bytes        = 0
+    data_type : TE_DATA_TYPE = TE_DATA_TYPE.MP_DATA_TYPE_MetaValue
+    error     : bytes        = 0
 
-    def to_cs(self) -> ArbinCTI.MetaVariableInfoEx:                       # type: ignore
-        instance          = ArbinCTI.MetaVariableInfoEx()                 # type: ignore
-        instance.DataType = ArbinCTI.TE_DATA_TYPE(self.DataType.value)    # type: ignore
-        instance.Error    = CSTypeConverter.to_cs_byte(self.Error)
+    def to_cs(self) -> ArbinCTI.MetaVariableInfoEx:                 
+        instance          = ArbinCTI.MetaVariableInfoEx()                 
+        instance.DataType = ArbinCTI.TE_DATA_TYPE(self.data_type.value)
+        instance.Error    = CSTypeConverter.to_cs_byte(self.error)
+        return instance
 
 class TimeSensitiveSetMV:
     """
@@ -223,26 +225,26 @@ class TimeSensitiveSetMV:
 
     Args:
         *args: Length variable argument list that accepts either:
-            - A single argument of type ArbinCTI.Core.TimeSensitiveSetMV to initialize from existing instance
-            - Two arguments (mvud, value) to initialize a new instance
-
-    Raises:
-        ValueError: If invalid number or types of arguments provided
+            - Two arguments (mvud: Enum_MvUd, value: float) to initialize a new instance
+            - A single argument of type ArbinCTI.Core.TimeSensitiveSetMV to convert to Python wrapper
     """
     def __init__(self, *args):
-        if len(args) == 1 and isinstance(args[0], ArbinCTI.TimeSensitiveSetMV):  # type: ignore
-            self.mvud  = Enum_MvUd(args[0].mvud.value)
-            self.value = args[0].value
+        if len(args) == 1:                                                    
+            assert(isinstance(args[0], ArbinCTI.TimeSensitiveSetMV))            
+            self.mvud  = EMVUD(int(args[0].MVUD))
+            self.value = float(args[0].Value)
         elif len(args) == 2:
-            self.mvud  = Enum_MvUd(args[0])
+            assert (isinstance(args[0], EMVUD))
+            assert (isinstance(args[1], (int, float)))
+            self.mvud  = args[0]
             self.value = args[1]
         else:
             raise ValueError("Invalid arguments for TimeSensitiveSetMV")
 
-    def to_cs(self) -> ArbinCTI.TimeSensitiveSetMV:                           # type: ignore
-        instance        = ArbinCTI.TimeSensitiveSetMV()                       # type: ignore
-        instance.mvud   = ArbinCTI.TimeSensitiveSetMV.EMVUD(self.mvud.value)  # type: ignore
-        instance.value  = CSTypeConverter.to_cs_float(self.value)
+    def to_cs(self) -> ArbinCTI.TimeSensitiveSetMV:                          
+        instance        = ArbinCTI.TimeSensitiveSetMV()                    
+        instance.MVUD   = ArbinCTI.TimeSensitiveSetMV.EMVUD(self.mvud.value) 
+        instance.Value  = CSTypeConverter.to_cs_float(self.value)
         return instance
 
 @dataclass
@@ -274,21 +276,30 @@ class TimeSensitiveSetMVArgs:
         time_sensitive_mvs  : list = field(default_factory=list)
         log                 : bool = True
 
-        def to_cs(self) -> ArbinCTI.TimeSensitiveSetMVArgs.TimeSensitiveSetMVChannel:  # type: ignore
+        def to_cs(self) -> ArbinCTI.TimeSensitiveSetMVArgs.TimeSensitiveSetMVChannel: 
             try:
-                self.time_sensitive_mvs = [obj.to_cs() for obj in self.time_sensitive_mvs]
+                self._convert_time_sensitive_mvs()
             except Exception as e:
                 raise ValueError(f"Error converting TimeSensitiveSetMV: {str(e)}")
 
-            instance = ArbinCTI.TimeSensitiveSetMVArgs.TimeSensitiveSetMVChannel(      # type: ignore
+            instance = ArbinCTI.TimeSensitiveSetMVArgs.TimeSensitiveSetMVChannel( 
                 CSTypeConverter.to_cs_int(self.global_index),
-                List[ArbinCTI.TimeSensitiveSetMV](self.time_sensitive_mvs),            # type: ignore
+                self.time_sensitive_mvs,
                 CSTypeConverter.to_cs_bool(self.log)
             )     
             return instance
         
-    def to_cs(self) -> ArbinCTI.TimeSensitiveSetMVArgs:        # type: ignore
-        instance         = ArbinCTI.TimeSensitiveSetMVArgs()   # type: ignore
+        def _convert_time_sensitive_mvs(self):
+            list_instance = List[ArbinCTI.TimeSensitiveSetMV]()
+            try:
+                [list_instance.Add(obj.to_cs()) for obj in self.time_sensitive_mvs]
+            except Exception as e:
+                raise ValueError(f"Error converting TimeSensitiveSetMV: {str(e)}")
+            finally:
+                self.time_sensitive_mvs = list_instance
+        
+    def to_cs(self) -> ArbinCTI.TimeSensitiveSetMVArgs:
+        instance         = ArbinCTI.TimeSensitiveSetMVArgs()
         instance.Timeout = CSTypeConverter.to_cs_float(self.timeout)
         try:
             [instance.Channels.Add(obj.to_cs()) for obj in self.channels]
@@ -306,10 +317,10 @@ class CMetavariableDataCodeApply:
     mv_meta_code  : int            = (0x10000) - 1
     mode          : EReadWriteMode = EReadWriteMode.Read
 
-    def to_cs(self) -> ArbinCTI.CMetavariableDataCodeApply:                        # type: ignore
-        instance = ArbinCTI.CMetavariableDataCodeApply()                           # type: ignore
+    def to_cs(self) -> ArbinCTI.CMetavariableDataCodeApply:  
+        instance = ArbinCTI.CMetavariableDataCodeApply()            
         instance.m_GlobalIndex  = CSTypeConverter.to_cs_ushort(self.global_index)
-        instance.m_MV_ValueType = ArbinCTI.TE_DATA_TYPE(self.mv_value_type.value)  # type: ignore
+        instance.m_MV_ValueType = ArbinCTI.TE_DATA_TYPE(self.mv_value_type.value) 
         instance.m_MV_MetaCode  = CSTypeConverter.to_cs_ushort(self.mv_meta_code)
-        instance.ReadWriteMode  = ArbinCTI.EReadWriteMode(self.mode.value)         # type: ignore
+        instance.ReadWriteMode  = ArbinCTI.EReadWriteMode(self.mode.value)      
         return instance
