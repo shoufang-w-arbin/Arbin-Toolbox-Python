@@ -11,7 +11,7 @@ from System import (
 )
 from System.Collections.Generic import List
 
-from arbincti.src.utils.data_type_wrapper import CSTypeConverter
+from ctitoolbox.src.cs_type_converter import CSTypeConverter
 
 class TestCSTypeConverter(unittest.TestCase):
 
@@ -85,35 +85,34 @@ class TestCSTypeConverter(unittest.TestCase):
 
     def test_to_cs_list(self):
         # Test with integers
-        int_list = CSTypeConverter.to_cs_list(CSTypeConverter.ListItemType.INT, [1, 2, 3])
+        int_list = CSTypeConverter.to_cs_list(CSTypeConverter.ItemType.INT, [1, 2, 3])
         self.assertIsInstance(int_list, List[Int32])
         self.assertEqual(len(int_list), 3)
-        self.assertEqual(int_list[0], Int32(1))
+        self.assertEqual(int_list[0], 1)
 
         # Test with floats
-        float_list = CSTypeConverter.to_cs_list(CSTypeConverter.ListItemType.FLOAT, [1.1, 2.2, 3.3])
+        float_list = CSTypeConverter.to_cs_list(CSTypeConverter.ItemType.FLOAT, [1.1, 2.2, 3.3])
         self.assertIsInstance(float_list, List[Single])
         self.assertEqual(len(float_list), 3)
         self.assertAlmostEqual(float(float_list[0]), 1.1, places=6)
 
         # Test with booleans
-        bool_list = CSTypeConverter.to_cs_list(CSTypeConverter.ListItemType.BOOL, [True, False, True])
+        bool_list = CSTypeConverter.to_cs_list(CSTypeConverter.ItemType.BOOL, [True, False, True])
         self.assertIsInstance(bool_list, List[Boolean])
         self.assertEqual(len(bool_list), 3)
-        self.assertEqual(bool_list[0], Boolean(True))
+        self.assertEqual(bool_list[0], True)
 
         # Test with strings
-        string_list = CSTypeConverter.to_cs_list(CSTypeConverter.ListItemType.STRING, ["a", "b", "c"])
+        string_list = CSTypeConverter.to_cs_list(CSTypeConverter.ItemType.STRING, ["a", "b", "c"])
         self.assertIsInstance(string_list, List[String])
         self.assertEqual(len(string_list), 3)
-        self.assertEqual(string_list[0], String("a"))
-
+        self.assertEqual(string_list[0], "a")
+        
         # Test with unsupported type
         with self.assertRaises(ValueError):
-            CSTypeConverter.to_cs_list(CSTypeConverter.ListItemType.FLOAT, [1, "2", 3])
+            CSTypeConverter.to_cs_list(CSTypeConverter.ItemType.FLOAT, [1, "2", 3])
 
         # Test with mixed types
         with self.assertRaises(ValueError):
-            CSTypeConverter.to_cs_list(CSTypeConverter.ListItemType.INT, [1, "2", 3])
-            CSTypeConverter.to_cs_list(CSTypeConverter.ListItemType.INT, [1, "2", 3])
-
+            CSTypeConverter.to_cs_list(CSTypeConverter.ItemType.INT, [1, "2", 3])
+            CSTypeConverter.to_cs_list(CSTypeConverter.ItemType.INT, [1, "2", 3])

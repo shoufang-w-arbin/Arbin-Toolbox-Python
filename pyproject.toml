@@ -33,9 +33,9 @@ dev = [
 ]
 
 [tool.setuptools]
-packages = ["arbincti-toolbox"]
+packages = ["ctitoolbox"]
 include-package-data = true
-exclude-package-data = {"*" = ["arbincti.test"]}
+exclude-package-data = {"*" = ["ctitoolbox.test"]}
 
 [tool.setuptools.package_data]
 your_package = ["bin/ArbinCTI.dll"]
