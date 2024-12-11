@@ -28,7 +28,7 @@ Supported data types:
 - list of basic data types
 """""""""""""""""""""""""""
 class CSTypeConverter:
-    class ItemType(Enum):
+    class EItemType(Enum):
         BYTE    = Byte
         BOOL    = Boolean
         INT     = Int32
@@ -102,20 +102,20 @@ class CSTypeConverter:
         raise ValueError("Value must be a bytes object or bytearray.")
     
     @staticmethod
-    def to_cs_list(item_type: ItemType, list_object: list):
+    def to_cs_list(item_type: EItemType, list_object: list):
         """Create a .NET List of given data type from Python arguments. Supported data types: byte, bool, int, ushort, uint, float, double, string."""
-        if not isinstance(item_type, CSTypeConverter.ItemType):
+        if not isinstance(item_type, CSTypeConverter.EItemType):
             raise ValueError(f"Unsupported data type: {item_type}")
         
         conversion_map = {
-            CSTypeConverter.ItemType.BYTE:   CSTypeConverter.to_cs_byte,
-            CSTypeConverter.ItemType.BOOL:   CSTypeConverter.to_cs_bool,
-            CSTypeConverter.ItemType.INT:    CSTypeConverter.to_cs_int,
-            CSTypeConverter.ItemType.USHORT: CSTypeConverter.to_cs_ushort,
-            CSTypeConverter.ItemType.UINT:   CSTypeConverter.to_cs_uint,
-            CSTypeConverter.ItemType.FLOAT:  CSTypeConverter.to_cs_float,
-            CSTypeConverter.ItemType.DOUBLE: CSTypeConverter.to_cs_double,
-            CSTypeConverter.ItemType.STRING: CSTypeConverter.to_cs_string,
+            CSTypeConverter.EItemType.BYTE:   CSTypeConverter.to_cs_byte,
+            CSTypeConverter.EItemType.BOOL:   CSTypeConverter.to_cs_bool,
+            CSTypeConverter.EItemType.INT:    CSTypeConverter.to_cs_int,
+            CSTypeConverter.EItemType.USHORT: CSTypeConverter.to_cs_ushort,
+            CSTypeConverter.EItemType.UINT:   CSTypeConverter.to_cs_uint,
+            CSTypeConverter.EItemType.FLOAT:  CSTypeConverter.to_cs_float,
+            CSTypeConverter.EItemType.DOUBLE: CSTypeConverter.to_cs_double,
+            CSTypeConverter.EItemType.STRING: CSTypeConverter.to_cs_string,
         }
 
         list_instance = List[item_type.value]()

@@ -11,7 +11,7 @@ from ctitoolbox.src.data_type.cs_data_type import CSTypeConverter
 CTI DATA TYPE WRAPPERS
 Classes:
 - TE_DATA_TYPE
-- Enum_MvUd
+- EMVUD
 - EReadWriteMode
 - StartResumeEx
 - MetaVariableInfo
