@@ -11,7 +11,7 @@ System & Connection
 """""""""""""""""""""""""""
 class GetSerailNumberFeedback:
     class ASSIGN_TOKEN(IntEnum):
-        CTI_GET_SERAIL_SUCESS = 0,
+        CTI_GET_SERIAL_SUCCESS = 0,
         CTI_ASSIGN_ERROR = 0x10,
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandGetSerialNumberFeed): 
@@ -52,18 +52,22 @@ class LoginFeedback:
         CTI_LOGIN_BEFORE_SUCCESS = 3
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandLoginFeed): 
-        self.result             = LoginFeedback.LoginResult(int(feedback.Result))
-        self.user_type          = int(feedback.UserType)
-        self.serial_number      = str(feedback.SN)
-        self.note               = str(feedback.Note)
-        self.nickname           = str(feedback.NickName)
-        self.location           = str(feedback.Location)
-        self.emergency_contact  = str(feedback.EmergencyContactNameAndPhoneNumber)
-        self.other_comments     = str(feedback.OtherComments)
-        self.email              = str(feedback.Email)
-        self.itac               = int(feedback.ITAC)
-        self.call               = str(feedback.CALL)
-        self.channel_count      = int(feedback.ChannelNum)
-        self.version            = LoginFeedback.CTIVersion(int(feedback.Version))
+        self.result              = LoginFeedback.LoginResult(int(feedback.Result))
+        self.user_type           = int(feedback.UserType)
+        self.serial_number       = str(feedback.SN)
+        self.note                = str(feedback.Note)
+        self.nickname            = str(feedback.NickName)
+        self.location            = str(feedback.Location)
+        self.emergency_contact   = str(feedback.EmergencyContactNameAndPhoneNumber)
+        self.other_comments      = str(feedback.OtherComments)
+        self.email               = str(feedback.Email)
+        self.itac                = int(feedback.ITAC)
+        self.call                = str(feedback.CALL)
+        self.is_allow_to_control = int(feedback.IsAllowToControl)
+        self.channel_count       = int(feedback.ChannelNum)
+        self.version             = LoginFeedback.CTIVersion(int(feedback.Version))
         # self.img: Optional[Image.Image] = feedback.Img if isinstance(feedback.Img, Image.Image) else None
-        self.server_info        = str(feedback.ServerInfo) if feedback.ServerInfo else None
+        self.server_info         = str(feedback.ServerInfo) if feedback.ServerInfo else None
+
+    def to_json(self):
+        return json.dumps(self.__dict__)

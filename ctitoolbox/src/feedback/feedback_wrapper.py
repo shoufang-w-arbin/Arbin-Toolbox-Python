@@ -113,7 +113,7 @@ class AssignScheduleFeedback:
         CTI_ASSIGN_SCHEDULE_MUID_NOT_SAME = 0x1D
         CTI_ASSIGN_SCHEDULE_CLEAR = 0x1E
 
-    def __init__(self, feedback: ArbinCTI.ArbinCommandAssignScheduleFeed):  
+    def __init__(self, feedback: ArbinCTI.ArbinCommandAssignScheduleFeed):
         self.result = AssignScheduleFeedback.AssignToken(int(feedback.Result))
 
 class AssignFileFeedback:
