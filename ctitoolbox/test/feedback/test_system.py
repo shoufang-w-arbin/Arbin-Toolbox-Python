@@ -21,7 +21,7 @@ class TestFeedbackClasses(unittest.TestCase):
         feedback_instance = GetSerailNumberFeedback(cs_instance)
 
         self.assertEqual(feedback_instance.serial_number, 12345.6789)
-        self.assertEqual(feedback_instance.result, GetSerailNumberFeedback.ASSIGN_TOKEN.CTI_GET_SERIAL_SUCCESS)
+        self.assertEqual(feedback_instance.result, GetSerailNumberFeedback.EAssignToken.CTI_GET_SERIAL_SUCCESS)
 
         if UNITTEST_VIEW_JSON:
             print("GetSerailNumberFeedback JSON:", feedback_instance.to_json())
@@ -56,7 +56,7 @@ class TestFeedbackClasses(unittest.TestCase):
         cs_instance.ServerInfo  = "Server Info"
 
         feedback_instance = LoginFeedback(cs_instance)
-        self.assertEqual(feedback_instance.result, LoginFeedback.LoginResult.CTI_LOGIN_SUCCESS)
+        self.assertEqual(feedback_instance.result, LoginFeedback.ELoginResult.CTI_LOGIN_SUCCESS)
         self.assertEqual(feedback_instance.user_type, 0)
         self.assertEqual(feedback_instance.serial_number, "12345")
         self.assertEqual(feedback_instance.note, "Note")
@@ -69,7 +69,7 @@ class TestFeedbackClasses(unittest.TestCase):
         self.assertEqual(feedback_instance.call, "+987654321")
         self.assertEqual(feedback_instance.is_allow_to_control, 1)
         self.assertEqual(feedback_instance.channel_count, 16)
-        self.assertEqual(feedback_instance.version, LoginFeedback.CTIVersion.CTI_PRO7)
+        self.assertEqual(feedback_instance.version, LoginFeedback.ECTIVersion.CTI_PRO7)
         self.assertEqual(feedback_instance.server_info, "Server Info")
 
         if UNITTEST_VIEW_JSON:
