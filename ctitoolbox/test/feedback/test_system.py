@@ -11,8 +11,6 @@ from ctitoolbox.src.feedback.system import (
 
 UNITTEST_VIEW_JSON = os.getenv("UNITTEST_VIEW_JSON", False)
 
-print(UNITTEST_VIEW_JSON)
-
 class TestFeedbackClasses(unittest.TestCase):
 
     def test_GetSerailNumberFeedback_instantiation(self):

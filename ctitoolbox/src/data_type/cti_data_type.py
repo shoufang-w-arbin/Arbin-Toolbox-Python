@@ -1,5 +1,6 @@
 from enum import IntEnum
 from dataclasses import dataclass, field
+import json
 
 import ArbinCTI.Core as ArbinCTI                # type: ignore
 from System.Collections.Generic import List     # type: ignore
@@ -247,6 +248,8 @@ class TimeSensitiveSetMV:
         instance.Value  = CSTypeConverter.to_cs_float(self.value)
         return instance
 
+    def to_json(self):
+        return json.dumps(self.__dict__)
 @dataclass
 class TimeSensitiveSetMVArgs:
     """

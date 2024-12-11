@@ -1,4 +1,5 @@
 import unittest
+import os
 
 import ArbinCTI.Core as ArbinCTI
 
@@ -13,6 +14,8 @@ from ctitoolbox.src.data_type.cti_data_type import (
     TimeSensitiveSetMVArgs,
     CMetavariableDataCodeApply
 )
+
+UNITTEST_VIEW_JSON = os.getenv("UNITTEST_VIEW_JSON", False)
 
 class TestArbinCTIClasses(unittest.TestCase):
 
@@ -105,6 +108,9 @@ class TestArbinCTIClasses(unittest.TestCase):
 
         self.assertEqual(time_sensitive_set_mv.mvud, EMVUD.MVUD1)
         self.assertEqual(time_sensitive_set_mv.value, 10.5)
+
+        if UNITTEST_VIEW_JSON:
+            print("TimeSensitiveSetMV JSON:", time_sensitive_set_mv.to_json())
 
     def test_time_sensitive_set_mv_args_to_cs(self):
         """Test conversion of TimeSensitiveSetMVArgs to C# object"""
