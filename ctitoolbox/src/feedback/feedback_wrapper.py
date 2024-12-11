@@ -22,93 +22,10 @@ __all__ = [
 
 import json
 from enum import IntEnum
-from typing import Optional
-import clr
 
-clr.AddReference("arbincti/bin/ArbinCTI")
-from ArbinCTI.Core import ( # type: ignore
-    ArbinCommandGetSerialNumberFeed,
-    ArbinCommandGetServerSoftwareVersionNumberFeed,
-    ArbinCommandLoginFeed,
-    ArbinCommandUpLoadFileFeed,
-    ArbinCommandDownLoadFileFeed,
-    ArbinCommandBrowseDirectoryFeed,
-    ArbinCommandAssignScheduleFeed,
-    ArbinCommandAssignFileFeed,
-    ArbinCommandSetMetaVariableFeed,
-    ArbinCommandGetMetaVariablesFeed,
-    ArbinCommandTimeSensitiveSetMVFeed,
-    ArbinCommandStartChannelFeed,
-    ArbinCommandStopChannelFeed,
-    ArbinCommandResumeChannelFeed,
-    ArbinCommandJumpChannelFeed,
-    ArbinCommandContinueChannelFeed,
-    ArbinCommandGetChannelDataFeed,
-    ArbinCommandGetResumeDataFeed,
-    ArbinCommandGetStartDataFeed,
-    ArbinCommandGetSerialNumberFeed,
-)
+import ArbinCTI.Core as ArbinCTI # type: ignore
 
-from arbincti.src.utils.data_type_wrapper import CSTypeConverter
-
-"""""""""""""""""""""""""""
-System
-"""""""""""""""""""""""""""
-class GetSerailNumberFeedback:
-    class ASSIGN_TOKEN(IntEnum):
-        CTI_GET_SERAIL_SUCESS = 0,
-        CTI_ASSIGN_ERROR = 0x10,
-
-    def __init__(self, feedback: ArbinCommandGetSerialNumberFeed): # type: ignore
-        self.serial_number  = float(feedback.SerialNum)
-        self.result         = GetSerailNumberFeedback.ASSIGN_TOKEN(int(feedback.Result))
-
-class GetMITSVersionFeedback:
-    def __init__(self, feedback: ArbinCommandGetServerSoftwareVersionNumberFeed): # type: ignore
-        self.version = str(feedback.ServerVersionNumber)
-
-"""""""""""""""""""""""""""
-Connection and Authentication
-"""""""""""""""""""""""""""
-class LoginFeedback:
-    class CTIVersion(IntEnum):
-        NONE = 0
-        CTI_PRO7 = 0
-        CTI_PRO8 = 1
-        Pro8_2 = 2
-        MitsX_1 = 0x01000001
-        MitsX_2 = 0x01000002
-        MitsX_3 = 0x01000003
-        MitsX_SPTT = 0x01001001
-        Pro7_MVUD = 0x02000001
-        TY_Pro7_2 = 0x02000002
-        TY_Pro7_3 = 0x02000003
-        TY_Pro8_1 = 0x04000001
-        TY_Pro8_2 = 0x04000002
-        TY_Pro8_SPTT = 0x04001001
-        ZY_Pro8_GX = 0x08000001
-
-    class LoginResult(IntEnum):
-        CTI_LOGIN_SUCCESS = 1
-        CTI_LOGIN_FAILED = 2
-        CTI_LOGIN_BEFORE_SUCCESS = 3
-
-    def __init__(self, feedback: ArbinCommandLoginFeed): # type: ignore
-        self.result             = LoginFeedback.LoginResult(int(feedback.Result))
-        self.user_type          = int(feedback.UserType)
-        self.serial_number      = str(feedback.SN)
-        self.note               = str(feedback.Note)
-        self.nickname           = str(feedback.NickName)
-        self.location           = str(feedback.Location)
-        self.emergency_contact  = str(feedback.EmergencyContactNameAndPhoneNumber)
-        self.other_comments     = str(feedback.OtherComments)
-        self.email              = str(feedback.Email)
-        self.itac               = int(feedback.ITAC)
-        self.call               = str(feedback.CALL)
-        self.channel_count      = int(feedback.ChannelNum)
-        self.version            = LoginFeedback.CTIVersion(int(feedback.Version))
-        # self.img: Optional[Image.Image] = feedback.Img if isinstance(feedback.Img, Image.Image) else None
-        self.server_info: Optional[str]   = feedback.ServerInfo
+from ctitoolbox.src.data_type.cs_data_type import CSTypeConverter
 
 """""""""""""""""""""""""""
 File Management
@@ -128,12 +45,12 @@ class UploadFileFeedback:
         CTI_UPLOAD_IN_PROGRESS = 11
 
     class UploadFileResult:
-        def __init__(self, upload_file_result: ArbinCommandUpLoadFileFeed.CUpLoadFileResult): # type: ignore
+        def __init__(self, upload_file_result: ArbinCTI.ArbinCommandUpLoadFileFeed.CUpLoadFileResult):  
             self.result_code    = upload_file_result.ResultCode
             self.cancel         = upload_file_result.IsCancelUploadFile
             self.progress_rate  = upload_file_result.ProgressRate
 
-    def __init__(self, feedback: ArbinCommandUpLoadFileFeed): # type: ignore
+    def __init__(self, feedback: ArbinCTI.ArbinCommandUpLoadFileFeed): 
         self.result       = UploadFileFeedback.UploadResult(int(feedback.Result))
         self.upload_time  = float(feedback.UploadTime)
         self.packet_count = int(feedback.uGeneralPackage)
@@ -146,7 +63,7 @@ class DownloadFileFeedback:
         CTI_DOWNLOAD_MD5_ERR = 3,
         CTI_DOWNLOAD_MAX_LENGTH_ERR = 4
 
-    def __init__(self, feedback: ArbinCommandDownLoadFileFeed): # type: ignore
+    def __init__(self, feedback: ArbinCTI.ArbinCommandDownLoadFileFeed):
         self.result         = DownloadFileFeedback.DownloadResult(int(feedback.Result))
         self.md5            = str(feedback.m_md5)
         self.file_length    = int(feedback.dw_file_length)
@@ -164,13 +81,13 @@ class BrowseDirectoryFeedback:
         CTI_BROWSE_DIRECTORY_FAILED = 4
     
     class DirFileInfo:
-        def __init__(self, info: ArbinCommandBrowseDirectoryFeed.DirFileInfo): # type: ignore
+        def __init__(self, info: ArbinCTI.ArbinCommandBrowseDirectoryFeed.DirFileInfo): 
             self.type = info.Type
             self.parent_dir_path = info.DirFileName
             self.size = info.dwSize
             self.last_modify_time = info.wcModified
 
-    def __init__(self, feedback: ArbinCommandBrowseDirectoryFeed): # type: ignore
+    def __init__(self, feedback: ArbinCTI.ArbinCommandBrowseDirectoryFeed):
         self.result         = BrowseDirectoryFeedback.BrowseDirectoryResult(int(feedback.Result))
         self.dir_file_info  = [BrowseDirectoryFeedback.DirFileInfo(info) for info in feedback.DirFileInfo]
 
@@ -196,7 +113,7 @@ class AssignScheduleFeedback:
         CTI_ASSIGN_SCHEDULE_MUID_NOT_SAME = 0x1D
         CTI_ASSIGN_SCHEDULE_CLEAR = 0x1E
 
-    def __init__(self, feedback: ArbinCommandAssignScheduleFeed): # type: ignore
+    def __init__(self, feedback: ArbinCTI.ArbinCommandAssignScheduleFeed):  
         self.result = AssignScheduleFeedback.AssignToken(int(feedback.Result))
 
 class AssignFileFeedback:
@@ -218,7 +135,7 @@ class AssignFileFeedback:
         CTI_ASSIGN_SCHEDULE_MUID_NOT_SAME = 0x1D
         CTI_ASSIGN_SCHEDULE_CLEAR = 0x1E
 
-    def __init__(self, feedback: ArbinCommandAssignFileFeed): # type: ignore
+    def __init__(self, feedback: ArbinCTI.ArbinCommandAssignFileFeed):  
         self.result = AssignFileFeedback.AssignToken(int(feedback.Result))
         self.channel_list_result = self._unpack_channel_result(feedback.ChanListResultPairs)
         self.reason = str(feedback.Reason)
@@ -239,7 +156,7 @@ class SetMetaVariableFeedback:
         CTI_SET_MV_CHANNEL_NOT_STARTED = 18
         CTI_SET_MV_METACODE_NOTEXIST_Pro7 = 19
 
-    def __init__(self, feedback: ArbinCommandSetMetaVariableFeed): # type: ignore
+    def __init__(self, feedback: ArbinCTI.ArbinCommandSetMetaVariableFeed):
         self.result = SetMetaVariableFeedback.SetMVResult(int(feedback.Result))
         
     def __repr__(self):
@@ -248,7 +165,7 @@ class SetMetaVariableFeedback:
     def to_json(self):
         return json.dumps({"result": self.result.name})
     
-from arbincti.src.utils.data_type_wrapper import TimeSensitiveSetMVArgs
+from ctitoolbox.src.data_type.cti_data_type import TimeSensitiveSetMVArgs
 class SetMetaVariableTimeSensitiveFeedback:
     class EControlStatus(IntEnum):
         Idle = 0
@@ -303,7 +220,7 @@ class SetMetaVariableTimeSensitiveFeedback:
         MCU_SOCKET_DISCONNECTED = 0x1D
  
     class TimeSensitiveSetMVResult:
-        def __init__(self, result: ArbinCommandTimeSensitiveSetMVFeed.TimeSensitiveSetMVResult):
+        def __init__(self, result: ArbinCTI.ArbinCommandTimeSensitiveSetMVFeed.TimeSensitiveSetMVResult):
             self.global_index   = int(result.GlobalIndex)
             self.step_index     = int(result.StepIndex)
             self.sub_step_index = int(result.SubStepIndex)
@@ -313,7 +230,7 @@ class SetMetaVariableTimeSensitiveFeedback:
             self.voltage        = float(result.Voltage)
             self.mvs            = [TimeSensitiveSetMVArgs.TimeSensitiveSetMV(mv) for mv in result.MVs]
 
-    def __init__(self, feedback: ArbinCommandTimeSensitiveSetMVFeed): # type: ignore
+    def __init__(self, feedback: ArbinCTI.ArbinCommandTimeSensitiveSetMVFeed):
         self.result = [SetMetaVariableTimeSensitiveFeedback.TimeSensitiveSetMVResult(result) for result in feedback.Results]
 
 class GetMetaVariableFeedback:
@@ -344,14 +261,14 @@ class GetMetaVariableFeedback:
         CTI_GET_MV_CELL_INDEX_ERROR = 0x26
 
     class MetaVariableInfo:
-        def __init__(self, info: ArbinCommandGetMetaVariablesFeed.MetaVariableInfo): # type: ignore
+        def __init__(self, info: ArbinCTI.ArbinCommandGetMetaVariablesFeed.MetaVariableInfo):
             self.channel_index  = int(info.m_Channel)
             self.mv_error     = GetMetaVariableFeedback.GetMVResult(int(info.m_MV_Error))
             self.mv_data_type = CSTypeConverter.TEDataType(int(info.m_MV_DataType))
             self.mv_data_code = int(info.m_MV_MetaCode)
             self.value        = float(info.m_Value)
     
-    def __init__(self, feedback: ArbinCommandGetMetaVariablesFeed): # type: ignore
+    def __init__(self, feedback: ArbinCTI.ArbinCommandGetMetaVariablesFeed):
         self.meta_variable_info = [GetMetaVariableFeedback.MetaVariableInfo(info) for info in feedback.MetaVariableInfos]
 
 """""""""""""""""""""""""""
@@ -389,7 +306,7 @@ class StartTestFeedback:
         CTI_START_CHANNEL_SUSPENT = 0x2A
         CTI_START_TESTNAME_TOO_LONG = 0x2B
 
-    def __init__(self, feedback: ArbinCommandStartChannelFeed): # type: ignore
+    def __init__(self, feedback: ArbinCTI.ArbinCommandStartChannelFeed): 
         self.result =StartTestFeedback.StartToken(int(feedback.Result))
 
 class StopTestFeedback:
@@ -400,7 +317,7 @@ class StopTestFeedback:
         STOP_NOT_RUNNING = 0x12
         STOP_CHANNEL_NOT_CONNECT = 0x13
 
-    def __init__(self, feedback: ArbinCommandStopChannelFeed): # type: ignore
+    def __init__(self, feedback: ArbinCTI.ArbinCommandStopChannelFeed):
         self.result = StopTestFeedback.StopToken(int(feedback.Result))
 
 class ResumeTestFeedback:
@@ -432,7 +349,7 @@ class ResumeTestFeedback:
         CTI_RESUME_BATTERYSIMULATION_NOT_PARALLEL = 0x27
         CTI_RESUME_CHANNEL_SUSPENT = 0x28
 
-    def __init__(self, feedback: ArbinCommandResumeChannelFeed): # type: ignore
+    def __init__(self, feedback: ArbinCTI.ArbinCommandResumeChannelFeed):
         self.result = ResumeTestFeedback.ResumeToken(int(feedback.Result))
 
 class JumpStepFeedback:
@@ -465,7 +382,7 @@ class JumpStepFeedback:
         CTI_JUMP_BATTERYSIMULATION_NOT_PARALLEL = 0x28
         CTI_JUMP_CHANNEL_SUSPENT = 0x29
 
-    def __init__(self, feedback: ArbinCommandJumpChannelFeed): # type: ignore
+    def __init__(self, feedback: ArbinCTI.ArbinCommandJumpChannelFeed):
         self.result                 = JumpStepFeedback.JumpToken(int(feedback.Result))
         self.error_channel_index    = int(feedback.ErrorChannelIndex)
 
@@ -480,7 +397,7 @@ class ProceedTestFeedback:
         CTI_PROCEED_NOT_PAUSE_NORMAL = 0x15
         CTI_PROCEED_CHANNEL_UNSAFE = 0x16
     
-    def __init__(self, feedback: ArbinCommandContinueChannelFeed): # type: ignore
+    def __init__(self, feedback: ArbinCTI.ArbinCommandContinueChannelFeed):
         self.result = ProceedTestFeedback.ProceedToken(int(feedback.Result))
     
 class GetChannelDataFeedback:
@@ -531,25 +448,25 @@ class GetChannelDataFeedback:
         CS_SUSPENT = 31
 
     class AuxData:
-        def __init__(self, data: ArbinCommandGetChannelDataFeed.AuxData): # type: ignore
+        def __init__(self, data: ArbinCTI.ArbinCommandGetChannelDataFeed.AuxData):
             self.value    = float(data.Value)
             self.value_dt = float(data.DTValue)
 
     class CANInfo:
-        def __init__(self, data: ArbinCommandGetChannelDataFeed.CANInfo): # type: ignore
+        def __init__(self, data: ArbinCTI.ArbinCommandGetChannelDataFeed.CANInfo):
             self.index = int(data.nIndex)
             self.value = float(data.Value)
             self.unit  = str(data.Unit)
 
     class SMBInfo:
-        def __init__(self, data: ArbinCommandGetChannelDataFeed.SMBInfo): # type: ignore
+        def __init__(self, data: ArbinCTI.ArbinCommandGetChannelDataFeed.SMBInfo):
             self.index = int(data.nIndex)
             self.type  = int(data.nType)
             self.unit  = str(data.Unit)
             self.value = data.Value  # Keeping this generic as 'object'
 
     class CANMonitorInfo:
-        def __init__(self, data: ArbinCommandGetChannelDataFeed.CANMonitorInfo):  # type: ignore
+        def __init__(self, data: ArbinCTI.ArbinCommandGetChannelDataFeed.CANMonitorInfo):
             self.is_offline = bool(data.IsOffline)
             self.alias_name = str(data.AliasName)
             self.meta_name  = str(data.MetaName)
@@ -557,7 +474,7 @@ class GetChannelDataFeedback:
             self.value      = str(data.Value)
 
     class SMBMonitorInfo:
-        def __init__(self, data: ArbinCommandGetChannelDataFeed.SMBMonitorInfo):  # type: ignore
+        def __init__(self, data: ArbinCTI.ArbinCommandGetChannelDataFeed.SMBMonitorInfo):
             self.is_offline = bool(data.IsOffline)
             self.alias_name = str(data.AliasName)
             self.meta_name  = str(data.MetaName)
@@ -565,7 +482,7 @@ class GetChannelDataFeedback:
             self.value      = str(data.Value)
 
     class AuxMonitorData:
-        def __init__(self, data: ArbinCommandGetChannelDataFeed.AuxMonitorData):  # type: ignore
+        def __init__(self, data: ArbinCTI.ArbinCommandGetChannelDataFeed.AuxMonitorData):
             self.aux_type = str(data.AuxType)
             self.alias_name = str(data.AliasName)
             self.aux_ch_global_id = int(data.AuxChGlobalID)
@@ -589,7 +506,7 @@ class GetChannelDataFeedback:
             AO = 11
             MAX_NUM = 12
     
-        def __init__(self, info: ArbinCommandGetChannelDataFeed.ChannelInfo):  # type: ignore
+        def __init__(self, info: ArbinCTI.ArbinCommandGetChannelDataFeed.ChannelInfo):
             self.channel_index          = int(info.Channel)
             self.status                 = GetChannelDataFeedback.ChannelStatus(int(info.Status))
             self.comm_failure           = bool(info.CommFailure)
@@ -637,7 +554,7 @@ class GetChannelDataFeedback:
             # self.eq_data              = None
             # self.cell_data            = None
 
-    def __init__(self, feedback: ArbinCommandGetChannelDataFeed):  # type: ignore
+    def __init__(self, feedback: ArbinCTI.ArbinCommandGetChannelDataFeed):
         self.channel_data = [GetChannelDataFeedback.ChannelInfo(info) for info in feedback.m_Channels]
 
 class GetResumeDataFeedback:
@@ -647,7 +564,7 @@ class GetResumeDataFeedback:
 
     class ResumeDatalInfo:
         class ResumeData:
-            def __init__(self, resume_data: ArbinCommandGetResumeDataFeed.ResumeDatalInfo): # type: ignore
+            def __init__(self, resume_data: ArbinCTI.ArbinCommandGetResumeDataFeed.ResumeDatalInfo):
                 self.test_id = resume_data.TestID
                 self.cycle = resume_data.Cycle
                 self.step_index = resume_data.StepIndex
@@ -695,7 +612,7 @@ class GetResumeDataFeedback:
                 self.mvud14 = resume_data.MVUD14
                 self.mvud15 = resume_data.MVUD15
                 self.mvud16 = resume_data.MVUD16
-        def __init__(self, info: ArbinCommandGetResumeDataFeed.ResumeDatalInfo): # type: ignore
+        def __init__(self, info: ArbinCTI.ArbinCommandGetResumeDataFeed.ResumeDatalInfo):
             self.channel_index = int(info.Channel)
             self.channel_code = GetResumeDataFeedback.EGetDataResult(int(info.channelCode))
             self.resume_data = GetResumeDataFeedback.ResumeDatalInfo.ResumeData(info.ResumeData)
@@ -706,7 +623,7 @@ class GetResumeDataFeedback:
             self.start_time = str(info.StartTime)
             self.step_names = [str(step) for step in info.Steps]
     
-    def __init__(self, feedback: ArbinCommandGetResumeDataFeed): # type: ignore
+    def __init__(self, feedback: ArbinCTI.ArbinCommandGetResumeDataFeed):
         self.channel_data = [GetResumeDataFeedback.ResumeDatalInfo(info) for info in feedback.m_Channels]
 
 class GetChannelAssignmentFeedback:
@@ -715,7 +632,7 @@ class GetChannelAssignmentFeedback:
         ERROR = 0x10
 
     class ChannelAssignmentInfo:
-        def __init__(self, info: ArbinCommandGetStartDataFeed.StartDatalInfo): # type: ignore
+        def __init__(self, info: ArbinCTI.ArbinCommandGetStartDataFeed.StartDatalInfo):
             self.channel = int(info.Channel)
             self.channel_code = GetChannelAssignmentFeedback.EGetDataResult(int(info.channelCode))
             self.schedule = str(info.Schedule)
@@ -738,5 +655,5 @@ class GetChannelAssignmentFeedback:
             self.test_names = [str(name) for name in info.TestNames]
             self.step_names = [str(step) for step in info.Steps]
 
-    def __init__(self, feedback: ArbinCommandGetStartDataFeed): # type: ignore
+    def __init__(self, feedback: ArbinCTI.ArbinCommandGetStartDataFeed):
         self.channel_data = [GetChannelAssignmentFeedback.ChannelAssignmentInfo(info) for info in feedback.m_Channels]

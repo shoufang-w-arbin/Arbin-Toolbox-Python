@@ -2,16 +2,16 @@ import unittest
 
 import ArbinCTI.Core as ArbinCTI
 
-from ctitoolbox.src.cti_data_type import (
+from ctitoolbox.src.data_type.cti_data_type import (
+    TE_DATA_TYPE, 
+    EMVUD,
+    EReadWriteMode,
     StartResumeEx,
     MetaVariableInfo,
-    TimeSensitiveSetMV,
-    CMetavariableDataCodeApply,
-    TimeSensitiveSetMVArgs,
     MetaVariableInfoEx,
-    TE_DATA_TYPE,
-    EReadWriteMode,
-    EMVUD
+    TimeSensitiveSetMV,
+    TimeSensitiveSetMVArgs,
+    CMetavariableDataCodeApply
 )
 
 class TestArbinCTIClasses(unittest.TestCase):

@@ -1,6 +1,6 @@
 import unittest
 
-from System import (
+from System import ( # type: ignore
     Byte,
     Boolean,
     Int32,
@@ -9,9 +9,9 @@ from System import (
     String,
     Array
 )
-from System.Collections.Generic import List
+from System.Collections.Generic import List # type: ignore
 
-from ctitoolbox.src.cs_type_converter import CSTypeConverter
+from ctitoolbox.src.data_type.cs_data_type import CSTypeConverter
 
 class TestCSTypeConverter(unittest.TestCase):
 

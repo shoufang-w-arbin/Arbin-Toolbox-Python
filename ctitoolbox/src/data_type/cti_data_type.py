@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 import ArbinCTI.Core as ArbinCTI                # type: ignore
 from System.Collections.Generic import List     # type: ignore
 
-from ctitoolbox.src.cs_type_converter import CSTypeConverter
+from ctitoolbox.src.data_type.cs_data_type import CSTypeConverter
 
 """
 CTI DATA TYPE WRAPPERS
