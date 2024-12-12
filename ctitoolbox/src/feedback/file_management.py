@@ -1,21 +1,12 @@
 import json
 from enum import IntEnum
 import base64
+import copy
 
 import ArbinCTI.Core as ArbinCTI # type: ignore
 
 from ctitoolbox.src.data_type.cs_data_type import CSTypeConverter
 
-"""""""""""""""""""""""""""
-File Management
-- UploadFileFeedback
-- DownloadFileFeedback
-- BrowseDirectoryFeedback
-- CheckFileExistFeedback
-- NewOrDeleteFeedback
-- DeleteFileFeedback
-- NewFolderFeedback
-"""""""""""""""""""""""""""
 class UploadFileFeedback:
     class EResult(IntEnum):
         CTI_UPLOAD_SUCCESS = 1
@@ -37,7 +28,9 @@ class UploadFileFeedback:
             self.progress_rate  = float(upload_file_result.ProgressRate)
         
         def to_json(self):
-            return json.dumps(self.__dict__)
+            data = copy.deepcopy(self.__dict__)
+            data['result_code'] = self.result_code.name
+            return json.dumps(data)
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandUpLoadFileFeed): 
         self.result       = UploadFileFeedback.EResult(int(feedback.Result))
@@ -46,7 +39,9 @@ class UploadFileFeedback:
         self.packet_index = int(feedback.uPackageIndex)
     
     def to_json(self):
-        return json.dumps(self.__dict__)
+        data = copy.deepcopy(self.__dict__)
+        data['result'] = self.result.name
+        return json.dumps(data)
     
 class DownloadFileFeedback:
     class EResult(IntEnum):
@@ -66,8 +61,9 @@ class DownloadFileFeedback:
         self.package_index  = int(feedback.uPackageIndex)
 
     def to_json(self):
-        """To decode data, use base64.b64decode(data_in_base64)"""
-        return json.dumps(self.__dict__)
+        data = copy.deepcopy(self.__dict__)
+        data['result'] = self.result.name
+        return json.dumps(data)
 
 class BrowseDirectoryFeedback:
     class EResult(IntEnum):
@@ -91,10 +87,11 @@ class BrowseDirectoryFeedback:
         self.dir_file_info  = [BrowseDirectoryFeedback.DirFileInfo(info) for info in feedback.DirFileInfoList]
 
     def to_json(self):
-        return json.dumps({
-            "result": self.result,
+        data = {
+            "result": self.result.name,
             "dir_file_info": [info.__dict__ for info in self.dir_file_info]
-        })
+        }
+        return json.dumps(data)
     
 class CheckFileExistFeedback:
     def __init__(self, feedback: ArbinCTI.ArbinCommandCheckFileExFeed):
@@ -122,7 +119,9 @@ class NewFolderFeedback:
         self.result = NewFolderFeedback.EResult(int(feedback.Result))
 
     def to_json(self):
-        return json.dumps(self.__dict__)
+        data = copy.deepcopy(self.__dict__)
+        data['result'] = self.result.name
+        return json.dumps(data)
     
 class DeleteFileFeedback:
     class EResult(IntEnum):
@@ -139,7 +138,9 @@ class DeleteFileFeedback:
         self.result = DeleteFileFeedback.EResult(int(feedback.Result))
 
     def to_json(self):
-        return json.dumps(self.__dict__)
+        data = copy.deepcopy(self.__dict__)
+        data['result'] = self.result.name
+        return json.dumps(data)
     
 class NewOrDeleteFeedback:
     class EResult(IntEnum):
@@ -160,4 +161,6 @@ class NewOrDeleteFeedback:
         self.result = NewOrDeleteFeedback.EResult(int(feedback.Result))
 
     def to_json(self):
-        return json.dumps(self.__dict__)
+        data = copy.deepcopy(self.__dict__)
+        data['result'] = self.result.name
+        return json.dumps(data)
