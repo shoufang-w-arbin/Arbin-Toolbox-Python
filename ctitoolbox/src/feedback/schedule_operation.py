@@ -75,13 +75,13 @@ class AssignFileFeedback:
         return python_dict
     
     def to_json(self):
-        result_dict = copy.deepcopy(self.__dict__)
-        result_dict['result'] = self.result.name
+        data = copy.deepcopy(self.__dict__)
+        data['result'] = self.result.name
         channel_list_result = dict()
-        for key, value in result_dict['channel_list_result'].items():
+        for key, value in data['channel_list_result'].items():
             channel_list_result[key.name] = value
-        result_dict['channel_list_result'] = channel_list_result
-        return json.dumps(result_dict)
+        data['channel_list_result'] = channel_list_result
+        return json.dumps(data)
 
 class SetMetaVariableFeedback:
     class EResult(IntEnum):
@@ -166,15 +166,15 @@ class SetMetaVariableTimeSensitiveFeedback:
         self.results = [SetMetaVariableTimeSensitiveFeedback.TimeSensitiveSetMVResult(result) for result in feedback.Results]
 
     def to_json(self):
-        temp = copy.deepcopy(self.results)
+        data = copy.deepcopy(self.results)
 
-        for res in temp:
+        for res in data:
             res.machine_status = res.machine_status.name
             res.result = res.result.name
             res.mvs = [mv.__dict__ for mv in res.mvs]
 
         return json.dumps({
-            "result": [res.__dict__ for res in temp]
+            "result": [res.__dict__ for res in data]
         })
 
 class GetMetaVariableFeedback:
