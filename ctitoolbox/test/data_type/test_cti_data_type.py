@@ -1,7 +1,7 @@
 import unittest
 import os
 
-import ArbinCTI.Core as ArbinCTI
+import ArbinCTI.Core as ArbinCTI # type: ignore
 
 from ctitoolbox.src.data_type.cti_data_type import (
     TE_DATA_TYPE, 
