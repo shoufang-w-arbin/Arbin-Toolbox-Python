@@ -15,7 +15,7 @@ from ctitoolbox.src.feedback.file_management import (
     NewOrDeleteFeedback,
 )
 
-UNITTEST_VIEW_JSON = os.getenv("UNITTEST_VIEW_JSON", False)
+UNITTEST_VIEW_DICT = os.getenv("UNITTEST_VIEW_DICT", False)
 
 class TestFileManagementFeedbackClasses(unittest.TestCase):
 
@@ -33,8 +33,8 @@ class TestFileManagementFeedbackClasses(unittest.TestCase):
         self.assertEqual(feedback_instance.packet_count, 5)
         self.assertEqual(feedback_instance.packet_index, 2)
 
-        if UNITTEST_VIEW_JSON:
-            print("UploadFileFeedback JSON:", feedback_instance.to_json())
+        if UNITTEST_VIEW_DICT:
+            print("UploadFileFeedback:", feedback_instance.to_dict())
 
     def test_DownloadFileFeedback_instantiation(self):
         cs_instance = ArbinCTI.ArbinCommandDownLoadFileFeed()
@@ -58,8 +58,8 @@ class TestFileManagementFeedbackClasses(unittest.TestCase):
         self.assertEqual(feedback_instance.package_count, 10)
         self.assertEqual(feedback_instance.package_index, 3)
 
-        if UNITTEST_VIEW_JSON:
-            print("DownloadFileFeedback JSON:", feedback_instance.to_json())
+        if UNITTEST_VIEW_DICT:
+            print("DownloadFileFeedback:", feedback_instance.to_dict())
 
     def test_BrowseDirectoryFeedback_instantiation(self):
         cs_instance = ArbinCTI.ArbinCommandBrowseDirectoryFeed()
@@ -98,8 +98,8 @@ class TestFileManagementFeedbackClasses(unittest.TestCase):
         self.assertEqual(feedback_instance.dir_file_info[1].size, 0)
         self.assertEqual(feedback_instance.dir_file_info[1].last_modify_time, "2024-01-02T15:30:00")
 
-        if UNITTEST_VIEW_JSON:
-            print("BrowseDirectoryFeedback JSON:", feedback_instance.to_json())
+        if UNITTEST_VIEW_DICT:
+            print("BrowseDirectoryFeedback:", feedback_instance.to_dict())
 
     def test_CheckFileExistFeedback_instantiation(self):
         cs_instance = ArbinCTI.ArbinCommandCheckFileExFeed()
@@ -117,8 +117,8 @@ class TestFileManagementFeedbackClasses(unittest.TestCase):
         self.assertEqual(feedback_instance.file_path, "/path/to/file.txt")
         self.assertEqual(feedback_instance.reason, "File partially exists.")
 
-        if UNITTEST_VIEW_JSON:
-            print("CheckFileExistFeedback JSON:", feedback_instance.to_json())
+        if UNITTEST_VIEW_DICT:
+            print("CheckFileExistFeedback:", feedback_instance.to_dict())
 
     def test_NewFolderFeedback_instantiation(self):
         cs_instance = ArbinCTI.ArbinCommandNewFolderFeed()
@@ -128,8 +128,8 @@ class TestFileManagementFeedbackClasses(unittest.TestCase):
 
         self.assertEqual(feedback_instance.result, NewFolderFeedback.EResult.CTI_NEW_FAILED_ADD_FOLDER)
 
-        if UNITTEST_VIEW_JSON:
-            print("NewFolderFeedback JSON:", feedback_instance.to_json())
+        if UNITTEST_VIEW_DICT:
+            print("NewFolderFeedback:", feedback_instance.to_dict())
 
     def test_DeleteFileFeedback_instantiation(self):
         cs_instance = ArbinCTI.ArbinCommandDeleteFileFeed()
@@ -139,8 +139,8 @@ class TestFileManagementFeedbackClasses(unittest.TestCase):
 
         self.assertEqual(feedback_instance.result, DeleteFileFeedback.EResult.CTI_DELETE_SUCCESS)
 
-        if UNITTEST_VIEW_JSON:
-            print("DeleteFileFeedback JSON:", feedback_instance.to_json())
+        if UNITTEST_VIEW_DICT:
+            print("DeleteFileFeedback:", feedback_instance.to_dict())
 
     def test_NewOrDeleteFeedback_instantiation(self):
         # Test for CTI_NEW
@@ -151,5 +151,5 @@ class TestFileManagementFeedbackClasses(unittest.TestCase):
 
         self.assertEqual(feedback_instance.result, NewOrDeleteFeedback.EResult.CTI_DELETE_FAILED)
 
-        if UNITTEST_VIEW_JSON:
-            print("NewOrDeleteFeedback JSON:", feedback_instance.to_json())
+        if UNITTEST_VIEW_DICT:
+            print("NewOrDeleteFeedback:", feedback_instance.to_dict())

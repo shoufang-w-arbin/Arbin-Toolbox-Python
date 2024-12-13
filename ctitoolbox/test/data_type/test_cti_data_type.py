@@ -15,7 +15,7 @@ from ctitoolbox.src.data_type.cti_data_type import (
     CMetavariableDataCodeApply
 )
 
-UNITTEST_VIEW_JSON = os.getenv("UNITTEST_VIEW_JSON", False)
+UNITTEST_VIEW_DICT = os.getenv("UNITTEST_VIEW_DICT", False)
 
 class TestArbinCTIClasses(unittest.TestCase):
 
@@ -109,8 +109,8 @@ class TestArbinCTIClasses(unittest.TestCase):
         self.assertEqual(time_sensitive_set_mv.mvud, EMVUD.MVUD1)
         self.assertEqual(time_sensitive_set_mv.value, 10.5)
 
-        if UNITTEST_VIEW_JSON:
-            print("TimeSensitiveSetMV JSON:", time_sensitive_set_mv.to_json())
+        if UNITTEST_VIEW_DICT:
+            print("TimeSensitiveSetMV:", time_sensitive_set_mv.to_dict())
 
     def test_time_sensitive_set_mv_args_to_cs(self):
         """Test conversion of TimeSensitiveSetMVArgs to C# object"""

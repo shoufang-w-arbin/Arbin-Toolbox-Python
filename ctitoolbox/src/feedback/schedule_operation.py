@@ -1,4 +1,3 @@
-import json
 import copy
 from enum import IntEnum
 
@@ -7,7 +6,6 @@ from ctitoolbox.src.data_type.cti_data_type import (
     TimeSensitiveSetMV,
     TE_DATA_TYPE
 )
-from ctitoolbox.src.data_type.cs_data_type import CSTypeConverter
 
 """""""""""""""""""""""""""
 Schedule Operation
@@ -39,8 +37,10 @@ class AssignScheduleFeedback:
     def __init__(self, feedback: ArbinCTI.ArbinCommandAssignScheduleFeed):
         self.result = AssignScheduleFeedback.EAssignToken(int(feedback.Result))
     
-    def to_json(self):
-        return json.dumps(self.__dict__)
+    def to_dict(self):
+        return {
+            "result": self.result.name
+        }
 
 class AssignFileFeedback:
     class EAssignToken(IntEnum):
@@ -74,15 +74,15 @@ class AssignFileFeedback:
             python_dict[token] = channels
         return python_dict
     
-    def to_json(self):
+    def to_dict(self):
         data = copy.deepcopy(self.__dict__)
         data['result'] = self.result.name
         channel_list_result = dict()
         for key, value in data['channel_list_result'].items():
             channel_list_result[key.name] = value
         data['channel_list_result'] = channel_list_result
-        return json.dumps(data)
-
+        return data
+    
 class SetMetaVariableFeedback:
     class EResult(IntEnum):
         CTI_SET_MV_SUCCESS = 0
@@ -94,10 +94,10 @@ class SetMetaVariableFeedback:
     def __init__(self, feedback: ArbinCTI.ArbinCommandSetMetaVariableFeed):
         self.result = SetMetaVariableFeedback.EResult(int(feedback.Result))
 
-    def to_json(self):
-        return json.dumps({
+    def to_dict(self):
+        return {
             "result": self.result.name
-        })
+        }
 class SetMetaVariableTimeSensitiveFeedback:
     class EControlStatus(IntEnum):
         Idle = 0
@@ -161,21 +161,21 @@ class SetMetaVariableTimeSensitiveFeedback:
             self.current        = float(result.Current)
             self.voltage        = float(result.Voltage)
             self.mvs            = [TimeSensitiveSetMV(mv) for mv in result.MVs]
+        
+        def to_dict(self):
+            data = copy.deepcopy(self.__dict__)
+            data['machine_status'] = self.machine_status.name
+            data['result']         = self.result.name
+            data['mvs']            = [mv.to_dict() for mv in self.mvs]
+            return data
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandTimeSensitiveSetMVFeed):
         self.results = [SetMetaVariableTimeSensitiveFeedback.TimeSensitiveSetMVResult(result) for result in feedback.Results]
 
-    def to_json(self):
-        data = copy.deepcopy(self.results)
-
-        for res in data:
-            res.machine_status = res.machine_status.name
-            res.result = res.result.name
-            res.mvs = [mv.__dict__ for mv in res.mvs]
-
-        return json.dumps({
-            "result": [res.__dict__ for res in data]
-        })
+    def to_dict(self):
+        data = copy.deepcopy(self.__dict__)
+        data['results'] = [res.to_dict() for res in data['results']]
+        return data
 
 class GetMetaVariableFeedback:
     class EResult(IntEnum):
@@ -211,17 +211,17 @@ class GetMetaVariableFeedback:
             self.mv_data_type  = TE_DATA_TYPE(int(info.m_MV_DataType))
             self.mv_meta_code  = int(info.m_MV_MetaCode)
             self.value         = float(info.m_Value)
+        
+        def to_dict(self):
+            data = copy.deepcopy(self.__dict__)
+            data['mv_error']     = self.mv_error.name
+            data['mv_data_type'] = self.mv_data_type.name
+            return data
     
     def __init__(self, feedback: ArbinCTI.ArbinCommandGetMetaVariablesFeed):
         self.meta_variable_info = [GetMetaVariableFeedback.MetaVariableInfo(info) for info in feedback.MetaVariableInfos]
 
-    def to_json(self):
-        temp = copy.deepcopy(self.meta_variable_info)
-
-        for info in temp:
-            info.mv_error = info.mv_error.name
-            info.mv_data_type = info.mv_data_type.name
-
-        return json.dumps({
-            "meta_variable_info": [info.__dict__ for info in temp]
-        })
+    def to_dict(self):
+        data = copy.deepcopy(self.__dict__)
+        data['meta_variable_info'] = [info.to_dict() for info in data['meta_variable_info']]
+        return data

@@ -20,7 +20,7 @@ from ctitoolbox.src.feedback.schedule_operation import (
     GetMetaVariableFeedback
 )
 
-UNITTEST_VIEW_JSON = os.getenv("UNITTEST_VIEW_JSON", False)
+UNITTEST_VIEW_DICT = os.getenv("UNITTEST_VIEW_DICT", False)
 
 class TestFeedbackClasses(unittest.TestCase):
 
@@ -32,8 +32,8 @@ class TestFeedbackClasses(unittest.TestCase):
 
         self.assertEqual(feedback_instance.result, AssignScheduleFeedback.EAssignToken.CTI_ASSIGN_SUCCESS)
 
-        if UNITTEST_VIEW_JSON:
-            print("AssignScheduleFeedback JSON:", feedback_instance.to_json())
+        if UNITTEST_VIEW_DICT:
+            print("AssignScheduleFeedback:", feedback_instance.to_dict())
 
     def test_AssignFileFeedback_instantiation(self):
         cs_instance                     = ArbinCTI.ArbinCommandAssignFileFeed()
@@ -56,8 +56,8 @@ class TestFeedbackClasses(unittest.TestCase):
         self.assertEqual(feedback_instance.channel_list_result[AssignFileFeedback.EAssignToken.CTI_ASSIGN_SUCCESS], list(list_instance1))
         self.assertEqual(feedback_instance.channel_list_result[AssignFileFeedback.EAssignToken.CTI_ASSIGN_ERROR], list(list_instance2))
 
-        if UNITTEST_VIEW_JSON:
-            print("AssignFileFeedback JSON:", feedback_instance.to_json())
+        if UNITTEST_VIEW_DICT:
+            print("AssignFileFeedback:", feedback_instance.to_dict())
 
     def test_SetMetaVariableFeedback_instantiation(self):
         cs_instance = ArbinCTI.ArbinCommandSetMetaVariableFeed()
@@ -67,8 +67,8 @@ class TestFeedbackClasses(unittest.TestCase):
 
         self.assertEqual(feedback_instance.result, SetMetaVariableFeedback.EResult.CTI_SET_MV_CHANNEL_NOT_STARTED)
 
-        if UNITTEST_VIEW_JSON:
-            print("SetMetaVariableFeedback JSON:", feedback_instance.to_json())
+        if UNITTEST_VIEW_DICT:
+            print("SetMetaVariableFeedback:", feedback_instance.to_dict())
 
     def test_SetMetaVariableTimeSensitiveFeedback_instantiation(self):
         mv_instance = ArbinCTI.TimeSensitiveSetMV()
@@ -107,8 +107,8 @@ class TestFeedbackClasses(unittest.TestCase):
         self.assertEqual(feedback_instance.results[0].mvs[0].mvud, EMVUD.MVUD6)
         self.assertAlmostEqual(feedback_instance.results[0].mvs[0].value, 1.23)
 
-        if UNITTEST_VIEW_JSON:
-            print("SetMetaVariableTimeSensitiveFeedback JSON:", feedback_instance.to_json())
+        if UNITTEST_VIEW_DICT:
+            print("SetMetaVariableTimeSensitiveFeedback:", feedback_instance.to_dict())
 
     def test_GetMetaVariableFeedback_instantiation(self):
         mv_info_instance = ArbinCTI.ArbinCommandGetMetaVariablesFeed.MetaVariableInfo()
@@ -133,5 +133,5 @@ class TestFeedbackClasses(unittest.TestCase):
         self.assertEqual(feedback_instance.meta_variable_info[0].mv_meta_code, 2)
         self.assertAlmostEqual(feedback_instance.meta_variable_info[0].value, 3.45)
 
-        if UNITTEST_VIEW_JSON:
-            print("GetMetaVariableFeedback JSON:", feedback_instance.to_json())
+        if UNITTEST_VIEW_DICT:
+            print("GetMetaVariableFeedback:", feedback_instance.to_dict())

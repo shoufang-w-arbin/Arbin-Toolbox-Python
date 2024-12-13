@@ -1,11 +1,8 @@
-import json
 from enum import IntEnum
 import base64
 import copy
 
 import ArbinCTI.Core as ArbinCTI # type: ignore
-
-from ctitoolbox.src.data_type.cs_data_type import CSTypeConverter
 
 class UploadFileFeedback:
     class EResult(IntEnum):
@@ -27,10 +24,10 @@ class UploadFileFeedback:
             self.canceled       = bool(upload_file_result.IsCancelUploadFile)
             self.progress_rate  = float(upload_file_result.ProgressRate)
         
-        def to_json(self):
+        def to_dict(self):
             data = copy.deepcopy(self.__dict__)
             data['result_code'] = self.result_code.name
-            return json.dumps(data)
+            return data
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandUpLoadFileFeed): 
         self.result       = UploadFileFeedback.EResult(int(feedback.Result))
@@ -38,10 +35,10 @@ class UploadFileFeedback:
         self.packet_count = int(feedback.uGeneralPackage)
         self.packet_index = int(feedback.uPackageIndex)
     
-    def to_json(self):
+    def to_dict(self):
         data = copy.deepcopy(self.__dict__)
         data['result'] = self.result.name
-        return json.dumps(data)
+        return data
     
 class DownloadFileFeedback:
     class EResult(IntEnum):
@@ -60,10 +57,10 @@ class DownloadFileFeedback:
         self.package_count  = int(feedback.uGeneralPackage)
         self.package_index  = int(feedback.uPackageIndex)
 
-    def to_json(self):
+    def to_dict(self):
         data = copy.deepcopy(self.__dict__)
         data['result'] = self.result.name
-        return json.dumps(data)
+        return data
 
 class BrowseDirectoryFeedback:
     class EResult(IntEnum):
@@ -79,19 +76,19 @@ class BrowseDirectoryFeedback:
             self.size               = int(info.dwSize)
             self.last_modify_time   = str(info.wcModified)
         
-        def to_json(self):
-            return json.dumps(self.__dict__)
+        def to_dict(self):
+            return self.__dict__
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandBrowseDirectoryFeed):
         self.result         = BrowseDirectoryFeedback.EResult(int(feedback.Result))
         self.dir_file_info  = [BrowseDirectoryFeedback.DirFileInfo(info) for info in feedback.DirFileInfoList]
 
-    def to_json(self):
+    def to_dict(self):
         data = {
             "result": self.result.name,
-            "dir_file_info": [info.__dict__ for info in self.dir_file_info]
+            "dir_file_info": [info.to_dict() for info in self.dir_file_info]
         }
-        return json.dumps(data)
+        return data
     
 class CheckFileExistFeedback:
     def __init__(self, feedback: ArbinCTI.ArbinCommandCheckFileExFeed):
@@ -101,8 +98,8 @@ class CheckFileExistFeedback:
         self.file_path           = str(feedback.FilePath)
         self.reason              = str(feedback.Reason)
 
-    def to_json(self):
-        return json.dumps(self.__dict__)
+    def to_dict(self):
+        return self.__dict__
     
 class NewFolderFeedback:
     class EResult(IntEnum):
@@ -118,10 +115,10 @@ class NewFolderFeedback:
     def __init__(self, feedback: ArbinCTI.ArbinCommandNewFolderFeed):
         self.result = NewFolderFeedback.EResult(int(feedback.Result))
 
-    def to_json(self):
+    def to_dict(self):
         data = copy.deepcopy(self.__dict__)
         data['result'] = self.result.name
-        return json.dumps(data)
+        return data
     
 class DeleteFileFeedback:
     class EResult(IntEnum):
@@ -137,10 +134,10 @@ class DeleteFileFeedback:
     def __init__(self, feedback: ArbinCTI.ArbinCommandDeleteFileFeed):
         self.result = DeleteFileFeedback.EResult(int(feedback.Result))
 
-    def to_json(self):
+    def to_dict(self):
         data = copy.deepcopy(self.__dict__)
         data['result'] = self.result.name
-        return json.dumps(data)
+        return data
     
 class NewOrDeleteFeedback:
     class EResult(IntEnum):
@@ -160,7 +157,7 @@ class NewOrDeleteFeedback:
     def __init__(self, feedback: ArbinCTI.ArbinCommandNewOrDeleteFeed):
         self.result = NewOrDeleteFeedback.EResult(int(feedback.Result))
 
-    def to_json(self):
+    def to_dict(self):
         data = copy.deepcopy(self.__dict__)
         data['result'] = self.result.name
-        return json.dumps(data)
+        return data

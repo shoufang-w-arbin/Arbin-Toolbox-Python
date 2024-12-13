@@ -18,7 +18,7 @@ from ctitoolbox.src.feedback.channel_control import (
     GetChannelDataFeedback
 )
 
-UNITTEST_VIEW_JSON = os.getenv("UNITTEST_VIEW_JSON", False)
+UNITTEST_VIEW_DICT = os.getenv("UNITTEST_VIEW_DICT", False)
 
 class TestFeedbackClasses(unittest.TestCase):
 
@@ -30,7 +30,7 @@ class TestFeedbackClasses(unittest.TestCase):
 
         self.assertEqual(feedback_instance.result, StartChannelFeedback.EStartToken.CTI_START_POWER_PROTECTED)
 
-        if UNITTEST_VIEW_JSON:
+        if UNITTEST_VIEW_DICT:
             print("StartChannelFeedback:", feedback_instance.to_dict())
 
     def test_StopChannelFeedback_instantiation(self):
@@ -41,7 +41,7 @@ class TestFeedbackClasses(unittest.TestCase):
 
         self.assertEqual(feedback_instance.result, StopChannelFeedback.EStopToken.STOP_CHANNEL_NOT_CONNECT)
 
-        if UNITTEST_VIEW_JSON:
+        if UNITTEST_VIEW_DICT:
             print("StopChannelFeedback:", feedback_instance.to_dict())
 
     def test_ResumeChannelFeedback_instantiation(self):
@@ -52,7 +52,7 @@ class TestFeedbackClasses(unittest.TestCase):
         
         self.assertEqual(feedback_instance.result, ResumeChannelFeedback.EResumeToken.RESUME_CHANNEL_RUNNING)
         
-        if UNITTEST_VIEW_JSON:
+        if UNITTEST_VIEW_DICT:
             print("ResumeChannelFeedback:", feedback_instance.to_dict())
 
     def test_JumpStepFeedback_instantiation(self):
@@ -65,7 +65,7 @@ class TestFeedbackClasses(unittest.TestCase):
         self.assertEqual(feedback_instance.result, JumpChannelFeedback.EJumpToken.CTI_JUMP_SCHEDULE_VALID)
         self.assertEqual(feedback_instance.error_channel_index, 5)
         
-        if UNITTEST_VIEW_JSON:
+        if UNITTEST_VIEW_DICT:
             print("JumpStepFeedback:", feedback_instance.to_dict())
 
     def test_ContinueChannelFeedback_instantiation(self):
@@ -76,7 +76,7 @@ class TestFeedbackClasses(unittest.TestCase):
 
         self.assertEqual(feedback_instance.result, ContinueChannelFeedback.EContinueToken.CTI_CONTINUE_CHANNEL_CALIBRATING)
         
-        if UNITTEST_VIEW_JSON:
+        if UNITTEST_VIEW_DICT:
             print("ContinueChannelFeedback:", feedback_instance.to_dict())
 
     def test_GetStartDataFeedback_instantiation(self):
@@ -137,7 +137,7 @@ class TestFeedbackClasses(unittest.TestCase):
         self.assertEqual(channel.test_names, ["Test1", "Step2"])
         self.assertEqual(channel.step_names, ["Test1", "Step2"])
         
-        if UNITTEST_VIEW_JSON:
+        if UNITTEST_VIEW_DICT:
             print("GetStartDataFeedback:", feedback_instance.to_dict())
 
     def test_GetChannelDataFeedback_instantiation(self):
@@ -249,7 +249,7 @@ class TestFeedbackClasses(unittest.TestCase):
         self.assertListEqual(channel_data.eq_data, [])
         self.assertListEqual(channel_data.cell_data, [])
 
-        if UNITTEST_VIEW_JSON:
+        if UNITTEST_VIEW_DICT:
             print("GetChannelDataFeedback:", feedback_instance.to_dict())
 
 

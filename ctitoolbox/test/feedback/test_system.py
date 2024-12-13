@@ -9,7 +9,7 @@ from ctitoolbox.src.feedback.system import (
     LoginFeedback
 )
 
-UNITTEST_VIEW_JSON = os.getenv("UNITTEST_VIEW_JSON", False)
+UNITTEST_VIEW_DICT = os.getenv("UNITTEST_VIEW_DICT", False)
 
 class TestFeedbackClasses(unittest.TestCase):
 
@@ -23,8 +23,8 @@ class TestFeedbackClasses(unittest.TestCase):
         self.assertEqual(feedback_instance.serial_number, 12345.6789)
         self.assertEqual(feedback_instance.result, GetSerailNumberFeedback.EAssignToken.CTI_GET_SERIAL_SUCCESS)
 
-        if UNITTEST_VIEW_JSON:
-            print("GetSerailNumberFeedback JSON:", feedback_instance.to_json())
+        if UNITTEST_VIEW_DICT:
+            print("GetSerailNumberFeedback:", feedback_instance.to_dict())
 
     def test_GetMITSVersionFeedback_instantiation(self):
         cs_instance = ArbinCTI.ArbinCommandGetServerSoftwareVersionNumberFeed()
@@ -34,8 +34,8 @@ class TestFeedbackClasses(unittest.TestCase):
 
         self.assertEqual(feedback_instance.version, "1.2.3.4")
 
-        if UNITTEST_VIEW_JSON:
-            print("GetMITSVersionFeedback JSON:", feedback_instance.to_json())
+        if UNITTEST_VIEW_DICT:
+            print("GetMITSVersionFeedback:", feedback_instance.to_dict())
 
     def test_LoginFeedback_instantiation(self):
         cs_instance = ArbinCTI.ArbinCommandLoginFeed()
@@ -72,6 +72,6 @@ class TestFeedbackClasses(unittest.TestCase):
         self.assertEqual(feedback_instance.version, LoginFeedback.ECTIVersion.CTI_PRO7)
         self.assertEqual(feedback_instance.server_info, "Server Info")
 
-        if UNITTEST_VIEW_JSON:
-            print("LoginFeedback JSON:", feedback_instance.to_json())
+        if UNITTEST_VIEW_DICT:
+            print("LoginFeedback:", feedback_instance.to_dict())
         

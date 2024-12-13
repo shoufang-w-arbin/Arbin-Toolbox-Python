@@ -1,4 +1,4 @@
-import json
+import copy
 from enum import IntEnum
 
 import ArbinCTI.Core as ArbinCTI # type: ignore
@@ -18,15 +18,17 @@ class GetSerailNumberFeedback:
         self.serial_number  = float(feedback.SerialNum)
         self.result         = GetSerailNumberFeedback.EAssignToken(int(feedback.Result))
     
-    def to_json(self):
-        return json.dumps(self.__dict__)
+    def to_dict(self):
+        data = copy.deepcopy(self.__dict__)
+        data['result'] = self.result.name
+        return data
 
 class GetMITSVersionFeedback:
     def __init__(self, feedback: ArbinCTI.ArbinCommandGetServerSoftwareVersionNumberFeed): 
         self.version = str(feedback.ServerVersionNumber)
 
-    def to_json(self):
-        return json.dumps(self.__dict__)
+    def to_dict(self):
+        return self.__dict__
     
 class LoginFeedback:
     class ECTIVersion(IntEnum):
@@ -69,5 +71,8 @@ class LoginFeedback:
         # self.img: Optional[Image.Image] = feedback.Img if isinstance(feedback.Img, Image.Image) else None
         self.server_info         = str(feedback.ServerInfo) if feedback.ServerInfo else None
 
-    def to_json(self):
-        return json.dumps(self.__dict__)
+    def to_dict(self):
+        data = copy.deepcopy(self.__dict__)
+        data['result'] = self.result.name
+        data['version'] = self.version.name
+        return data
