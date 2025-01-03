@@ -283,7 +283,7 @@ class GetChannelDataFeedback:
             self.value             = float(data.Value)
             self.dxdt              = float(data.dxdt)
         def to_dict(self):
-            return json.dumps(self.__dict__)
+            return self.__dict__
 
     class CTISPTTTrayMetaValue:
         def __init__(self, data: ArbinCTI.Common.CTISPTTTrayMetaValue):
@@ -411,9 +411,9 @@ class GetChannelDataFeedback:
             self.eq_data                = [GetChannelDataFeedback.CTISPTTEQData(item) for item in info.EQDatas]
             self.cell_data              = [GetChannelDataFeedback.CTISPTTCellData(item) for item in info.CellDatas]
             self.aux_data               = [
-                GetChannelDataFeedback.AuxMonitorData(item) 
-                for aux_list in info.AuxeDatas if aux_list 
-                for item in aux_list
+                [GetChannelDataFeedback.AuxMonitorData(item) for item in aux_list] if aux_list is not None 
+                else []
+                for aux_list in info.AuxeDatas
             ]
 
         def to_dict(self):
@@ -421,17 +421,18 @@ class GetChannelDataFeedback:
             data['status']      = self.status.name
             data['can_data']    = [can.to_dict() for can in self.can_data]
             data['smb_data']    = [smb.to_dict() for smb in self.smb_data]
-            data['aux_data']    = [aux.to_dict() for aux in self.aux_data]
             data['eq_data']     = [eq.to_dict() for eq in self.eq_data]
             data['cell_data']   = [cell.to_dict() for cell in self.cell_data]
+            data['aux_data']    = [[aux.to_dict() for aux in aux_list] for aux_list in self.aux_data]
             return data
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandGetChannelDataFeed):
         self.channel_data = [GetChannelDataFeedback.ChannelInfo(info) for info in feedback.m_ChannelInfo]
 
     def to_dict(self):
-        data = copy.deepcopy(self.__dict__)
-        data['channel_data'] = [ch.to_dict() for ch in self.channel_data]
+        data = {
+            "channel_data": [ch.to_dict() for ch in self.channel_data]
+        }
         return data
 
 class GetResumeDataFeedback:

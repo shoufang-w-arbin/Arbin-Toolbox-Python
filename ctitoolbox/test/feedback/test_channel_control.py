@@ -141,10 +141,36 @@ class TestFeedbackClasses(unittest.TestCase):
             print("GetStartDataFeedback:", feedback_instance.to_dict())
 
     def test_GetChannelDataFeedback_instantiation(self):
+        can_list_instance = List[ArbinCTI.ArbinCommandGetChannelDataFeed.CANMonitorInfo]()
+        can_info_instance = ArbinCTI.ArbinCommandGetChannelDataFeed.CANMonitorInfo()
+        can_info_instance.IsOffline = True
+        can_list_instance.Add(can_info_instance)
+
+        smb_list_instance = List[ArbinCTI.ArbinCommandGetChannelDataFeed.SMBMonitorInfo]()
+        smb_info_instance = ArbinCTI.ArbinCommandGetChannelDataFeed.SMBMonitorInfo()
+        smb_info_instance.IsOffline = True
+        smb_list_instance.Add(smb_info_instance)
+
+        aux_type_num = int(ArbinCTI.ArbinCommandGetChannelDataFeed.ChannelInfo.AUX_TYPE.MAX_NUM)
         aux_array_instance = Array.CreateInstance(
             List[ArbinCTI.ArbinCommandGetChannelDataFeed.AuxMonitorData], 
-            int(ArbinCTI.ArbinCommandGetChannelDataFeed.ChannelInfo.AUX_TYPE.MAX_NUM)
+            aux_type_num
         )
+        for i in range(aux_type_num):
+            aux_array_instance[i] = List[ArbinCTI.ArbinCommandGetChannelDataFeed.AuxMonitorData]()
+        aux_data_instance = ArbinCTI.ArbinCommandGetChannelDataFeed.AuxMonitorData()
+        aux_data_instance.AuxChGlobalID = 12
+        aux_array_instance[0].Add(aux_data_instance)
+
+        eq_list_instance = List[ArbinCTI.Common.CTISPTTEQData]()
+        eq_data_instance = ArbinCTI.Common.CTISPTTEQData()
+        eq_data_instance.ParentTrayGlobalIndex = 34
+        eq_list_instance.Add(eq_data_instance)
+
+        cell_list_instance = List[ArbinCTI.Common.CTISPTTCellData]()
+        cell_data_instance = ArbinCTI.Common.CTISPTTCellData()
+        cell_data_instance.ParentTrayGlobalIndex = 56
+        cell_list_instance.Add(cell_data_instance)
 
         channel_info_instance = ArbinCTI.ArbinCommandGetChannelDataFeed.ChannelInfo()
         channel_info_instance.Channel = 1
@@ -188,11 +214,11 @@ class TestFeedbackClasses(unittest.TestCase):
         channel_info_instance.ACR = 0.001
         channel_info_instance.ACI = 0.002
         channel_info_instance.ACIPhase = 0.5
-        channel_info_instance.CANs      = List[ArbinCTI.ArbinCommandGetChannelDataFeed.CANMonitorInfo]()
-        channel_info_instance.SMBs      = List[ArbinCTI.ArbinCommandGetChannelDataFeed.SMBMonitorInfo]()
+        channel_info_instance.CANs      = can_list_instance
+        channel_info_instance.SMBs      = smb_list_instance
         channel_info_instance.AuxeDatas = aux_array_instance
-        channel_info_instance.EQDatas   = List[ArbinCTI.Common.CTISPTTEQData]()
-        channel_info_instance.CellDatas = List[ArbinCTI.Common.CTISPTTCellData]()
+        channel_info_instance.EQDatas   = eq_list_instance
+        channel_info_instance.CellDatas = cell_list_instance
 
         cs_instance = ArbinCTI.ArbinCommandGetChannelDataFeed()
         cs_instance.m_ChannelInfo = List[ArbinCTI.ArbinCommandGetChannelDataFeed.ChannelInfo]()
@@ -243,11 +269,21 @@ class TestFeedbackClasses(unittest.TestCase):
         self.assertAlmostEqual(channel_data.acr, 0.001, places=6)
         self.assertAlmostEqual(channel_data.aci, 0.002, places=6)
         self.assertAlmostEqual(channel_data.aci_phase, 0.5, places=6)
-        self.assertListEqual(channel_data.can_data, [])
-        self.assertListEqual(channel_data.smb_data, [])
-        self.assertListEqual(channel_data.aux_data, [])
-        self.assertListEqual(channel_data.eq_data, [])
-        self.assertListEqual(channel_data.cell_data, [])
+        self.assertEqual(len(channel_data.can_data), 1)
+        self.assertTrue(channel_data.can_data[0].is_offline)
+        
+        self.assertEqual(len(channel_data.smb_data), 1)
+        self.assertTrue(channel_data.smb_data[0].is_offline)
+
+        self.assertEqual(len(channel_data.aux_data), 12)
+        self.assertEqual(len(channel_data.aux_data[0]), 1)
+        self.assertEqual(channel_data.aux_data[0][0].aux_ch_global_id, 12)
+
+        self.assertEqual(len(channel_data.eq_data), 1)
+        self.assertEqual(channel_data.eq_data[0].parent_tray_global_index, 34)
+
+        self.assertEqual(len(channel_data.cell_data), 1)
+        self.assertEqual(channel_data.cell_data[0].parent_tray_global_index, 56)
 
         if UNITTEST_VIEW_DICT:
             print("GetChannelDataFeedback:", feedback_instance.to_dict())
