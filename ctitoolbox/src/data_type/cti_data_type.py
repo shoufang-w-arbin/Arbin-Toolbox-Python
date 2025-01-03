@@ -271,15 +271,15 @@ class TimeSensitiveSetMVArgs:
         Python wrapper of 'ArbinCTI.Core.TimeSensitiveSetMVArgs.TimeSensitiveSetMVChannel'
 
         Attributes:
-            global_index        : global index of IV channel
-            time_sensitive_mvs  : list of TimeSensitiveSetMVArgs.TimesensitiveSetMV objects
-            log                 : log data to database if set.
+            global_index : global index of IV channel
+            mv_list      : list of TimeSensitiveSetMVArgs.TimesensitiveSetMV objects
+            log          : log data to database if set.
         
         Raises:
             ValueError: If invalid number or types of arguments
         """
         global_index        : int
-        time_sensitive_mvs  : list = field(default_factory=list)
+        mv_list  : list = field(default_factory=list)
         log                 : bool = True
 
         def to_cs(self) -> ArbinCTI.TimeSensitiveSetMVArgs.TimeSensitiveSetMVChannel: 
@@ -290,7 +290,7 @@ class TimeSensitiveSetMVArgs:
 
             instance = ArbinCTI.TimeSensitiveSetMVArgs.TimeSensitiveSetMVChannel( 
                 CSTypeConverter.to_cs_int(self.global_index),
-                self.time_sensitive_mvs,
+                self.mv_list,
                 CSTypeConverter.to_cs_bool(self.log)
             )     
             return instance
@@ -298,11 +298,11 @@ class TimeSensitiveSetMVArgs:
         def _convert_time_sensitive_mvs(self):
             list_instance = List[ArbinCTI.TimeSensitiveSetMV]()
             try:
-                [list_instance.Add(obj.to_cs()) for obj in self.time_sensitive_mvs]
+                [list_instance.Add(obj.to_cs()) for obj in self.mv_list]
             except Exception as e:
                 raise ValueError(f"Error converting TimeSensitiveSetMV: {str(e)}")
             finally:
-                self.time_sensitive_mvs = list_instance
+                self.mv_list = list_instance
         
     def to_cs(self) -> ArbinCTI.TimeSensitiveSetMVArgs:
         instance         = ArbinCTI.TimeSensitiveSetMVArgs()

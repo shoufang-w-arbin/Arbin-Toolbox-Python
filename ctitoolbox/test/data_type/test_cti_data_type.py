@@ -117,7 +117,7 @@ class TestArbinCTIClasses(unittest.TestCase):
         time_sensitive_set_mv = TimeSensitiveSetMV(EMVUD.MVUD1, 20.0)
         time_sensitive_set_mv_channel = TimeSensitiveSetMVArgs.TimeSensitiveSetMVChannel(
             global_index=1,
-            time_sensitive_mvs=[time_sensitive_set_mv],
+            mv_list=[time_sensitive_set_mv],
             log=False
         )
 
