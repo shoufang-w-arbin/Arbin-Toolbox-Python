@@ -286,7 +286,7 @@ class TimeSensitiveSetMVArgs:
             try:
                 self._convert_time_sensitive_mvs()
             except Exception as e:
-                raise ValueError(f"Error converting TimeSensitiveSetMV: {str(e)}")
+                raise ValueError(f"Error converting TimeSensitiveSetMVChannel: {str(e)}")
 
             instance = ArbinCTI.TimeSensitiveSetMVArgs.TimeSensitiveSetMVChannel( 
                 CSTypeConverter.to_cs_int(self.global_index),
