@@ -11,13 +11,26 @@ Wrappers of C# objects, providing a smoother and more Pythonic programming exper
 ## Usage Example 1: Command Arguments
 When calling `public bool PostTimeSensitiveSetMV(IArbinSocket socket, TimeSensitiveSetMVArgs args)`, creating a `TimeSensitiveSetMVArgs` object in C# without the toolbox can be quite cumbersome. Here's an example:
 
-### Without Toolbox
+<table>
+<thead>
+<tr>
+<th>Without Toolbox</th>
+<th>With Toolbox</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="vertical-align: top;">
+
 ```python
 import clr
 clr.AddReference("ArbinCTI")
 
 from System.Collections.Generic import List
-from ArbinCTI.Core import TimeSensitiveSetMVArgs, TimeSensitiveSetMV
+from ArbinCTI.Core import (
+    TimeSensitiveSetMVArgs, 
+    TimeSensitiveSetMV
+)
 
 mv1 = TimeSensitiveSetMV()
 mv1.MVUD  = TimeSensitiveSetMV.EMVUD.MVUD1
@@ -44,21 +57,51 @@ mv_args.Channels.Add(mv_channel1)
 control.PostTimeSensitiveSetMV(client, mv_args)
 ```
 
-### With Toolbox
-Using the toolbox, the same task becomes much simpler and more intuitive:
+</td>
+<td style="vertical-align: top;">
+
 
 ```python
-from ctitoolbox import TimeSensitiveSetMVArgs, EMVUD
+from ctitoolbox import (
+    TimeSensitiveSetMVArgs, 
+    EMVUD
+)
+
+
+
+
 
 mv1 = TimeSensitiveSetMV(EMVUD.MVUD1, 12.3)
 mv2 = TimeSensitiveSetMV(EMVUD.MVUD2, 4.56)
 
-mv_channel1 = TimeSensitiveSetMVArgs.TimeSensitiveSetMVChannel(1, [mv1, mv2], True)
+
+
+
+
+
+
+
+
+
+mv_channel1 = TimeSensitiveSetMVArgs.TimeSensitiveSetMVChannel(
+    1, 
+    [mv1, mv2], 
+    True
+)
 
 mv_args = TimeSensitiveSetMVArgs(5.0, [mv_channel1])
 
+
+
 control.PostTimeSensitiveSetMV(client, mv_args.to_cs())
 ```
+
+</td>
+</tr>
+</tbody>
+</table>
+
+
 
 As you can see, the toolbox provides a smoother and more Pythonic way to interact with C# objects, making your code cleaner and easier to maintain.
 
