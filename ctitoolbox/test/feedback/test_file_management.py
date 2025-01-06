@@ -87,13 +87,13 @@ class TestFileManagementFeedbackClasses(unittest.TestCase):
         self.assertEqual(len(feedback_instance.dir_file_info), 2)
 
         # Validate first DirFileInfo
-        self.assertEqual(feedback_instance.dir_file_info[0].type, 1)
+        self.assertEqual(feedback_instance.dir_file_info[0].type_, 1)
         self.assertEqual(feedback_instance.dir_file_info[0].parent_dir_path, "file1.txt")
         self.assertEqual(feedback_instance.dir_file_info[0].size, 2048)
         self.assertEqual(feedback_instance.dir_file_info[0].last_modify_time, "2024-01-01T12:00:00")
 
         # Validate second DirFileInfo
-        self.assertEqual(feedback_instance.dir_file_info[1].type, 0)
+        self.assertEqual(feedback_instance.dir_file_info[1].type_, 0)
         self.assertEqual(feedback_instance.dir_file_info[1].parent_dir_path, "folder1")
         self.assertEqual(feedback_instance.dir_file_info[1].size, 0)
         self.assertEqual(feedback_instance.dir_file_info[1].last_modify_time, "2024-01-02T15:30:00")

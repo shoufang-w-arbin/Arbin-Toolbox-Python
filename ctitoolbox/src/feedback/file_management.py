@@ -71,7 +71,7 @@ class BrowseDirectoryFeedback:
     
     class DirFileInfo:
         def __init__(self, info: ArbinCTI.ArbinCommandBrowseDirectoryFeed.DirFileInfo): 
-            self.type               = int(info.Type)
+            self.type_              = int(info.Type)
             self.parent_dir_path    = str(info.DirFileName)
             self.size               = int(info.dwSize)
             self.last_modify_time   = str(info.wcModified)
