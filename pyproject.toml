@@ -3,11 +3,11 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "arbincti-toolbox"
-version = "1.0.0"
+name = "ctitoolbox"
+version = "0.1.0"
 license = { file = "LICENSE.txt" }
 authors = [{name="Shou-Fang Wu", email="shoufang.w@arbin.com" },]
-description = ""
+description = "A toolbox that provides a smoother and more Pythonic programming experience for users who want to use ArbinCTI in Python"
 readme = "README.md"
 requires-python = ">=3.7"
 classifiers = [
@@ -33,9 +33,12 @@ dev = [
 ]
 
 [tool.setuptools]
-packages = ["ctitoolbox"]
 include-package-data = true
-exclude-package-data = {"*" = ["ctitoolbox.test"]}
 
-[tool.setuptools.package_data]
-your_package = ["bin/ArbinCTI.dll"]
+[tool.setuptools.packages.find]
+include = ["ctitoolbox*"]
+exclude = ["ctitoolbox.test*"]
+
+
+[tool.setuptools.package-data]
+ctitoolbox = ["bin/ArbinCTI.dll"]
