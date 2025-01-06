@@ -9,11 +9,11 @@ Test Control
 - StartChannelFeedback
 - StopChannelFeedback
 - ResumeChannelFeedback
-- JumpStepFeedback
+- JumpChannelFeedback
 - ContinueChannelFeedback
 - GetChannelDataFeedback
 - GetResumeDataFeedback
-- GetChannelAssignmentFeedback
+- GetStartDataFeedback
 """""""""""""""""""""""""""
 class StartChannelFeedback:
     class EStartToken(IntEnum):
