@@ -11,7 +11,7 @@ Wrappers of C# objects, providing a smoother and more Pythonic programming exper
 ## Usage Example 1: Command Arguments
 When calling `public bool PostTimeSensitiveSetMV(IArbinSocket socket, TimeSensitiveSetMVArgs args)`, creating a `TimeSensitiveSetMVArgs` object in C# without the toolbox can be quite cumbersome. Here's an example:
 
-<table border-collapse: collapse; width: 100%;>
+<table>
 <thead>
 <tr>
 <th>Without Toolbox</th>
@@ -62,14 +62,14 @@ control.PostTimeSensitiveSetMV(client, mv_args)
 
 
 ```python
+
+
+
 from ctitoolbox import (
-    TimeSensitiveSetMVArgs, 
+    TimeSensitiveSetMVArgs,
+    TimeSensitiveSetMV,
     EMVUD
 )
-
-
-
-
 
 mv1 = TimeSensitiveSetMV(EMVUD.MVUD1, 12.3)
 mv2 = TimeSensitiveSetMV(EMVUD.MVUD2, 4.56)
