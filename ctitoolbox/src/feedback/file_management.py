@@ -4,6 +4,17 @@ import copy
 
 import ArbinCTI.Core as ArbinCTI # type: ignore
 
+"""""""""""""""""""""""""""
+File Management Feedback
+- UploadFileFeedback
+- DownloadFileFeedback
+- BrowseDirectoryFeedback
+- CheckFileExistFeedback
+- NewFolderFeedback
+- DeleteFileFeedback
+- NewOrDeleteFeedback
+"""""""""""""""""""""""""""
+
 class UploadFileFeedback:
     class EResult(IntEnum):
         CTI_UPLOAD_SUCCESS = 1
