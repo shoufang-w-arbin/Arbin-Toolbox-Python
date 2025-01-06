@@ -98,6 +98,7 @@ class SetMetaVariableFeedback:
         return {
             "result": self.result.name
         }
+    
 class SetMetaVariableTimeSensitiveFeedback:
     class EControlStatus(IntEnum):
         Idle = 0
