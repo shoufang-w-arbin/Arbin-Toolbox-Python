@@ -5,7 +5,6 @@ import ArbinCTI.Core as ArbinCTI # type: ignore
 
 from ctitoolbox.src.data_type.cti_data_type import (
     TE_DATA_TYPE, 
-    EMVUD,
     EReadWriteMode,
     StartResumeEx,
     MetaVariableInfo,
@@ -91,7 +90,7 @@ class TestArbinCTIClasses(unittest.TestCase):
 
     def test_time_sensitive_set_mv_to_cs(self):
         """Test conversion of TimeSensitiveSetMV to C# object"""
-        time_sensitive_set_mv = TimeSensitiveSetMV(EMVUD.MVUD1, 10.5)
+        time_sensitive_set_mv = TimeSensitiveSetMV(TimeSensitiveSetMV.EMVUD.MVUD1, 10.5)
 
         cs_instance = time_sensitive_set_mv.to_cs()
 
@@ -106,7 +105,7 @@ class TestArbinCTIClasses(unittest.TestCase):
 
         time_sensitive_set_mv = TimeSensitiveSetMV(cs_instance)
 
-        self.assertEqual(time_sensitive_set_mv.mvud, EMVUD.MVUD1)
+        self.assertEqual(time_sensitive_set_mv.mvud, TimeSensitiveSetMV.EMVUD.MVUD1)
         self.assertEqual(time_sensitive_set_mv.value, 10.5)
 
         if UNITTEST_VIEW_DICT:
@@ -114,7 +113,7 @@ class TestArbinCTIClasses(unittest.TestCase):
 
     def test_time_sensitive_set_mv_args_to_cs(self):
         """Test conversion of TimeSensitiveSetMVArgs to C# object"""
-        time_sensitive_set_mv = TimeSensitiveSetMV(EMVUD.MVUD1, 20.0)
+        time_sensitive_set_mv = TimeSensitiveSetMV(TimeSensitiveSetMV.EMVUD.MVUD1, 20.0)
         time_sensitive_set_mv_channel = TimeSensitiveSetMVArgs.TimeSensitiveSetMVChannel(
             global_index=1,
             mv_list=[time_sensitive_set_mv],

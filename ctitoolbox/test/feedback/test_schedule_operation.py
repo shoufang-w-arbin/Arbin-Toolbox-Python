@@ -10,7 +10,7 @@ import ArbinCTI.Core as ArbinCTI # type: ignore
 
 from ctitoolbox.src.data_type.cti_data_type import (
     TE_DATA_TYPE,
-    EMVUD
+    TimeSensitiveSetMV
 )
 from ctitoolbox.src.feedback.schedule_operation import (
     AssignScheduleFeedback,
@@ -104,7 +104,7 @@ class TestFeedbackClasses(unittest.TestCase):
         self.assertAlmostEqual(feedback_instance.results[0].current, 4.5)
         self.assertAlmostEqual(feedback_instance.results[0].voltage, 6.789)
 
-        self.assertEqual(feedback_instance.results[0].mvs[0].mvud, EMVUD.MVUD6)
+        self.assertEqual(feedback_instance.results[0].mvs[0].mvud, TimeSensitiveSetMV.EMVUD.MVUD6)
         self.assertAlmostEqual(feedback_instance.results[0].mvs[0].value, 1.23)
 
         if UNITTEST_VIEW_DICT:
