@@ -66,14 +66,14 @@ control.PostTimeSensitiveSetMV(client, mv_args)
 ‎ 
 
 
+
 from ctitoolbox import (
     TimeSensitiveSetMVArgs,
     TimeSensitiveSetMV
 )
 
-
-mv1 = TimeSensitiveSetMV(EMVUD.MVUD1, 12.3)
-mv2 = TimeSensitiveSetMV(EMVUD.MVUD2, 4.56)
+mv1 = TimeSensitiveSetMV(TimeSensitiveSetMV.EMVUD.MVUD1, 12.3)
+mv2 = TimeSensitiveSetMV(TimeSensitiveSetMV.EMVUD.MVUD2, 4.56)
 
 
 
@@ -130,43 +130,45 @@ These objects include objects that may be required when sending ArbinCTI command
 - `to_cs` converts the object to a C# object, which is required by commands.
 - (to-do) uses CSTypeConverter to convert to C# List object
 
-| Wrapper Class           | Original Object Name                                      |
-|-------------------------|-----------------------------------------------------------|
-| StartResumeEx           | ArbinCTI.Core.StartResumeEx                               |
-| MetaVariableInfo        | ArbinCTI.Core.ArbinCommandGetMetaVariablesFeed.MetaVariableInfo |
-| MetaVariableInfoEx      | ArbinCTI.Core.MetaVariableInfoEx                          |
-| TimeSensitiveSetMVArgs  | ArbinCTI.Core.ArbinCommandTimeSensitiveSetMVArgs          |
-| CMetavariableDataCodeApply | ArbinCTI.Core.ArbinCommandCMetavariableDataCodeApply   |
+| Wrapper Class              | Original Object                                           |
+|----------------------------|-----------------------------------------------------------|
+| StartResumeEx              | StartResumeEx                                             |
+| MetaVariableInfo           | ArbinCommandGetMetaVariablesFeed.MetaVariableInfo         |
+| MetaVariableInfoEx         | MetaVariableInfoEx                                        |
+| TimeSensitiveSetMVArgs     | ArbinCommandTimeSensitiveSetMVArgs                        |
+| CMetavariableDataCodeApply | ArbinCommandCMetavariableDataCodeApply                    |
 
 Additional Objects/Enums may be required when generating the above wrapper classes:
 
-| Wrapper Class           | Original Object Name                                      | Required By                           |
-|-------------------------|-----------------------------------------------------------|---------------------------------------|
-| TE_DATA_TYPE            | TE_DATA_TYPE                                              | MetaVariableInfo, MetaVariableInfoEx, CMetavariableDataCodeApply |
-| TimeSensitiveSetMV      | TimeSensitiveSetMV                                        | TimeSensitiveSetMVArgs                |
+| Wrapper Class           | Original Object       | Required By                                                      |
+|-------------------------|-----------------------|------------------------------------------------------------------|
+| TE_DATA_TYPE            | TE_DATA_TYPE          | MetaVariableInfo, MetaVariableInfoEx, CMetavariableDataCodeApply |
+| TimeSensitiveSetMV      | TimeSensitiveSetMV    | TimeSensitiveSetMVArgs                                           |
+
+> Ignoring namespace `ArbinCTI.Core` in the second column for simplicity.
 
 ## Feedback Objects
 The wrapper class converts C# ArbinCTI feedback objects to Python objects, enabling user-friendly access. Additionally, all wrapper classes come with two methods:
 - `to_dict` converts object to a serializable format, easily transformable to JSON, with enum objects represented by their names.
 - `__repr__` is defined for quick data inspection.
 
-| Wrapper Class                        | Original Object Name                              |
+| Wrapper Class                        | Original Object                                   |
 |--------------------------------------|---------------------------------------------------|
-| **Connection**                       |                                                   |
+| ***Connection***                       |                                                   |
 | LoginFeedback                        | ArbinCommandLoginFeed                             |
-| **Test Schedule**                    |                                                   |
+| ***Test Schedule***                    |                                                   |
 | AssignScheduleFeedback               | ArbinCommandAssignScheduleFeed                    |
 | AssignFileFeedback                   | ArbinCommandAssignFileFeed                        |
 | SetMetaVariableFeedback              | ArbinCommandSetMetaVariableFeed                   |
 | SetMetaVariableTimeSensitiveFeedback | ArbinCommandTimeSensitiveSetMVFeed                |
 | GetMetaVariableFeedback              | ArbinCommandGetMetaVariablesFeed                  |
-| **Channel Control**                  |                                                   |
+| ***Channel Control***                  |                                                   |
 | StartChannelFeedback                 | ArbinCommandStartChannelFeed                      |
 | StopChannelFeedback                  | ArbinCommandStopChannelFeed                       |
 | ResumeChannelFeedback                | ArbinCommandResumeChannelFeed                     |
 | JumpChannelFeedback                  | ArbinCommandJumpChannelFeed                       |
 | ContinueChannelFeedback              | ArbinCommandContinueChannelFeed                   |
-| **File Operation**                   |                                                   |
+| ***File Operation***                   |                                                   |
 | UploadFileFeedback                   | ArbinCommandUpLoadFileFeed                        |
 | DownloadFileFeedback                 | ArbinCommandDownloadFileFeed                      |
 | BrowseDirectoryFeedback              | ArbinCommandBrowseDirectoryFeed                   |
@@ -174,14 +176,14 @@ The wrapper class converts C# ArbinCTI feedback objects to Python objects, enabl
 | NewFolderFeedback                    | ArbinCommandNewFolderFeed                         |
 | DeleteFileFeedback                   | ArbinCommandDeleteFileFeed                        |
 | NewOrDeleteFeedback                  | ArbinCommandNewOrDeleteFeed                       |
-| **Request Information**              |                                                   |
+| ***Request Information***              |                                                   |
 | GetChannelDataFeedback               | ArbinCommandGetChannelDataFeed                    |
 | GetStartDataFeedback                 | ArbinCommandGetStartDataFeed                      |
 | GetResumeDataFeedback                | ArbinCommandGetResumeDataFeed                     |
 | GetSerialNumberFeedback              | ArbinCommandGetSerialNumberFeed                   |
 | GetMITSVersionFeedback               | ArbinCommandGetServerSoftwareVersionNumberFeed    |
 
-> Ignoring `ArbinCTI.Core` namespace in the second column for simplicity.
+> Ignoring namespace `ArbinCTI.Core` in the second column for simplicity.
 
 # Usage Examples
 ## Example 1: Feedback Accessing
