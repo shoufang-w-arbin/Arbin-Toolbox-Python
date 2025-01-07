@@ -11,8 +11,6 @@ from ctitoolbox.src.data_type.cs_data_type import CSTypeConverter
 CTI DATA TYPE WRAPPERS
 Classes:
 - TE_DATA_TYPE
-- EMVUD
-- EReadWriteMode
 - StartResumeEx
 - MetaVariableInfo
 - MetaVariableInfoEx
@@ -44,10 +42,6 @@ class TE_DATA_TYPE(IntEnum):
     MP_DATA_TYPE_AuxAO = 30
     MP_DATA_TYPE_EQ = 31
     MP_DATA_TYPE_CELL = 32
-
-# class EReadWriteMode(IntEnum):
-#     Read = 0
-#     WriteAndRead = 1
 
 @dataclass
 class StartResumeEx:
