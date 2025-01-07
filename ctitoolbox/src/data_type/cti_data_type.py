@@ -1,11 +1,12 @@
 from enum import IntEnum
 from dataclasses import dataclass, field
-import copy
 
 import ArbinCTI.Core as ArbinCTI                # type: ignore
 from System.Collections.Generic import List     # type: ignore
 
 from ctitoolbox.src.data_type.cs_data_type import CSTypeConverter
+
+from ctitoolbox.src.feedback.feedback_base import DictReprBase
 
 """
 CTI DATA TYPE WRAPPERS
@@ -196,7 +197,7 @@ class MetaVariableInfoEx:
         instance.Error    = CSTypeConverter.to_cs_byte(self.error)
         return instance
 
-class TimeSensitiveSetMV:
+class TimeSensitiveSetMV(DictReprBase):
     """
     Python wrapper of 'ArbinCTI.Core.TimeSensitiveSetMV'
 
@@ -240,11 +241,6 @@ class TimeSensitiveSetMV:
         instance.MVUD   = ArbinCTI.TimeSensitiveSetMV.EMVUD(self.mvud.value) 
         instance.Value  = CSTypeConverter.to_cs_float(self.value)
         return instance
-
-    def to_dict(self):
-        data = copy.deepcopy(self.__dict__)
-        data['mvud'] = self.mvud.name
-        return data
     
 @dataclass
 class TimeSensitiveSetMVArgs:
