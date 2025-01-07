@@ -4,6 +4,8 @@ import copy
 
 import ArbinCTI.Core as ArbinCTI # type: ignore
 
+from ctitoolbox.src.feedback.feedback_base import DictReprBase
+
 """""""""""""""""""""""""""
 Test Control
 - StartChannelFeedback
@@ -15,7 +17,7 @@ Test Control
 - GetResumeDataFeedback
 - GetStartDataFeedback
 """""""""""""""""""""""""""
-class StartChannelFeedback:
+class StartChannelFeedback(DictReprBase):
     class EStartToken(IntEnum):
         CTI_START_SUCCESS = 1
         CTI_START_INDEX = 0x10
@@ -48,14 +50,9 @@ class StartChannelFeedback:
         CTI_START_TESTNAME_TOO_LONG = 0x2B
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandStartChannelFeed): 
-        self.result =StartChannelFeedback.EStartToken(int(feedback.Result))
-    
-    def to_dict(self):
-        return {
-            "result": self.result.name  
-        }
+        self.result = StartChannelFeedback.EStartToken(int(feedback.Result))
 
-class StopChannelFeedback:
+class StopChannelFeedback(DictReprBase):
     class EStopToken(IntEnum):
         SUCCESS = 0
         STOP_INDEX = 0x10
@@ -66,12 +63,7 @@ class StopChannelFeedback:
     def __init__(self, feedback: ArbinCTI.ArbinCommandStopChannelFeed):
         self.result = StopChannelFeedback.EStopToken(int(feedback.Result))
 
-    def to_dict(self):
-        return json.dumps({
-            "result": self.result.name  
-        })
-
-class ResumeChannelFeedback:
+class ResumeChannelFeedback(DictReprBase):
     class EResumeToken(IntEnum):
         RESUME_SUCCESS = 0
         RESUME_INDEX = 0x10
@@ -102,13 +94,8 @@ class ResumeChannelFeedback:
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandResumeChannelFeed):
         self.result = ResumeChannelFeedback.EResumeToken(int(feedback.Result))
-    
-    def to_dict(self):
-        return {
-            "result": self.result.name  
-        }
 
-class JumpChannelFeedback:
+class JumpChannelFeedback(DictReprBase):
     class EJumpToken(IntEnum):
         CTI_JUMP_SUCCESS = 0
         CTI_JUMP_INDEX = 0x10
@@ -141,14 +128,8 @@ class JumpChannelFeedback:
     def __init__(self, feedback: ArbinCTI.ArbinCommandJumpChannelFeed):
         self.result                 = JumpChannelFeedback.EJumpToken(int(feedback.Result))
         self.error_channel_index    = int(feedback.ErrorChannelIndex)
-    
-    def to_dict(self):
-        return {
-            "result": self.result.name,
-            "error_channel_index": self.error_channel_index
-        }
 
-class ContinueChannelFeedback:
+class ContinueChannelFeedback(DictReprBase):
     class EContinueToken(IntEnum):
         CTI_CONTINUE_SUCCESS = 0
         CTI_CONTINUE_ERROR = 0x11
@@ -161,12 +142,7 @@ class ContinueChannelFeedback:
     def __init__(self, feedback: ArbinCTI.ArbinCommandContinueChannelFeed):
         self.result = ContinueChannelFeedback.EContinueToken(int(feedback.Result))
 
-    def to_dict(self):
-        return json.dumps({
-            "result": self.result.name  
-        })
-
-class GetChannelDataFeedback:
+class GetChannelDataFeedback(DictReprBase):
     class EChannelNeedType(IntEnum):
         THIRD_PARTY_GET_CHANNELS_INFO_NEED_TYPE_BMS = 0x100
         THIRD_PARTY_GET_CHANNELS_INFO_NEED_TYPE_SMB = 0x200
@@ -230,51 +206,41 @@ class GetChannelDataFeedback:
         CurrentUnsafe = 6
         VoltageUnsafe = 7
 
-    class AuxData:
+    class AuxData(DictReprBase):
         def __init__(self, data: ArbinCTI.ArbinCommandGetChannelDataFeed.AuxData):
             self.value    = float(data.Value)
             self.value_dt = float(data.DTValue)
-        def to_dict(self):
-            return self.__dict__
 
-    class CANInfo:
+    class CANInfo(DictReprBase):
         def __init__(self, data: ArbinCTI.ArbinCommandGetChannelDataFeed.CANInfo):
             self.index = int(data.nIndex)
             self.value = float(data.Value)
             self.unit  = str(data.Unit)
-        def to_dict(self):
-            return self.__dict__
 
-    class SMBInfo:
+    class SMBInfo(DictReprBase):
         def __init__(self, data: ArbinCTI.ArbinCommandGetChannelDataFeed.SMBInfo):
             self.index = int(data.nIndex)
             self.type  = int(data.nType)
             self.unit  = str(data.Unit)
             self.value = data.Value  # Keeping this generic as 'object'
-        def to_dict(self):
-            return self.__dict__
 
-    class CANMonitorInfo:
+    class CANMonitorInfo(DictReprBase):
         def __init__(self, data: ArbinCTI.ArbinCommandGetChannelDataFeed.CANMonitorInfo):
             self.is_offline = bool(data.IsOffline)
             self.alias_name = str(data.AliasName)
             self.meta_name  = str(data.MetaName)
             self.data_type  = int(data.DataType)
             self.value      = str(data.Value)
-        def to_dict(self):
-            return self.__dict__
 
-    class SMBMonitorInfo:
+    class SMBMonitorInfo(DictReprBase):
         def __init__(self, data: ArbinCTI.ArbinCommandGetChannelDataFeed.SMBMonitorInfo):
             self.is_offline = bool(data.IsOffline)
             self.alias_name = str(data.AliasName)
             self.meta_name  = str(data.MetaName)
             self.data_type  = int(data.DataType)
             self.value      = str(data.Value)
-        def to_dict(self):
-            return self.__dict__
 
-    class AuxMonitorData:
+    class AuxMonitorData(DictReprBase):
         def __init__(self, data: ArbinCTI.ArbinCommandGetChannelDataFeed.AuxMonitorData):
             self.aux_type          = str(data.AuxType)
             self.alias_name        = str(data.AliasName)
@@ -282,26 +248,20 @@ class GetChannelDataFeedback:
             self.aux_ch_virtual_id = int(data.AuxChVirtualID)
             self.value             = float(data.Value)
             self.dxdt              = float(data.dxdt)
-        def to_dict(self):
-            return self.__dict__
 
-    class CTISPTTTrayMetaValue:
+    class CTISPTTTrayMetaValue(DictReprBase):
         def __init__(self, data: ArbinCTI.Common.CTISPTTTrayMetaValue):
             self.value      = float(data.Value)
             self.alias_name = str(data.AliasName)
-        def to_dict(self):
-            return self.__dict__
 
-    class CTISPTTTrayData:
+    class CTISPTTTrayData(DictReprBase):
         def __init__(self, data: ArbinCTI.Common.CTISPTTTrayData):
             self.global_index = int(data.GlobalIndex)
             self.barcode = str(data.Barcode)
             self.info = str(data.Info)
             self.data = [GetChannelDataFeedback.CTISPTTTrayMetaValue(item) for item in data.Datas]
-        def to_dict(self):
-            return self.__dict__
 
-    class CTISPTTEQData:
+    class CTISPTTEQData(DictReprBase):
         def __init__(self, data: ArbinCTI.Common.CTISPTTEQData):
             self.parent_tray_global_index  = int(data.ParentTrayGlobalIndex)
             self.global_index              = int(data.GlobalIndex)
@@ -318,12 +278,8 @@ class GetChannelDataFeedback:
             self.status                    = GetChannelDataFeedback.ECTISPTTEQStatus(int(data.Status))
             self.barcode                   = str(data.Barcode)
             self.info                      = str(data.Info)
-        def to_dict(self):
-            data = copy.deepcopy(self.__dict__)
-            data['status'] = self.status.name
-            return data
     
-    class CTISPTTCellData:
+    class CTISPTTCellData(DictReprBase):
         def __init__(self, data: ArbinCTI.Common.CTISPTTCellData):
             self.parent_tray_global_index   = int(data.ParentTrayGlobalIndex)
             self.parent_eq_global_index     = int(data.ParentEQGlobalIndex)
@@ -343,12 +299,8 @@ class GetChannelDataFeedback:
             self.info                       = str(data.Info)
             self.position_x                 = int(data.PositionX)
             self.position_y                 = int(data.PositionY)
-        def to_dict(self):
-            data = copy.deepcopy(self.__dict__)
-            data['status'] = self.status.name
-            return data
 
-    class ChannelInfo:
+    class ChannelInfo(DictReprBase):
         class AuxType(IntEnum):
             AuxV = 0
             T = 1
@@ -429,19 +381,13 @@ class GetChannelDataFeedback:
     def __init__(self, feedback: ArbinCTI.ArbinCommandGetChannelDataFeed):
         self.channel_data = [GetChannelDataFeedback.ChannelInfo(info) for info in feedback.m_ChannelInfo]
 
-    def to_dict(self):
-        data = {
-            "channel_data": [ch.to_dict() for ch in self.channel_data]
-        }
-        return data
-
-class GetResumeDataFeedback:
+class GetResumeDataFeedback(DictReprBase):
     class EResult(IntEnum):
         SUCCESS = 0,
         ERROR = 0x10
 
-    class ResumeDatalInfo:
-        class ResumeData:
+    class ResumeDatalInfo(DictReprBase):
+        class ResumeData(DictReprBase):
             def __init__(self, resume_data: ArbinCTI.ArbinCommandGetResumeDataFeed.ResumeDatalInfo):
                 self.test_id                  = int(resume_data.TestID)
                 self.cycle                    = int(resume_data.Cycle)
@@ -491,9 +437,6 @@ class GetResumeDataFeedback:
                 self.mvud15                   = float(resume_data.MVUD15)
                 self.mvud16                   = float(resume_data.MVUD16)
 
-            def to_dict(self):
-                return self.__dict__
-
         def __init__(self, info: ArbinCTI.ArbinCommandGetResumeDataFeed.ResumeDatalInfo):
             self.channel_index  = int(info.Channel)
             self.channel_code   = GetResumeDataFeedback.EResult(int(info.channelCode))
@@ -504,28 +447,17 @@ class GetResumeDataFeedback:
             self.comment        = str(info.Comment)
             self.start_time     = str(info.StartTime)
             self.step_names     = [str(step) for step in info.Steps]
-        
-        def to_dict(self):
-            data = copy.deepcopy(self.__dict__)
-            data['channel_code'] = self.channel_code.name
-            data['resume_data']  = self.resume_data.to_dict()
-            return data
     
     def __init__(self, feedback: ArbinCTI.ArbinCommandGetResumeDataFeed):
         self.channel_data = [GetResumeDataFeedback.ResumeDatalInfo(info) for info in feedback.m_Channels]
 
-    def to_dict(self):
-        data = copy.deepcopy(self.__dict__)
-        data['channel_data'] = [ch.to_dict() for ch in self.channel_data]
-        return data
-
-class GetStartDataFeedback:
+class GetStartDataFeedback(DictReprBase):
     """Get the channel assignments, including the channel number, channel code, schedule, MVs, and test names."""
     class EResult(IntEnum):
         SUCCESS = 0,
         ERROR = 0x10
 
-    class StartDataInfo:
+    class StartDataInfo(DictReprBase):
         def __init__(self, info: ArbinCTI.ArbinCommandGetStartDataFeed.StartDatalInfo):
             self.channel        = int(info.Channel)
             self.channel_code   = GetStartDataFeedback.EResult(int(info.channelCode))
@@ -548,15 +480,6 @@ class GetStartDataFeedback:
             self.fMV_UD16       = float(info.fMV_UD16)
             self.test_names     = [str(name) for name in info.TestNames]
             self.step_names     = [str(step) for step in info.Steps]
-        def to_dict(self):
-            data = copy.deepcopy(self.__dict__)
-            data['channel_code'] = self.channel_code.name
-            return data
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandGetStartDataFeed):
         self.channel_data = [GetStartDataFeedback.StartDataInfo(info) for info in feedback.m_Channels]
-
-    def to_dict(self):
-        data = copy.deepcopy(self.__dict__)
-        data['channel_data'] = [ch.to_dict() for ch in self.channel_data]
-        return data

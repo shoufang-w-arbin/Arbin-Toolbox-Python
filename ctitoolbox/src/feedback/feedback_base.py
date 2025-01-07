@@ -2,7 +2,7 @@ import copy
 import json
 from enum import IntEnum, Enum
 
-class FeedbackBase:
+class DictReprBase:
     def to_dict(self):
         data = copy.deepcopy(self.__dict__)
         for key, value in data.items():

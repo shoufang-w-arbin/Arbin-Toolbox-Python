@@ -55,7 +55,7 @@ class TestFeedbackClasses(unittest.TestCase):
         if UNITTEST_VIEW_DICT:
             print("ResumeChannelFeedback:", feedback_instance.to_dict())
 
-    def test_JumpStepFeedback_instantiation(self):
+    def test_JumpChannelFeedback_instantiation(self):
         cs_instance = ArbinCTI.ArbinCommandJumpChannelFeed()
         cs_instance.Result = ArbinCTI.ArbinCommandJumpChannelFeed.JUMP_TOKEN.CTI_JUMP_SCHEDULE_VALID
         cs_instance.ErrorChannelIndex = 5
@@ -66,7 +66,7 @@ class TestFeedbackClasses(unittest.TestCase):
         self.assertEqual(feedback_instance.error_channel_index, 5)
         
         if UNITTEST_VIEW_DICT:
-            print("JumpStepFeedback:", feedback_instance.to_dict())
+            print("JumpChannelFeedback:", feedback_instance.to_dict())
 
     def test_ContinueChannelFeedback_instantiation(self):
         cs_instance = ArbinCTI.ArbinCommandContinueChannelFeed()
