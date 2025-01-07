@@ -1,15 +1,15 @@
-import copy
 from enum import IntEnum
 
 import ArbinCTI.Core as ArbinCTI # type: ignore
 
+from ctitoolbox.src.feedback.dict_repr_base import DictReprBase
 """""""""""""""""""""""""""
 System & Connection
 - GetSerailNumberFeedback
 - GetMITSVersionFeedback
 - LoginFeedback
 """""""""""""""""""""""""""
-class GetSerailNumberFeedback:
+class GetSerailNumberFeedback(DictReprBase):
     class EAssignToken(IntEnum):
         CTI_GET_SERIAL_SUCCESS = 0,
         CTI_ASSIGN_ERROR = 0x10,
@@ -17,20 +17,12 @@ class GetSerailNumberFeedback:
     def __init__(self, feedback: ArbinCTI.ArbinCommandGetSerialNumberFeed): 
         self.serial_number  = float(feedback.SerialNum)
         self.result         = GetSerailNumberFeedback.EAssignToken(int(feedback.Result))
-    
-    def to_dict(self):
-        data = copy.deepcopy(self.__dict__)
-        data['result'] = self.result.name
-        return data
 
-class GetMITSVersionFeedback:
+class GetMITSVersionFeedback(DictReprBase):
     def __init__(self, feedback: ArbinCTI.ArbinCommandGetServerSoftwareVersionNumberFeed): 
         self.version = str(feedback.ServerVersionNumber)
-
-    def to_dict(self):
-        return self.__dict__
     
-class LoginFeedback:
+class LoginFeedback(DictReprBase):
     class ECTIVersion(IntEnum):
         NONE = 0
         CTI_PRO7 = 0
@@ -70,9 +62,3 @@ class LoginFeedback:
         self.version             = LoginFeedback.ECTIVersion(int(feedback.Version))
         # self.img: Optional[Image.Image] = feedback.Img if isinstance(feedback.Img, Image.Image) else None
         self.server_info         = str(feedback.ServerInfo) if feedback.ServerInfo else None
-
-    def to_dict(self):
-        data = copy.deepcopy(self.__dict__)
-        data['result'] = self.result.name
-        data['version'] = self.version.name
-        return data

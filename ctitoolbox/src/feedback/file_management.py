@@ -1,8 +1,9 @@
 from enum import IntEnum
 import base64
-import copy
 
 import ArbinCTI.Core as ArbinCTI # type: ignore
+
+from ctitoolbox.src.feedback.dict_repr_base import DictReprBase
 
 """""""""""""""""""""""""""
 File Management Feedback
@@ -15,7 +16,7 @@ File Management Feedback
 - NewOrDeleteFeedback
 """""""""""""""""""""""""""
 
-class UploadFileFeedback:
+class UploadFileFeedback(DictReprBase):
     class EResult(IntEnum):
         CTI_UPLOAD_SUCCESS = 1
         CTI_UPLOAD_FAILED = 2
@@ -29,16 +30,11 @@ class UploadFileFeedback:
         CTI_UPLOAD_FAILED_CHECK_FILE_TIMEOUT = 10
         CTI_UPLOAD_IN_PROGRESS = 11
 
-    class UploadFileResult:
+    class UploadFileResult(DictReprBase):
         def __init__(self, upload_file_result: ArbinCTI.ArbinCommandUpLoadFileFeed.CUpLoadFileResult):  
             self.result_code    = UploadFileFeedback.EResult(int(upload_file_result.ResultCode))
             self.canceled       = bool(upload_file_result.IsCancelUploadFile)
             self.progress_rate  = float(upload_file_result.ProgressRate)
-        
-        def to_dict(self):
-            data = copy.deepcopy(self.__dict__)
-            data['result_code'] = self.result_code.name
-            return data
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandUpLoadFileFeed): 
         self.result       = UploadFileFeedback.EResult(int(feedback.Result))
@@ -46,12 +42,7 @@ class UploadFileFeedback:
         self.packet_count = int(feedback.uGeneralPackage)
         self.packet_index = int(feedback.uPackageIndex)
     
-    def to_dict(self):
-        data = copy.deepcopy(self.__dict__)
-        data['result'] = self.result.name
-        return data
-    
-class DownloadFileFeedback:
+class DownloadFileFeedback(DictReprBase):
     class EResult(IntEnum):
         CTI_DOWNLOAD_SUCCESS = 1,
         CTI_DOWNLOAD_FAILED = 2,
@@ -68,51 +59,33 @@ class DownloadFileFeedback:
         self.package_count  = int(feedback.uGeneralPackage)
         self.package_index  = int(feedback.uPackageIndex)
 
-    def to_dict(self):
-        data = copy.deepcopy(self.__dict__)
-        data['result'] = self.result.name
-        return data
-
-class BrowseDirectoryFeedback:
+class BrowseDirectoryFeedback(DictReprBase):
     class EResult(IntEnum):
         CTI_BROWSE_DIRECTORY_SUCCESS = 1,
         CTI_BROWSE_SCHEDULE_SUCCESS = 2,
         CTI_BROWSE_SCHEDULE_VERSION1_SUCCESS = 3,
         CTI_BROWSE_DIRECTORY_FAILED = 4
     
-    class DirFileInfo:
+    class DirFileInfo(DictReprBase):
         def __init__(self, info: ArbinCTI.ArbinCommandBrowseDirectoryFeed.DirFileInfo): 
             self.type_              = int(info.Type)
             self.parent_dir_path    = str(info.DirFileName)
             self.size               = int(info.dwSize)
-            self.last_modify_time   = str(info.wcModified)
-        
-        def to_dict(self):
-            return self.__dict__
+            self.last_modify_time   = str(info.wcModified)  
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandBrowseDirectoryFeed):
         self.result         = BrowseDirectoryFeedback.EResult(int(feedback.Result))
         self.dir_file_info  = [BrowseDirectoryFeedback.DirFileInfo(info) for info in feedback.DirFileInfoList]
-
-    def to_dict(self):
-        data = {
-            "result": self.result.name,
-            "dir_file_info": [info.to_dict() for info in self.dir_file_info]
-        }
-        return data
     
-class CheckFileExistFeedback:
+class CheckFileExistFeedback(DictReprBase):
     def __init__(self, feedback: ArbinCTI.ArbinCommandCheckFileExFeed):
         self.relative_path_exist = bool(feedback.bRelativePathExist)
         self.file_name_exist     = bool(feedback.bFileNameExist)
         self.MD5_exist           = bool(feedback.bMD5Exist)
         self.file_path           = str(feedback.FilePath)
         self.reason              = str(feedback.Reason)
-
-    def to_dict(self):
-        return self.__dict__
     
-class NewFolderFeedback:
+class NewFolderFeedback(DictReprBase):
     class EResult(IntEnum):
         CTI_NEW_SUCCESS = 1
         CTI_DELETE_SUCCESS = 2
@@ -125,13 +98,8 @@ class NewFolderFeedback:
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandNewFolderFeed):
         self.result = NewFolderFeedback.EResult(int(feedback.Result))
-
-    def to_dict(self):
-        data = copy.deepcopy(self.__dict__)
-        data['result'] = self.result.name
-        return data
     
-class DeleteFileFeedback:
+class DeleteFileFeedback(DictReprBase):
     class EResult(IntEnum):
         CTI_NEW_SUCCESS = 1
         CTI_DELETE_SUCCESS = 2
@@ -144,13 +112,8 @@ class DeleteFileFeedback:
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandDeleteFileFeed):
         self.result = DeleteFileFeedback.EResult(int(feedback.Result))
-
-    def to_dict(self):
-        data = copy.deepcopy(self.__dict__)
-        data['result'] = self.result.name
-        return data
     
-class NewOrDeleteFeedback:
+class NewOrDeleteFeedback(DictReprBase):
     class EResult(IntEnum):
         CTI_NEW_SUCCESS = 1
         CTI_DELETE_SUCCESS = 2
@@ -167,8 +130,3 @@ class NewOrDeleteFeedback:
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandNewOrDeleteFeed):
         self.result = NewOrDeleteFeedback.EResult(int(feedback.Result))
-
-    def to_dict(self):
-        data = copy.deepcopy(self.__dict__)
-        data['result'] = self.result.name
-        return data
