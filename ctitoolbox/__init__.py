@@ -9,7 +9,6 @@ clr.AddReference(os.path.join(current_dir, "bin", "ArbinCTI"))
 from ctitoolbox.src.data_type.cs_data_type import CSTypeConverter
 from ctitoolbox.src.data_type.cti_data_type import (
     TE_DATA_TYPE, 
-    EReadWriteMode,
     StartResumeEx,
     MetaVariableInfo,
     MetaVariableInfoEx,

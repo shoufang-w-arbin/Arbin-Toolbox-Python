@@ -45,27 +45,9 @@ class TE_DATA_TYPE(IntEnum):
     MP_DATA_TYPE_EQ = 31
     MP_DATA_TYPE_CELL = 32
 
-class EMVUD(IntEnum):
-    MVUD1 = 52
-    MVUD2 = 53
-    MVUD3 = 54
-    MVUD4 = 55
-    MVUD5 = 105
-    MVUD6 = 106
-    MVUD7 = 107
-    MVUD8 = 108
-    MVUD9 = 109
-    MVUD10 = 110
-    MVUD11 = 111
-    MVUD12 = 112
-    MVUD13 = 113
-    MVUD14 = 114
-    MVUD15 = 115
-    MVUD16 = 116
-
-class EReadWriteMode(IntEnum):
-    Read = 0
-    WriteAndRead = 1
+# class EReadWriteMode(IntEnum):
+#     Read = 0
+#     WriteAndRead = 1
 
 @dataclass
 class StartResumeEx:
@@ -227,15 +209,32 @@ class TimeSensitiveSetMV:
     Args:
         *args: Length variable argument list that accepts either:
             - Two arguments (mvud: Enum_MvUd, value: float) to initialize a new instance
-            - A single argument of type ArbinCTI.Core.TimeSensitiveSetMV to convert to Python wrapper
+            - A single argument of type ArbinCTI.Core.TimeSensitiveSetMV to convert to Python wrapper object
     """
+    class EMVUD(IntEnum):
+        MVUD1 = 52
+        MVUD2 = 53
+        MVUD3 = 54
+        MVUD4 = 55
+        MVUD5 = 105
+        MVUD6 = 106
+        MVUD7 = 107
+        MVUD8 = 108
+        MVUD9 = 109
+        MVUD10 = 110
+        MVUD11 = 111
+        MVUD12 = 112
+        MVUD13 = 113
+        MVUD14 = 114
+        MVUD15 = 115
+
     def __init__(self, *args):
         if len(args) == 1:                                                    
             assert(isinstance(args[0], ArbinCTI.TimeSensitiveSetMV))            
-            self.mvud  = EMVUD(int(args[0].MVUD))
+            self.mvud  = TimeSensitiveSetMV.EMVUD(int(args[0].MVUD))
             self.value = float(args[0].Value)
         elif len(args) == 2:
-            assert (isinstance(args[0], EMVUD))
+            assert (isinstance(args[0], TimeSensitiveSetMV.EMVUD))
             assert (isinstance(args[1], (int, float)))
             self.mvud  = args[0]
             self.value = args[1]
@@ -313,15 +312,19 @@ class TimeSensitiveSetMVArgs:
             raise ValueError(f"Error converting TimeSensitiveSetMVChannel: {str(e)}")
         return instance    
 
-@dataclass
 class CMetavariableDataCodeApply:
     """
     Python wrapper of 'ArbinCTI.Core.CMetavariableDataCodeApply'
     """
-    global_index  : int
-    mv_value_type : TE_DATA_TYPE   = TE_DATA_TYPE.MP_DATA_TYPE_MetaValue
-    mv_meta_code  : int            = (0x10000) - 1
-    mode          : EReadWriteMode = EReadWriteMode.Read
+    class EReadWriteMode(IntEnum):
+        Read = 0
+        WriteAndRead = 1
+
+    def __init__(self, global_index: int, mv_value_type: TE_DATA_TYPE = TE_DATA_TYPE.MP_DATA_TYPE_MetaValue, mv_meta_code: int = (0x10000)-1, mode: EReadWriteMode = EReadWriteMode.Read):
+        self.global_index  = global_index
+        self.mv_value_type = mv_value_type
+        self.mv_meta_code  = mv_meta_code
+        self.mode          = mode
 
     def to_cs(self) -> ArbinCTI.CMetavariableDataCodeApply:  
         instance = ArbinCTI.CMetavariableDataCodeApply()            

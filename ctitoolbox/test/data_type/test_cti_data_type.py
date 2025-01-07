@@ -5,7 +5,6 @@ import ArbinCTI.Core as ArbinCTI # type: ignore
 
 from ctitoolbox.src.data_type.cti_data_type import (
     TE_DATA_TYPE, 
-    EReadWriteMode,
     StartResumeEx,
     MetaVariableInfo,
     MetaVariableInfoEx,
@@ -78,7 +77,7 @@ class TestArbinCTIClasses(unittest.TestCase):
             global_index=2,
             mv_value_type=TE_DATA_TYPE.MP_DATA_TYPE_AuxVoltage,
             mv_meta_code=5000,
-            mode=EReadWriteMode.Read
+            mode=CMetavariableDataCodeApply.EReadWriteMode.Read
         )
 
         cs_instance = c_meta_var_apply.to_cs()
