@@ -68,9 +68,9 @@ control.PostTimeSensitiveSetMV(client, mv_args)
 
 from ctitoolbox import (
     TimeSensitiveSetMVArgs,
-    TimeSensitiveSetMV,
-    EMVUD
+    TimeSensitiveSetMV
 )
+
 
 mv1 = TimeSensitiveSetMV(EMVUD.MVUD1, 12.3)
 mv2 = TimeSensitiveSetMV(EMVUD.MVUD2, 4.56)
