@@ -1,6 +1,5 @@
 from enum import IntEnum
 import base64
-import copy
 
 import ArbinCTI.Core as ArbinCTI # type: ignore
 
