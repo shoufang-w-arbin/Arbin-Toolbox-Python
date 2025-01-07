@@ -1,7 +1,8 @@
-import copy
 from enum import IntEnum
 
 import ArbinCTI.Core as ArbinCTI # type: ignore
+
+from ctitoolbox.src.feedback.feedback_base import DictReprBase
 from ctitoolbox.src.data_type.cti_data_type import (
     TimeSensitiveSetMV,
     TE_DATA_TYPE
@@ -15,7 +16,7 @@ Schedule Operation
 - SetMetaVariableTimeSensitiveFeedback
 - GetMetaVariableFeedback
 """""""""""""""""""""""""""
-class AssignScheduleFeedback:
+class AssignScheduleFeedback(DictReprBase):
     class EAssignToken(IntEnum):
         CTI_ASSIGN_SUCCESS = 0
         CTI_ASSIGN_INDEX = 0x10
@@ -36,13 +37,8 @@ class AssignScheduleFeedback:
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandAssignScheduleFeed):
         self.result = AssignScheduleFeedback.EAssignToken(int(feedback.Result))
-    
-    def to_dict(self):
-        return {
-            "result": self.result.name
-        }
 
-class AssignFileFeedback:
+class AssignFileFeedback(DictReprBase):
     class EAssignToken(IntEnum):
         CTI_ASSIGN_SUCCESS = 0
         CTI_ASSIGN_INDEX = 0x10
@@ -67,7 +63,7 @@ class AssignFileFeedback:
         self.reason              = str(feedback.Reason)
 
     def _unpack_channel_result(self, cs_dict):
-        python_dict = {}
+        python_dict = dict()
         for pair in cs_dict:
             token              = AssignFileFeedback.EAssignToken(int(pair.Key))
             channels           = list(pair.Value)
@@ -75,15 +71,15 @@ class AssignFileFeedback:
         return python_dict
     
     def to_dict(self):
-        data = copy.deepcopy(self.__dict__)
-        data['result'] = self.result.name
-        channel_list_result = dict()
-        for key, value in data['channel_list_result'].items():
-            channel_list_result[key.name] = value
-        data['channel_list_result'] = channel_list_result
-        return data
+        _channel_list_result = dict()
+        for key, value in self.channel_list_result.items():
+            _channel_list_result[key.name] = value
+        return {
+            "result": self.result.name,
+            "channel_list_result": _channel_list_result
+        }
     
-class SetMetaVariableFeedback:
+class SetMetaVariableFeedback(DictReprBase):
     class EResult(IntEnum):
         CTI_SET_MV_SUCCESS = 0
         CTI_SET_MV_FAILED = 16
@@ -93,13 +89,8 @@ class SetMetaVariableFeedback:
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandSetMetaVariableFeed):
         self.result = SetMetaVariableFeedback.EResult(int(feedback.Result))
-
-    def to_dict(self):
-        return {
-            "result": self.result.name
-        }
     
-class SetMetaVariableTimeSensitiveFeedback:
+class SetMetaVariableTimeSensitiveFeedback(DictReprBase):
     class EControlStatus(IntEnum):
         Idle = 0
         Transition = 1
@@ -152,7 +143,7 @@ class SetMetaVariableTimeSensitiveFeedback:
         NOT_ALLOW_CONTROL = 0x1C
         MCU_SOCKET_DISCONNECTED = 0x1D
  
-    class TimeSensitiveSetMVResult:
+    class TimeSensitiveSetMVResult(DictReprBase):
         def __init__(self, result: ArbinCTI.ArbinCommandTimeSensitiveSetMVFeed.TimeSensitiveSetMVResult):
             self.global_index   = int(result.GlobalIndex)
             self.step_index     = int(result.StepIndex)
@@ -162,23 +153,11 @@ class SetMetaVariableTimeSensitiveFeedback:
             self.current        = float(result.Current)
             self.voltage        = float(result.Voltage)
             self.mvs            = [TimeSensitiveSetMV(mv) for mv in result.MVs]
-        
-        def to_dict(self):
-            data = copy.deepcopy(self.__dict__)
-            data['machine_status'] = self.machine_status.name
-            data['result']         = self.result.name
-            data['mvs']            = [mv.to_dict() for mv in self.mvs]
-            return data
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandTimeSensitiveSetMVFeed):
         self.results = [SetMetaVariableTimeSensitiveFeedback.TimeSensitiveSetMVResult(result) for result in feedback.Results]
 
-    def to_dict(self):
-        data = copy.deepcopy(self.__dict__)
-        data['results'] = [res.to_dict() for res in data['results']]
-        return data
-
-class GetMetaVariableFeedback:
+class GetMetaVariableFeedback(DictReprBase):
     class EResult(IntEnum):
         CTI_GET_MV_SUCCESS = 0x0
         CTI_GET_MV_ERROR = 0x10
@@ -205,24 +184,13 @@ class GetMetaVariableFeedback:
         CTI_GET_MV_EQ_INDEX_ERROR = 0x25
         CTI_GET_MV_CELL_INDEX_ERROR = 0x26
 
-    class MetaVariableInfo:
+    class MetaVariableInfo(DictReprBase):
         def __init__(self, info: ArbinCTI.ArbinCommandGetMetaVariablesFeed.MetaVariableInfo):
             self.channel_index = int(info.m_Channel)
             self.mv_error      = GetMetaVariableFeedback.EResult(int(info.m_MV_Error))
             self.mv_data_type  = TE_DATA_TYPE(int(info.m_MV_DataType))
             self.mv_meta_code  = int(info.m_MV_MetaCode)
             self.value         = float(info.m_Value)
-        
-        def to_dict(self):
-            data = copy.deepcopy(self.__dict__)
-            data['mv_error']     = self.mv_error.name
-            data['mv_data_type'] = self.mv_data_type.name
-            return data
     
     def __init__(self, feedback: ArbinCTI.ArbinCommandGetMetaVariablesFeed):
         self.meta_variable_info = [GetMetaVariableFeedback.MetaVariableInfo(info) for info in feedback.MetaVariableInfos]
-
-    def to_dict(self):
-        data = copy.deepcopy(self.__dict__)
-        data['meta_variable_info'] = [info.to_dict() for info in data['meta_variable_info']]
-        return data
