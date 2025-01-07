@@ -3,7 +3,7 @@ import copy
 
 import ArbinCTI.Core as ArbinCTI # type: ignore
 
-from ctitoolbox.src.feedback.feedback_base import DictReprBase
+from ctitoolbox.src.feedback.dict_repr_base import DictReprBase
 
 """""""""""""""""""""""""""
 Test Control

@@ -6,7 +6,7 @@ from System.Collections.Generic import List     # type: ignore
 
 from ctitoolbox.src.data_type.cs_data_type import CSTypeConverter
 
-from ctitoolbox.src.feedback.feedback_base import DictReprBase
+from ctitoolbox.src.feedback.dict_repr_base import DictReprBase
 
 """
 CTI DATA TYPE WRAPPERS

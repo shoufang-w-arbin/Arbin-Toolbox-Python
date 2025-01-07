@@ -2,7 +2,7 @@ from enum import IntEnum
 
 import ArbinCTI.Core as ArbinCTI # type: ignore
 
-from ctitoolbox.src.feedback.feedback_base import DictReprBase
+from ctitoolbox.src.feedback.dict_repr_base import DictReprBase
 from ctitoolbox.src.data_type.cti_data_type import (
     TimeSensitiveSetMV,
     TE_DATA_TYPE
