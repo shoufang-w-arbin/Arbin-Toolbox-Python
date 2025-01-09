@@ -1,4 +1,5 @@
-# Table of Contents
+# ArbinCTI Toolbox
+## Table of Contents
 - [About](#about)
 - [Requirements](#requirements)
 - [Installation](#installation)
@@ -7,10 +8,10 @@
 - [Testing](#testing)
 - [To-Do](#to-do)
 
-# About
+## About
 Wrappers of C# objects, providing a smoother and more Pythonic programming experience for users who want to use ArbinCTI in Python.
 
-## Background
+### Background
 When calling `public bool PostTimeSensitiveSetMV(IArbinSocket socket, TimeSensitiveSetMVArgs args)`, creating a `TimeSensitiveSetMVArgs` object in Python without the toolbox can be quite cumbersome. Here's an example:
 
 <table>
@@ -102,33 +103,31 @@ control.PostTimeSensitiveSetMV(client, mv_args.to_cs())
 </tbody>
 </table>
 
-
-
 As you can see, the toolbox provides a smoother and more Pythonic way to interact with C# objects, making your code cleaner and easier to maintain.
 
-## Additional Benefits
+### Additional Benefits
 - **Keyword arguments** are allowed in this toolbox, compared to using `pythonnet` directly. 
 - **Attributes are discoverable by Pylance**, reducing human error when programming. \
     ![](resource/pylance.png)
 
 > We are adding more wrapper classes. If you require immediate implementation of a certain CTI object, please create an issue or submit a pull request with your work.
 
-# Requirements
+## Requirements
 - 64-bit Python >= 3.7
 - System
     - Windows: .NET Framework >=4.7.2
     - Linux: Mono is used by default
 
-# Installation
+## Installation
 ```bash
 pip install {path}/ctitoolbox-{version}-py3-none-any.whl
 ```
 
-# Supported ArbinCTI Objects
-## General Objects
-These objects include objects that may be required when sending ArbinCTI commands. The wrapper classes allow for creating objects in a Pythonic way and then converting them to C# objects, eliminating the need to use C# syntax.
-- `to_cs` converts the object to a C# object, which is required by commands.
-- (to-do) uses CSTypeConverter to convert to C# List object
+## Supported ArbinCTI Objects
+### General Objects
+The ArbinCTI wrapper provides Python classes for objects commonly used in ArbinCTI commands. These wrapper classes:
+- Allow object creation using Pythonic syntax and handle conversion to C# objects internally
+- Eliminate the need for direct C# syntax in your Python code
 
 | Wrapper Class              | Original Object                                           |
 |----------------------------|-----------------------------------------------------------|
@@ -138,37 +137,39 @@ These objects include objects that may be required when sending ArbinCTI command
 | TimeSensitiveSetMVArgs     | ArbinCommandTimeSensitiveSetMVArgs                        |
 | CMetavariableDataCodeApply | ArbinCommandCMetavariableDataCodeApply                    |
 
-Additional Objects/Enums may be required when generating the above wrapper classes:
+Additional Objects/Enums required for generating the above wrapper classes are also provided in this toolbox:
 
-| Wrapper Class           | Original Object       | Required By                                                      |
-|-------------------------|-----------------------|------------------------------------------------------------------|
+| Wrapper Class           | Original Object       | Required By                          |
+|-------------------------|-----------------------|--------------------------------------|
 | TE_DATA_TYPE            | TE_DATA_TYPE          | MetaVariableInfo, MetaVariableInfoEx, CMetavariableDataCodeApply |
-| TimeSensitiveSetMV      | TimeSensitiveSetMV    | TimeSensitiveSetMVArgs                                           |
+| TimeSensitiveSetMV      | TimeSensitiveSetMV    | TimeSensitiveSetMVArgs               |
 
 > Ignoring namespace `ArbinCTI.Core` in the second column for simplicity.
 
-## Feedback Objects
-The wrapper class converts C# ArbinCTI feedback objects to Python objects, enabling user-friendly access. Additionally, all wrapper classes come with two methods:
-- `to_dict` converts object to a serializable format, easily transformable to JSON, with enum objects represented by their names.
-- `__repr__` is defined for quick data inspection.
+### Feedback Objects
+The wrapper class provides a convenient way to work with ArbinCTI feedback objects in Python.
+- Convert C# ArbinCTI feedback objects to Python objects
+- Offer quick inspection methods for these objects
+
+See [EXAMPLE.md](EXAMPLE.md#arbincti-feedback-accessing) for detailed usage.
 
 | Wrapper Class                        | Original Object                                   |
 |--------------------------------------|---------------------------------------------------|
-| ***Connection***                       |                                                   |
+| ***Connection***                     |                                                   |
 | LoginFeedback                        | ArbinCommandLoginFeed                             |
-| ***Test Schedule***                    |                                                   |
+| ***Test Schedule***                  |                                                   |
 | AssignScheduleFeedback               | ArbinCommandAssignScheduleFeed                    |
 | AssignFileFeedback                   | ArbinCommandAssignFileFeed                        |
 | SetMetaVariableFeedback              | ArbinCommandSetMetaVariableFeed                   |
 | SetMetaVariableTimeSensitiveFeedback | ArbinCommandTimeSensitiveSetMVFeed                |
 | GetMetaVariableFeedback              | ArbinCommandGetMetaVariablesFeed                  |
-| ***Channel Control***                  |                                                   |
+| ***Channel Control***                |                                                   |
 | StartChannelFeedback                 | ArbinCommandStartChannelFeed                      |
 | StopChannelFeedback                  | ArbinCommandStopChannelFeed                       |
 | ResumeChannelFeedback                | ArbinCommandResumeChannelFeed                     |
 | JumpChannelFeedback                  | ArbinCommandJumpChannelFeed                       |
 | ContinueChannelFeedback              | ArbinCommandContinueChannelFeed                   |
-| ***File Operation***                   |                                                   |
+| ***File Operation***                 |                                                   |
 | UploadFileFeedback                   | ArbinCommandUpLoadFileFeed                        |
 | DownloadFileFeedback                 | ArbinCommandDownloadFileFeed                      |
 | BrowseDirectoryFeedback              | ArbinCommandBrowseDirectoryFeed                   |
@@ -176,7 +177,38 @@ The wrapper class converts C# ArbinCTI feedback objects to Python objects, enabl
 | NewFolderFeedback                    | ArbinCommandNewFolderFeed                         |
 | DeleteFileFeedback                   | ArbinCommandDeleteFileFeed                        |
 | NewOrDeleteFeedback                  | ArbinCommandNewOrDeleteFeed                       |
-| ***Request Information***              |                                                   |
+| ***Request Information***            |                                                   |
+| GetChannelDataFeedback               | ArbinCommandGetChannelDataFeed                    |
+| GetStartDataFeedback                 | ArbinCommandGetStartDataFeed                      |
+| GetResumeDataFeedback                | ArbinCommandGetResumeDataFeed                     |
+| GetSerialNumberFeedback              | ArbinCommandGetSerialNumberFeed                   |
+| GetMITSVersionFeedback               | ArbinCommandGetServerSoftwareVersionNumberFeed    |
+
+> Ignoring namespace `ArbinCTI.Core` in the second column for simplicity.
+|--------------------------------------|---------------------------------------------------|
+| ***Connection***                     |                                                   |
+| LoginFeedback                        | ArbinCommandLoginFeed                             |
+| ***Test Schedule***                  |                                                   |
+| AssignScheduleFeedback               | ArbinCommandAssignScheduleFeed                    |
+| AssignFileFeedback                   | ArbinCommandAssignFileFeed                        |
+| SetMetaVariableFeedback              | ArbinCommandSetMetaVariableFeed                   |
+| SetMetaVariableTimeSensitiveFeedback | ArbinCommandTimeSensitiveSetMVFeed                |
+| GetMetaVariableFeedback              | ArbinCommandGetMetaVariablesFeed                  |
+| ***Channel Control***                |                                                   |
+| StartChannelFeedback                 | ArbinCommandStartChannelFeed                      |
+| StopChannelFeedback                  | ArbinCommandStopChannelFeed                       |
+| ResumeChannelFeedback                | ArbinCommandResumeChannelFeed                     |
+| JumpChannelFeedback                  | ArbinCommandJumpChannelFeed                       |
+| ContinueChannelFeedback              | ArbinCommandContinueChannelFeed                   |
+| ***File Operation***                 |                                                   |
+| UploadFileFeedback                   | ArbinCommandUpLoadFileFeed                        |
+| DownloadFileFeedback                 | ArbinCommandDownloadFileFeed                      |
+| BrowseDirectoryFeedback              | ArbinCommandBrowseDirectoryFeed                   |
+| CheckFileExistFeedback               | ArbinCommandCheckFileExFeed                       |
+| NewFolderFeedback                    | ArbinCommandNewFolderFeed                         |
+| DeleteFileFeedback                   | ArbinCommandDeleteFileFeed                        |
+| NewOrDeleteFeedback                  | ArbinCommandNewOrDeleteFeed                       |
+| ***Request Information***            |                                                   |
 | GetChannelDataFeedback               | ArbinCommandGetChannelDataFeed                    |
 | GetStartDataFeedback                 | ArbinCommandGetStartDataFeed                      |
 | GetResumeDataFeedback                | ArbinCommandGetResumeDataFeed                     |
@@ -185,58 +217,10 @@ The wrapper class converts C# ArbinCTI feedback objects to Python objects, enabl
 
 > Ignoring namespace `ArbinCTI.Core` in the second column for simplicity.
 
-# Usage Examples
-## Example 1: Feedback Accessing
-```python
-from ctitoolbox import BrowseDirectoryFeedback
+## Usage Examples
+Please see `EXAMPLE.md`.
 
-def OnBrowseDirectoryBack(feedback):
-    feedback = BrowseDirectoryFeedback(feedback)
-
-    # access attributes
-    result        = feedback.result
-    dir_file_info = feedback.dir_file_info
-    for i in range(len(dir_file_info)):
-        info = dir_file_info[i]
-        s = info.size
-        l = info.last_modify_time
-
-    # verify result by enum type
-    if feedback.result == BrowseDirectoryFeedback.EResult.CTI_BROWSE_DIRECTORY_SUCCESS:
-
-        # export as a JSON string
-        print("Feedback instance:\n", feedback, "\n") 
-        
-        # export as a Python dictionary
-        print("Python dictionary:\n", feedback.to_dict())
-```
-
-Output
-```
-Feedback instance
-{
-  "result": "CTI_BROWSE_DIRECTORY_SUCCESS",
-  "dir_file_info": [
-    {
-      "type": 1,
-      "parent_dir_path": "file1.txt",
-      "size": 2048,
-      "last_modify_time": "2024-01-01T12:00:00"
-    },
-    {
-      "type": 0,
-      "parent_dir_path": "folder1",
-      "size": 0,
-      "last_modify_time": "2024-01-02T15:30:00"
-    }
-  ]
-}
-
-Python dictionary: 
-{'result': 'CTI_BROWSE_DIRECTORY_SUCCESS', 'dir_file_info': [{'type': 1, 'parent_dir_path': 'file1.txt', 'size': 2048, 'last_modify_time': '2024-01-01T12:00:00'}, {'type': 0, 'parent_dir_path': 'folder1', 'size': 0, 'last_modify_time': '2024-01-02T15:30:00'}]}
-```
-
-# Testing
+## Testing
 Run unittest
 ```sh
 python -m unittest
@@ -252,7 +236,8 @@ To view feedback output while running test, set env variable before running unit
     UNITTEST_VIEW_DICT="True"
     ```
 
-# To-Do
-- Abstract feedback classes: base class with `to_dict` and `__repr__` definition.
+## To-Do
 - `CSTypeConvertor.to_cs_list` supports various types of iterables.
     - `PostApplyForUDPCommunication`: `List<CMetavariableDataCodeApply>`
+- Add original Enum value to the result for debugging.
+- Detect Null object when initializing
