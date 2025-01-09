@@ -108,60 +108,60 @@ class StartResumeEx:
         return instance
 
     def _set_basic_fields(self, instance):
-        instance.channelIndex        = CSTypeConverter.to_cs_uint(self.channelIndex)
-        instance.TestID              = CSTypeConverter.to_cs_int(self.TestID)
-        instance.TestNames           = CSTypeConverter.to_cs_string(self.TestNames)
-        instance.Schedules           = CSTypeConverter.to_cs_string(self.Schedules)
-        instance.nSelectSteps        = CSTypeConverter.to_cs_uint(self.nSelectSteps)
-        instance.Cycle               = CSTypeConverter.to_cs_uint(self.Cycle)
-        instance.TestTime            = CSTypeConverter.to_cs_double(self.TestTime)
-        instance.StepTime            = CSTypeConverter.to_cs_double(self.StepTime)
-        instance.CCapacity           = CSTypeConverter.to_cs_double(self.CCapacity)
-        instance.DCapacity           = CSTypeConverter.to_cs_double(self.DCapacity)
-        instance.CEnergy             = CSTypeConverter.to_cs_double(self.CEnergy)
-        instance.DEnergy             = CSTypeConverter.to_cs_double(self.DEnergy)
-        instance.ChargeCapacityTime  = CSTypeConverter.to_cs_double(self.ChargeCapacityTime)
-        instance.DischargeCapacityTime = CSTypeConverter.to_cs_double(self.DischargeCapacityTime)
+        instance.channelIndex        = CSTypeConverter.to_uint(self.channelIndex)
+        instance.TestID              = CSTypeConverter.to_int(self.TestID)
+        instance.TestNames           = CSTypeConverter.to_string(self.TestNames)
+        instance.Schedules           = CSTypeConverter.to_string(self.Schedules)
+        instance.nSelectSteps        = CSTypeConverter.to_uint(self.nSelectSteps)
+        instance.Cycle               = CSTypeConverter.to_uint(self.Cycle)
+        instance.TestTime            = CSTypeConverter.to_double(self.TestTime)
+        instance.StepTime            = CSTypeConverter.to_double(self.StepTime)
+        instance.CCapacity           = CSTypeConverter.to_double(self.CCapacity)
+        instance.DCapacity           = CSTypeConverter.to_double(self.DCapacity)
+        instance.CEnergy             = CSTypeConverter.to_double(self.CEnergy)
+        instance.DEnergy             = CSTypeConverter.to_double(self.DEnergy)
+        instance.ChargeCapacityTime  = CSTypeConverter.to_double(self.ChargeCapacityTime)
+        instance.DischargeCapacityTime = CSTypeConverter.to_double(self.DischargeCapacityTime)
 
     def _set_tc_fields(self, instance):
-        instance.TC_Time1            = CSTypeConverter.to_cs_double(self.TC_Time1)
-        instance.TC_Time2            = CSTypeConverter.to_cs_double(self.TC_Time2)
-        instance.TC_Time3            = CSTypeConverter.to_cs_double(self.TC_Time3)
-        instance.TC_Time4            = CSTypeConverter.to_cs_double(self.TC_Time4)
-        instance.TC_CCapacity1       = CSTypeConverter.to_cs_double(self.TC_CCapacity1)
-        instance.TC_CCapacity2       = CSTypeConverter.to_cs_double(self.TC_CCapacity2)
-        instance.TC_DCapacity1       = CSTypeConverter.to_cs_double(self.TC_DCapacity1)
-        instance.TC_DCapacity2       = CSTypeConverter.to_cs_double(self.TC_DCapacity2)
-        instance.TC_CEnergy1         = CSTypeConverter.to_cs_double(self.TC_CEnergy1)
-        instance.TC_CEnergy2         = CSTypeConverter.to_cs_double(self.TC_CEnergy2)
-        instance.TC_DEnergy1         = CSTypeConverter.to_cs_double(self.TC_DEnergy1)
-        instance.TC_DEnergy2         = CSTypeConverter.to_cs_double(self.TC_DEnergy2)
+        instance.TC_Time1            = CSTypeConverter.to_double(self.TC_Time1)
+        instance.TC_Time2            = CSTypeConverter.to_double(self.TC_Time2)
+        instance.TC_Time3            = CSTypeConverter.to_double(self.TC_Time3)
+        instance.TC_Time4            = CSTypeConverter.to_double(self.TC_Time4)
+        instance.TC_CCapacity1       = CSTypeConverter.to_double(self.TC_CCapacity1)
+        instance.TC_CCapacity2       = CSTypeConverter.to_double(self.TC_CCapacity2)
+        instance.TC_DCapacity1       = CSTypeConverter.to_double(self.TC_DCapacity1)
+        instance.TC_DCapacity2       = CSTypeConverter.to_double(self.TC_DCapacity2)
+        instance.TC_CEnergy1         = CSTypeConverter.to_double(self.TC_CEnergy1)
+        instance.TC_CEnergy2         = CSTypeConverter.to_double(self.TC_CEnergy2)
+        instance.TC_DEnergy1         = CSTypeConverter.to_double(self.TC_DEnergy1)
+        instance.TC_DEnergy2         = CSTypeConverter.to_double(self.TC_DEnergy2)
 
     def _set_mv_fields(self, instance):
-        instance.MV_Counter1         = CSTypeConverter.to_cs_float(self.MV_Counter1)
-        instance.MV_Counter2         = CSTypeConverter.to_cs_float(self.MV_Counter2)
-        instance.MV_Counter3         = CSTypeConverter.to_cs_float(self.MV_Counter3)
-        instance.MV_Counter4         = CSTypeConverter.to_cs_float(self.MV_Counter4)
-        instance.MV_Counter5         = CSTypeConverter.to_cs_float(self.MV_Counter5)
-        instance.MV_Counter6         = CSTypeConverter.to_cs_float(self.MV_Counter6)
-        instance.MV_Counter7         = CSTypeConverter.to_cs_float(self.MV_Counter7)
-        instance.MV_Counter8         = CSTypeConverter.to_cs_float(self.MV_Counter8)
-        instance.MVUD1               = CSTypeConverter.to_cs_float(self.MVUD1)
-        instance.MVUD2               = CSTypeConverter.to_cs_float(self.MVUD2)
-        instance.MVUD3               = CSTypeConverter.to_cs_float(self.MVUD3)
-        instance.MVUD4               = CSTypeConverter.to_cs_float(self.MVUD4)
-        instance.MVUD5               = CSTypeConverter.to_cs_float(self.MVUD5)
-        instance.MVUD6               = CSTypeConverter.to_cs_float(self.MVUD6)
-        instance.MVUD7               = CSTypeConverter.to_cs_float(self.MVUD7)
-        instance.MVUD8               = CSTypeConverter.to_cs_float(self.MVUD8)
-        instance.MVUD9               = CSTypeConverter.to_cs_float(self.MVUD9)
-        instance.MVUD10              = CSTypeConverter.to_cs_float(self.MVUD10)
-        instance.MVUD11              = CSTypeConverter.to_cs_float(self.MVUD11)
-        instance.MVUD12              = CSTypeConverter.to_cs_float(self.MVUD12)
-        instance.MVUD13              = CSTypeConverter.to_cs_float(self.MVUD13)
-        instance.MVUD14              = CSTypeConverter.to_cs_float(self.MVUD14)
-        instance.MVUD15              = CSTypeConverter.to_cs_float(self.MVUD15)
-        instance.MVUD16              = CSTypeConverter.to_cs_float(self.MVUD16)
+        instance.MV_Counter1         = CSTypeConverter.to_float(self.MV_Counter1)
+        instance.MV_Counter2         = CSTypeConverter.to_float(self.MV_Counter2)
+        instance.MV_Counter3         = CSTypeConverter.to_float(self.MV_Counter3)
+        instance.MV_Counter4         = CSTypeConverter.to_float(self.MV_Counter4)
+        instance.MV_Counter5         = CSTypeConverter.to_float(self.MV_Counter5)
+        instance.MV_Counter6         = CSTypeConverter.to_float(self.MV_Counter6)
+        instance.MV_Counter7         = CSTypeConverter.to_float(self.MV_Counter7)
+        instance.MV_Counter8         = CSTypeConverter.to_float(self.MV_Counter8)
+        instance.MVUD1               = CSTypeConverter.to_float(self.MVUD1)
+        instance.MVUD2               = CSTypeConverter.to_float(self.MVUD2)
+        instance.MVUD3               = CSTypeConverter.to_float(self.MVUD3)
+        instance.MVUD4               = CSTypeConverter.to_float(self.MVUD4)
+        instance.MVUD5               = CSTypeConverter.to_float(self.MVUD5)
+        instance.MVUD6               = CSTypeConverter.to_float(self.MVUD6)
+        instance.MVUD7               = CSTypeConverter.to_float(self.MVUD7)
+        instance.MVUD8               = CSTypeConverter.to_float(self.MVUD8)
+        instance.MVUD9               = CSTypeConverter.to_float(self.MVUD9)
+        instance.MVUD10              = CSTypeConverter.to_float(self.MVUD10)
+        instance.MVUD11              = CSTypeConverter.to_float(self.MVUD11)
+        instance.MVUD12              = CSTypeConverter.to_float(self.MVUD12)
+        instance.MVUD13              = CSTypeConverter.to_float(self.MVUD13)
+        instance.MVUD14              = CSTypeConverter.to_float(self.MVUD14)
+        instance.MVUD15              = CSTypeConverter.to_float(self.MVUD15)
+        instance.MVUD16              = CSTypeConverter.to_float(self.MVUD16)
 
 @dataclass
 class MetaVariableInfo:
@@ -173,13 +173,13 @@ class MetaVariableInfo:
         m_MV_DataType:  TE_DATA_TYPE
     """
     channel_index : int          = 0
-    mv_meta_code  : int          = 0
+    mv_meta_code  : int          = 52
     mv_data_type  : TE_DATA_TYPE = 1
 
     def to_cs(self) -> ArbinCTI.ArbinCommandGetMetaVariablesFeed.MetaVariableInfo:           
         instance               = ArbinCTI.ArbinCommandGetMetaVariablesFeed.MetaVariableInfo()
-        instance.m_Channel     = CSTypeConverter.to_cs_ushort(self.channel_index)
-        instance.m_MV_MetaCode = CSTypeConverter.to_cs_ushort(self.mv_meta_code)
+        instance.m_Channel     = CSTypeConverter.to_ushort(self.channel_index)
+        instance.m_MV_MetaCode = CSTypeConverter.to_ushort(self.mv_meta_code)
         instance.m_MV_DataType = ArbinCTI.TE_DATA_TYPE(self.mv_data_type.value)
         return instance
 
@@ -194,7 +194,7 @@ class MetaVariableInfoEx:
     def to_cs(self) -> ArbinCTI.MetaVariableInfoEx:                 
         instance          = ArbinCTI.MetaVariableInfoEx()                 
         instance.DataType = ArbinCTI.TE_DATA_TYPE(self.data_type.value)
-        instance.Error    = CSTypeConverter.to_cs_byte(self.error)
+        instance.Error    = CSTypeConverter.to_byte(self.error)
         return instance
 
 class TimeSensitiveSetMV(DictReprBase):
@@ -239,7 +239,7 @@ class TimeSensitiveSetMV(DictReprBase):
     def to_cs(self) -> ArbinCTI.TimeSensitiveSetMV:                          
         instance        = ArbinCTI.TimeSensitiveSetMV()                    
         instance.MVUD   = ArbinCTI.TimeSensitiveSetMV.EMVUD(self.mvud.value) 
-        instance.Value  = CSTypeConverter.to_cs_float(self.value)
+        instance.Value  = CSTypeConverter.to_float(self.value)
         return instance
     
 @dataclass
@@ -278,9 +278,9 @@ class TimeSensitiveSetMVArgs:
                 raise ValueError(f"Error converting TimeSensitiveSetMVChannel: {str(e)}")
 
             instance = ArbinCTI.TimeSensitiveSetMVArgs.TimeSensitiveSetMVChannel( 
-                CSTypeConverter.to_cs_int(self.global_index),
+                CSTypeConverter.to_int(self.global_index),
                 self.mv_list,
-                CSTypeConverter.to_cs_bool(self.log)
+                CSTypeConverter.to_bool(self.log)
             )     
             return instance
         
@@ -295,7 +295,7 @@ class TimeSensitiveSetMVArgs:
         
     def to_cs(self) -> ArbinCTI.TimeSensitiveSetMVArgs:
         instance         = ArbinCTI.TimeSensitiveSetMVArgs()
-        instance.Timeout = CSTypeConverter.to_cs_float(self.timeout)
+        instance.Timeout = CSTypeConverter.to_float(self.timeout)
         try:
             [instance.Channels.Add(obj.to_cs()) for obj in self.channels]
         except Exception as e:
@@ -318,8 +318,8 @@ class CMetavariableDataCodeApply:
 
     def to_cs(self) -> ArbinCTI.CMetavariableDataCodeApply:  
         instance = ArbinCTI.CMetavariableDataCodeApply()            
-        instance.m_GlobalIndex  = CSTypeConverter.to_cs_ushort(self.global_index)
+        instance.m_GlobalIndex  = CSTypeConverter.to_ushort(self.global_index)
         instance.m_MV_ValueType = ArbinCTI.TE_DATA_TYPE(self.mv_value_type.value) 
-        instance.m_MV_MetaCode  = CSTypeConverter.to_cs_ushort(self.mv_meta_code)
+        instance.m_MV_MetaCode  = CSTypeConverter.to_ushort(self.mv_meta_code)
         instance.ReadWriteMode  = ArbinCTI.EReadWriteMode(self.mode.value)      
         return instance
