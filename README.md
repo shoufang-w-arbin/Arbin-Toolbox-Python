@@ -139,10 +139,10 @@ The ArbinCTI wrapper provides Python classes for objects commonly used in ArbinC
 
 Additional Objects/Enums required for generating the above wrapper classes are also provided in this toolbox:
 
-| Wrapper Class           | Original Object       | Required By                          |
-|-------------------------|-----------------------|--------------------------------------|
+| Wrapper Class           | Original Object       | Required By                                                      |
+|-------------------------|-----------------------|------------------------------------------------------------------|
 | TE_DATA_TYPE            | TE_DATA_TYPE          | MetaVariableInfo, MetaVariableInfoEx, CMetavariableDataCodeApply |
-| TimeSensitiveSetMV      | TimeSensitiveSetMV    | TimeSensitiveSetMVArgs               |
+| TimeSensitiveSetMV      | TimeSensitiveSetMV    | TimeSensitiveSetMVArgs                                           |
 
 > Ignoring namespace `ArbinCTI.Core` in the second column for simplicity.
 
