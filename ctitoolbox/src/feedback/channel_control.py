@@ -49,6 +49,8 @@ class StartChannelFeedback(DictReprBase):
         CTI_START_TESTNAME_TOO_LONG = 0x2B
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandStartChannelFeed): 
+        if not isinstance(feedback, ArbinCTI.ArbinCommandStartChannelFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandStartChannelFeed', got '{type(feedback)}'")
         self.result = StartChannelFeedback.EStartToken(int(feedback.Result))
 
 class StopChannelFeedback(DictReprBase):
@@ -60,6 +62,8 @@ class StopChannelFeedback(DictReprBase):
         STOP_CHANNEL_NOT_CONNECT = 0x13
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandStopChannelFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandStopChannelFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandStopChannelFeed', got '{type(feedback)}'")
         self.result = StopChannelFeedback.EStopToken(int(feedback.Result))
 
 class ResumeChannelFeedback(DictReprBase):
@@ -92,6 +96,8 @@ class ResumeChannelFeedback(DictReprBase):
         CTI_RESUME_CHANNEL_SUSPENT = 0x28
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandResumeChannelFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandResumeChannelFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandResumeChannelFeed', got '{type(feedback)}'")
         self.result = ResumeChannelFeedback.EResumeToken(int(feedback.Result))
 
 class JumpChannelFeedback(DictReprBase):
@@ -125,6 +131,8 @@ class JumpChannelFeedback(DictReprBase):
         CTI_JUMP_CHANNEL_SUSPENT = 0x29
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandJumpChannelFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandJumpChannelFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandJumpChannelFeed', got '{type(feedback)}'")
         self.result                 = JumpChannelFeedback.EJumpToken(int(feedback.Result))
         self.error_channel_index    = int(feedback.ErrorChannelIndex)
 
@@ -139,6 +147,8 @@ class ContinueChannelFeedback(DictReprBase):
         CTI_CONTINUE_CHANNEL_UNSAFE = 0x16
     
     def __init__(self, feedback: ArbinCTI.ArbinCommandContinueChannelFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandContinueChannelFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandContinueChannelFeed', got '{type(feedback)}'")
         self.result = ContinueChannelFeedback.EContinueToken(int(feedback.Result))
 
 class GetChannelDataFeedback(DictReprBase):
@@ -378,6 +388,9 @@ class GetChannelDataFeedback(DictReprBase):
             return data
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandGetChannelDataFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandGetChannelDataFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetChannelDataFeed', got '{type(feedback)}'")
+        
         self.channel_data = [GetChannelDataFeedback.ChannelInfo(info) for info in feedback.m_ChannelInfo]
 
 class GetResumeDataFeedback(DictReprBase):
@@ -448,6 +461,8 @@ class GetResumeDataFeedback(DictReprBase):
             self.step_names     = [str(step) for step in info.Steps]
     
     def __init__(self, feedback: ArbinCTI.ArbinCommandGetResumeDataFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandGetResumeDataFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetResumeDataFeed', got '{type(feedback)}'")
         self.channel_data = [GetResumeDataFeedback.ResumeDatalInfo(info) for info in feedback.m_Channels]
 
 class GetStartDataFeedback(DictReprBase):
@@ -481,4 +496,6 @@ class GetStartDataFeedback(DictReprBase):
             self.step_names     = [str(step) for step in info.Steps]
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandGetStartDataFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandGetStartDataFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetStartDataFeed', got '{type(feedback)}'")
         self.channel_data = [GetStartDataFeedback.StartDataInfo(info) for info in feedback.m_Channels]
