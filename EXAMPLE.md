@@ -1,30 +1,14 @@
 # Usage Examples
 ## About
 Here are some example how to use "pythonnet" and "ctitoolbox" in order to interact smoothly with ArbinCTI.
-- [C# Basic Data Types Conversion using `CSTypeConverter`](#basic-c-type-converting)
-  - [Data Type Casting in ArbinCTI](#data-type-casting-in-arbincti)
+- [Data Type Casting in Pythonnet](#data-type-casting-in-pythonnet)
   - [Handling TypeError](#handling-typeerror)
 - [C# List Conversion using `CSTypeConverter`](#c-list-converting)
 - [ArbinCTI Object Creation](#arbincti-object-creation)
 - [ArbinCTI Feedback Accessing](#arbincti-feedback-accessing)
 
-## C# Basic Data Types Conversion using `CSTypeConverter`
-
-```python
-from ctitoolbox import CSTypeConverter
-
-# C# 'ushort' instance of value 123
-a = CSTypeConverter.to_cs_ushort(123)
-
-# C# 'string' instance of value "123"
-b = CSTypeConverter.to_cs_string("123")
-
-# C# 'byte[]' instance
-c = CSTypeConverter.to_cs_byte_array(b'hello world')
-```
-
-### Data Type Casting in ArbinCTI
-Pythonnet doesn't handle casting between Python and C# data types perfectly. Explicit casting is recommended to avoid potential TypeError issues. Below is a guide on data type compatibility and casting in ArbinCTI.
+## Data Type Casting in Pythonnet
+Pythonnet doesn't handle casting between Python and C# data types perfectly. Explicit casting is recommended for certain data types. Below is a known data type casting compatibility in Pythonnet.
 
 | Python Type | Pythonnet Type    | C# Type  | Implicit Casting       | Explicit Casting |
 |-------------|-------------------|----------|------------------------|------------------|
@@ -47,17 +31,10 @@ control.PostNewFolder(client, "hello world")
 control.PostResumeChannel(client, True, 0)
 ```
 
-#### Explicit Casting (Recommended)
-```python
-# Using CSTypeConvert for explicit casting
-control.PostNewFolder(client, CSTypeConvert.to_string("hello world"))
-
-control.PostResumeChannel(client, CSTypeConvert.to_bool(True), CSTypeConvert.to_int(0))
-```
-
 ### Handling TypeError
 Some operations may lead to `TypeError` if not properly cast. For example:
 ```python
+# bool PostUpLoadFile(IArbinSocket socket, string strPath, byte[] FileData, double time, uint uGeneralPackage, uint PackageIndex)
 control.PostUpLoadFile(
     client, 
     "path",         # -
@@ -91,10 +68,10 @@ This section explains how to create C# List instances from Python data using the
 To create a C# List instance of basic data types:
 ```python
 # Create a C# 'List<ushort>' instance containing items [1, 2, 3]
-ushort_list = CSTypeConverter.to_cs_list([1, 2, 3], CSTypeConverter.EDataType.USHORT)
+ushort_list = CSTypeConverter.to_list([1, 2, 3], CSTypeConverter.EDataType.USHORT)
 
 # Create a C# 'List<string>' instance containing items ["a", "b", "c"]
-string_list = CSTypeConverter.to_cs_list(["a", "b", "c"], CSTypeConverter.EDataType.STRING)
+string_list = CSTypeConverter.to_list(["a", "b", "c"], CSTypeConverter.EDataType.STRING)
 ```
 ### ArbinCTI General Objects
 For creating a C# List of supported [ArbinCTI general objects](README.md#general-objects), use the following approach:
@@ -126,9 +103,9 @@ Creating ArbinCTI general objects is straightforward. First, create a Python wra
 from ctitoolbox import MetaVariableInfo, TE_DATA_TYPE
 
 info = MetaVariableInfo(
-  channel_index=0,
-  mv_meta_code=0,
-  mv_data_type=TE_DATA_TYPE.MP_DATA_TYPE_MetaValue
+  channel_index = 0,
+  mv_meta_code  = 0,
+  mv_data_type  = TE_DATA_TYPE.MP_DATA_TYPE_MetaValue
 )
 
 info_cs = info.to_cs()  # Now it is a C# 'MetaVariableInfo' instance

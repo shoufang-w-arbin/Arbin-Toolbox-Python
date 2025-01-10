@@ -10,7 +10,7 @@
     - [To-Do](#to-do)
 
 ## About
-Wrappers of C# objects, providing a smoother and more Pythonic programming experience for users who want to use ArbinCTI in Python.
+Wrappers of C# objects built on top of Pythonnet, providing a smoother and more Pythonic programming experience for users who want to use ArbinCTI in Python.
 
 ### Background
 When calling `public bool PostTimeSensitiveSetMV(IArbinSocket socket, TimeSensitiveSetMVArgs args)`, creating a `TimeSensitiveSetMVArgs` object in Python without the toolbox can be quite cumbersome. Here's an example:
