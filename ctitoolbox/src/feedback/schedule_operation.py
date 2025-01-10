@@ -36,6 +36,8 @@ class AssignScheduleFeedback(DictReprBase):
         CTI_ASSIGN_SCHEDULE_CLEAR = 0x1E
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandAssignScheduleFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandAssignScheduleFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandAssignScheduleFeed', got '{type(feedback)}'")
         self.result = AssignScheduleFeedback.EAssignToken(int(feedback.Result))
 
 class AssignFileFeedback(DictReprBase):
@@ -57,7 +59,9 @@ class AssignFileFeedback(DictReprBase):
         CTI_ASSIGN_SCHEDULE_MUID_NOT_SAME = 0x1D
         CTI_ASSIGN_SCHEDULE_CLEAR = 0x1E
 
-    def __init__(self, feedback: ArbinCTI.ArbinCommandAssignFileFeed):  
+    def __init__(self, feedback: ArbinCTI.ArbinCommandAssignFileFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandAssignFileFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandAssignFileFeed', got '{type(feedback)}'")
         self.result              = AssignFileFeedback.EAssignToken(int(feedback.Result))
         self.channel_list_result = self._unpack_channel_result(feedback.ChanListResultPairs)
         self.reason              = str(feedback.Reason)
@@ -88,6 +92,8 @@ class SetMetaVariableFeedback(DictReprBase):
         CTI_SET_MV_METACODE_NOTEXIST_Pro7 = 19
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandSetMetaVariableFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandSetMetaVariableFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandSetMetaVariableFeed', got '{type(feedback)}'")
         self.result = SetMetaVariableFeedback.EResult(int(feedback.Result))
     
 class SetMetaVariableTimeSensitiveFeedback(DictReprBase):
@@ -155,6 +161,8 @@ class SetMetaVariableTimeSensitiveFeedback(DictReprBase):
             self.mvs            = [TimeSensitiveSetMV(mv) for mv in result.MVs]
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandTimeSensitiveSetMVFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandTimeSensitiveSetMVFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandTimeSensitiveSetMVFeed', got '{type(feedback)}'")
         self.results = [SetMetaVariableTimeSensitiveFeedback.TimeSensitiveSetMVResult(result) for result in feedback.Results]
 
 class GetMetaVariableFeedback(DictReprBase):
@@ -193,4 +201,6 @@ class GetMetaVariableFeedback(DictReprBase):
             self.value         = float(info.m_Value)
     
     def __init__(self, feedback: ArbinCTI.ArbinCommandGetMetaVariablesFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandGetMetaVariablesFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetMetaVariablesFeed', got '{type(feedback)}'")
         self.meta_variable_info = [GetMetaVariableFeedback.MetaVariableInfo(info) for info in feedback.MetaVariableInfos]

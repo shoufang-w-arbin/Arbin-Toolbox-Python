@@ -36,7 +36,9 @@ class UploadFileFeedback(DictReprBase):
             self.canceled       = bool(upload_file_result.IsCancelUploadFile)
             self.progress_rate  = float(upload_file_result.ProgressRate)
 
-    def __init__(self, feedback: ArbinCTI.ArbinCommandUpLoadFileFeed): 
+    def __init__(self, feedback: ArbinCTI.ArbinCommandUpLoadFileFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandUpLoadFileFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandUpLoadFileFeed', got '{type(feedback)}'")
         self.result       = UploadFileFeedback.EResult(int(feedback.Result))
         self.upload_time  = float(feedback.UploadTime)
         self.packet_count = int(feedback.uGeneralPackage)
@@ -50,6 +52,8 @@ class DownloadFileFeedback(DictReprBase):
         CTI_DOWNLOAD_MAX_LENGTH_ERR = 4
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandDownLoadFileFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandDownLoadFileFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandDownLoadFileFeed', got '{type(feedback)}'")
         self.result         = DownloadFileFeedback.EResult(int(feedback.Result))
         self.md5            = str(feedback.m_MD5)
         self.file_length    = int(feedback.dwFileLength)
@@ -74,11 +78,15 @@ class BrowseDirectoryFeedback(DictReprBase):
             self.last_modify_time   = str(info.wcModified)  
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandBrowseDirectoryFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandBrowseDirectoryFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandBrowseDirectoryFeed', got '{type(feedback)}'")
         self.result         = BrowseDirectoryFeedback.EResult(int(feedback.Result))
         self.dir_file_info  = [BrowseDirectoryFeedback.DirFileInfo(info) for info in feedback.DirFileInfoList]
     
 class CheckFileExistFeedback(DictReprBase):
     def __init__(self, feedback: ArbinCTI.ArbinCommandCheckFileExFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandCheckFileExFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandCheckFileExFeed', got '{type(feedback)}'")
         self.relative_path_exist = bool(feedback.bRelativePathExist)
         self.file_name_exist     = bool(feedback.bFileNameExist)
         self.MD5_exist           = bool(feedback.bMD5Exist)
@@ -97,6 +105,8 @@ class NewFolderFeedback(DictReprBase):
         CTI_DELETE_FAILED_EXIST = 8
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandNewFolderFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandNewFolderFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandNewFolderFeed', got '{type(feedback)}'")
         self.result = NewFolderFeedback.EResult(int(feedback.Result))
     
 class DeleteFileFeedback(DictReprBase):
@@ -111,6 +121,8 @@ class DeleteFileFeedback(DictReprBase):
         CTI_DELETE_FAILED_EXIST = 8
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandDeleteFileFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandDeleteFileFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandDeleteFileFeed', got '{type(feedback)}'")
         self.result = DeleteFileFeedback.EResult(int(feedback.Result))
     
 class NewOrDeleteFeedback(DictReprBase):
@@ -129,4 +141,6 @@ class NewOrDeleteFeedback(DictReprBase):
         CTI_DELETE = 1
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandNewOrDeleteFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandNewOrDeleteFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandNewOrDeleteFeed', got '{type(feedback)}'")
         self.result = NewOrDeleteFeedback.EResult(int(feedback.Result))

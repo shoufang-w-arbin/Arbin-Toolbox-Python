@@ -8,18 +8,23 @@ System & Connection
 - GetSerailNumberFeedback
 - GetMITSVersionFeedback
 - LoginFeedback
+- LogicConnectFeedback
 """""""""""""""""""""""""""
 class GetSerailNumberFeedback(DictReprBase):
     class EAssignToken(IntEnum):
         CTI_GET_SERIAL_SUCCESS = 0,
         CTI_ASSIGN_ERROR = 0x10,
 
-    def __init__(self, feedback: ArbinCTI.ArbinCommandGetSerialNumberFeed): 
+    def __init__(self, feedback: ArbinCTI.ArbinCommandGetSerialNumberFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandGetSerialNumberFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetSerialNumberFeed', got '{type(feedback)}'")
         self.serial_number  = float(feedback.SerialNum)
         self.result         = GetSerailNumberFeedback.EAssignToken(int(feedback.Result))
 
 class GetMITSVersionFeedback(DictReprBase):
     def __init__(self, feedback: ArbinCTI.ArbinCommandGetServerSoftwareVersionNumberFeed): 
+        if not isinstance(feedback, ArbinCTI.ArbinCommandGetServerSoftwareVersionNumberFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetServerSoftwareVersionNumberFeed', got '{type(feedback)}'")
         self.version = str(feedback.ServerVersionNumber)
     
 class LoginFeedback(DictReprBase):
@@ -46,6 +51,8 @@ class LoginFeedback(DictReprBase):
         CTI_LOGIN_BEFORE_SUCCESS = 3
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandLoginFeed): 
+        if not isinstance(feedback, ArbinCTI.ArbinCommandLoginFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandLoginFeed', got '{type(feedback)}'")
         self.result              = LoginFeedback.ELoginResult(int(feedback.Result))
         self.user_type           = int(feedback.UserType)
         self.serial_number       = str(feedback.SN)
@@ -62,3 +69,10 @@ class LoginFeedback(DictReprBase):
         self.version             = LoginFeedback.ECTIVersion(int(feedback.Version))
         # self.img: Optional[Image.Image] = feedback.Img if isinstance(feedback.Img, Image.Image) else None
         self.server_info         = str(feedback.ServerInfo) if feedback.ServerInfo else None
+
+class LogicConnectFeedback(DictReprBase):
+    def __init__(self, feedback: ArbinCTI.ArbinCommandLogicConnectFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandLogicConnectFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandLogicConnectFeed', got '{type(feedback)}'")
+        self.dwSetKickOut    = int(feedback.dwSetKickOut)
+        self.dwConnectResult = int(feedback.dwConnectResult)
