@@ -22,7 +22,7 @@ Pythonnet doesn't handle casting between Python and C# data types perfectly. Exp
 | `int`       | `UInt16`          | `ushort` | **No**                 | Yes              |
 | `int`       | `UInt32`          | `uint`   | **No**                 | Yes              |
 
-#### Safe Implicit Casting
+#### Safe Implicit Casting Examples
 ```python
 # bool PostNewFolder (IArbinSocket socket, string strPath)
 control.PostNewFolder(client, "hello world")
