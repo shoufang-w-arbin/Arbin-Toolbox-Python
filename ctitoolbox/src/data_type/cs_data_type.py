@@ -1,4 +1,5 @@
 from enum import Enum
+import copy
 
 from System import ( # type: ignore
     Byte,
@@ -108,6 +109,8 @@ class CSTypeConverter:
         If an EDataType is provided, the list is converted to a csharp List of that type.
         If not, the objects in the list are presumed to have a 'to_cs' method.
         """
+        _object_list = copy.deepcopy(object_list)
+
         # EDataType is provided
         if len(args) == 1:
             if not isinstance(args[0], CSTypeConverter.EDataType):
@@ -125,23 +128,23 @@ class CSTypeConverter:
                 CSTypeConverter.EDataType.STRING: CSTypeConverter.to_string,
             }
 
-            for i in range(len(object_list)):
-                obj = object_list[i]
+            for i in range(len(_object_list)):
+                obj = _object_list[i]
                 try:
-                    object_list[i] = _conversion_map[item_type](obj)
+                    _object_list[i] = _conversion_map[item_type](obj)
                 except Exception as e:
                     raise ValueError(f"Error converting item {obj}, object type {type(obj)}, to {item_type.name}.")
                 
-            return CSTypeConverter._to_cs_list(object_list, item_type)
+            return CSTypeConverter._to_cs_list(_object_list, item_type.value)
         
         # No EDataType provided
         elif len(args) == 0:
-            if not all(isinstance(obj, type(object_list[0])) and hasattr(obj, 'to_cs') for obj in object_list):
+            if not all(isinstance(obj, type(_object_list[0])) and hasattr(obj, 'to_cs') for obj in _object_list):
                 raise ValueError("All objects in the list must be of the same type and have a 'to_cs' method.")
             
-            object_list = [obj.to_cs() for obj in object_list]
+            _object_list = [obj.to_cs() for obj in _object_list]
 
-            return CSTypeConverter._to_cs_list(object_list, object_list[0].GetType())
+            return CSTypeConverter._to_cs_list(_object_list, _object_list[0].GetType())
         
         else:
             raise ValueError("Invalid arguments passed to to_cs_list")

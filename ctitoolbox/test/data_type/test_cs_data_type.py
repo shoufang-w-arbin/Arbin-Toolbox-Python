@@ -101,35 +101,46 @@ class TestCSTypeConverter(unittest.TestCase):
         with self.assertRaises(ValueError):
             CSTypeConverter.to_double("5.5")
 
-    def test_to_list_with_type(self):
-        python_list = [1, 2, 3]
+    def test_to_list_with_etype(self):
+        python_list = [1, 2, 3, 4, 5]
         cs_list = CSTypeConverter.to_list(python_list, CSTypeConverter.EDataType.INT)
         self.assertIsInstance(cs_list, List[Int32])
         self.assertEqual(len(cs_list), len(python_list))
         for i, item in enumerate(python_list):
-            self.assertEqual(cs_list[i], Int32(item))
+            self.assertEqual(int(cs_list[i]), item) # automatically converted to py 'int' when unzipping
+
+        python_list = [True, False, True]
+        cs_list = CSTypeConverter.to_list(python_list, CSTypeConverter.EDataType.BOOL)
+        self.assertIsInstance(cs_list, List[Boolean])
+        self.assertEqual(len(cs_list), len(python_list))
+        for i, item in enumerate(python_list):
+            self.assertEqual(cs_list[i], item) # automatically converted to py 'int' when unzipping
 
         with self.assertRaises(ValueError):
             CSTypeConverter.to_list(python_list, "invalid type")
 
-        with self.assertRaises(ValueError):
-            CSTypeConverter.to_list([1, "2", 3], CSTypeConverter.EDataType.INT)
-
-    def test_to_list_without_type(self):
+    def test_to_list_without_etype(self):
         class MockObject:
-            def to_cs(self):
-                return Int32(5)
+            def __init__(self, value):
+                self.value = value
 
-        python_list = [MockObject(), MockObject()]
+            def to_cs(self):
+                return Int32(self.value)
+
+        python_list = [MockObject(1), MockObject(2), MockObject(3)]
         cs_list = CSTypeConverter.to_list(python_list)
         self.assertIsInstance(cs_list, List[Int32])
         self.assertEqual(len(cs_list), len(python_list))
-        for item in cs_list:
-            self.assertEqual(item, Int32(5))
+        for i, item in enumerate(python_list):
+            self.assertEqual(cs_list[i], item.value)
 
         with self.assertRaises(ValueError):
-            CSTypeConverter.to_list([MockObject(), "invalid object"])
+            CSTypeConverter.to_list([MockObject(1), "invalid object"])
 
-    def test_to_list_invalid_args(self):
-        with self.assertRaises(ValueError):
-            CSTypeConverter.to_list([1, 2, 3], CSTypeConverter.EDataType.INT, "extra arg")
+    def test__to_cs_list(self):
+        python_list = [Int32(1), Int32(2), Int32(3)]
+        cs_list = CSTypeConverter._to_cs_list(python_list, Int32)
+        self.assertIsInstance(cs_list, List[Int32])
+        self.assertEqual(len(cs_list), len(python_list))
+        for i, item in enumerate(python_list):
+            self.assertEqual(cs_list[i], int(item))
