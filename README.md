@@ -157,6 +157,7 @@ See [EXAMPLE.md](EXAMPLE.md#arbincti-feedback-accessing) for detailed usage.
 |--------------------------------------|---------------------------------------------------|
 | ***Connection***                     |                                                   |
 | LoginFeedback                        | ArbinCommandLoginFeed                             |
+| LogicConnectFeedback                 | ArbinCommandLogicConnectFeed                      |
 | ***Test Schedule***                  |                                                   |
 | AssignScheduleFeedback               | ArbinCommandAssignScheduleFeed                    |
 | AssignFileFeedback                   | ArbinCommandAssignFileFeed                        |
