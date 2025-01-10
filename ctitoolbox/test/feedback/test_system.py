@@ -6,7 +6,8 @@ import ArbinCTI.Core as ArbinCTI # type: ignore
 from ctitoolbox.src.feedback.system import (
     GetSerailNumberFeedback, 
     GetMITSVersionFeedback,
-    LoginFeedback
+    LoginFeedback,
+    LogicConnectFeedback
 )
 
 UNITTEST_VIEW_DICT = os.getenv("UNITTEST_VIEW_DICT", False)
@@ -74,4 +75,16 @@ class TestFeedbackClasses(unittest.TestCase):
 
         if UNITTEST_VIEW_DICT:
             print("LoginFeedback:", feedback_instance.to_dict())
-        
+
+    def test_LogicConnectFeedback_instantiation(self):
+        cs_instance = ArbinCTI.ArbinCommandLogicConnectFeed()
+        cs_instance.dwSetKickOut = 1
+        cs_instance.dwConnectResult = 0
+
+        feedback_instance = LogicConnectFeedback(cs_instance)
+
+        self.assertEqual(feedback_instance.dwSetKickOut, 1)
+        self.assertEqual(feedback_instance.dwConnectResult, 0)
+
+        if UNITTEST_VIEW_DICT:
+            print("LogicConnectFeedback:", feedback_instance.to_dict())

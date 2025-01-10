@@ -8,6 +8,7 @@ System & Connection
 - GetSerailNumberFeedback
 - GetMITSVersionFeedback
 - LoginFeedback
+- LogicConnectFeedback
 """""""""""""""""""""""""""
 class GetSerailNumberFeedback(DictReprBase):
     class EAssignToken(IntEnum):
@@ -68,3 +69,10 @@ class LoginFeedback(DictReprBase):
         self.version             = LoginFeedback.ECTIVersion(int(feedback.Version))
         # self.img: Optional[Image.Image] = feedback.Img if isinstance(feedback.Img, Image.Image) else None
         self.server_info         = str(feedback.ServerInfo) if feedback.ServerInfo else None
+
+class LogicConnectFeedback(DictReprBase):
+    def __init__(self, feedback: ArbinCTI.ArbinCommandLogicConnectFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandLogicConnectFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandLogicConnectFeed', got '{type(feedback)}'")
+        self.dwSetKickOut    = int(feedback.dwSetKickOut)
+        self.dwConnectResult = int(feedback.dwConnectResult)
