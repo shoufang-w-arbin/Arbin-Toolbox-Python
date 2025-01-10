@@ -3,7 +3,7 @@
 Here are some example how to use "pythonnet" and "ctitoolbox" in order to interact smoothly with ArbinCTI.
 - [Data Type Casting in Pythonnet](#data-type-casting-in-pythonnet)
   - [Handling TypeError](#handling-typeerror)
-- [C# List Conversion using `CSTypeConverter`](#c-list-converting)
+- [C# List Conversion using `CSTypeConverter`](#c-list-conversion-using-cstypeconverter)
 - [ArbinCTI Object Creation](#arbincti-object-creation)
 - [ArbinCTI Feedback Accessing](#arbincti-feedback-accessing)
 
