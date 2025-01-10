@@ -1,12 +1,13 @@
 # ArbinCTI Toolbox
 ## Table of Contents
 - [About](#about)
-- [Requirements](#requirements)
 - [Installation](#installation)
 - [Supported ArbinCTI Objects](#supported-arbincti-objects)
-- [Usage Examples](#usage-examples) 
-- [Testing](#testing)
-- [To-Do](#to-do)
+- [Usage Examples](#usage-examples)
+- [Developing `ctitoolbox`](#developing-ctitoolbox)
+    - [Requirements](#requirements)
+    - [Testing](#testing)
+    - [To-Do](#to-do)
 
 ## About
 Wrappers of C# objects, providing a smoother and more Pythonic programming experience for users who want to use ArbinCTI in Python.
@@ -112,15 +113,15 @@ As you can see, the toolbox provides a smoother and more Pythonic way to interac
 
 > We are adding more wrapper classes. If you require immediate implementation of a certain CTI object, please create an issue or submit a pull request with your work.
 
-## Requirements
+## Installation
+### Requirements
 - 64-bit Python >= 3.7
 - System
     - Windows: .NET Framework >=4.7.2
     - Linux: Mono is used by default
-
-## Installation
+### Install from Wheel
 ```bash
-pip install {path}/ctitoolbox-{version}-py3-none-any.whl
+pip install dist/ctitoolbox-{version}-py3-none-any.whl
 ```
 
 ## Supported ArbinCTI Objects
@@ -190,8 +191,9 @@ See [EXAMPLE.md](EXAMPLE.md#arbincti-feedback-accessing) for detailed usage.
 ## Usage Examples
 Please see `EXAMPLE.md`.
 
-## Testing
-Run unittest
+## Developing `ctitoolbox`
+### Testing
+To run unittest
 ```sh
 python -m unittest
 ```
@@ -206,8 +208,5 @@ To view feedback output while running test, set env variable before running unit
     UNITTEST_VIEW_DICT="True"
     ```
 
-## To-Do
-- `CSTypeConvertor.to_cs_list` supports various types of iterables.
-    - `PostApplyForUDPCommunication`: `List<CMetavariableDataCodeApply>`
+### To-Do
 - Add original Enum value to the result for debugging.
-- Detect Null object when initializing

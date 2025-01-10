@@ -1,6 +1,5 @@
 __pycache__/
 .vscode/
 *.egg-info/
-dist/
 .~c9_invoke_*.py
 ArbinCTI_Python.egg-info/
