@@ -119,6 +119,7 @@ As you can see, the toolbox provides a smoother and more Pythonic way to interac
 - System
     - Windows: .NET Framework >=4.7.2
     - Linux: Mono is used by default
+- ArbinCTI permission on MITS
 ### Install from Wheel
 ```bash
 pip install dist/ctitoolbox-{version}-py3-none-any.whl
