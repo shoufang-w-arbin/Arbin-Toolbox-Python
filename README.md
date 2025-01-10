@@ -185,37 +185,6 @@ See [EXAMPLE.md](EXAMPLE.md#arbincti-feedback-accessing) for detailed usage.
 | GetMITSVersionFeedback               | ArbinCommandGetServerSoftwareVersionNumberFeed    |
 
 > Ignoring namespace `ArbinCTI.Core` in the second column for simplicity.
-|--------------------------------------|---------------------------------------------------|
-| ***Connection***                     |                                                   |
-| LoginFeedback                        | ArbinCommandLoginFeed                             |
-| ***Test Schedule***                  |                                                   |
-| AssignScheduleFeedback               | ArbinCommandAssignScheduleFeed                    |
-| AssignFileFeedback                   | ArbinCommandAssignFileFeed                        |
-| SetMetaVariableFeedback              | ArbinCommandSetMetaVariableFeed                   |
-| SetMetaVariableTimeSensitiveFeedback | ArbinCommandTimeSensitiveSetMVFeed                |
-| GetMetaVariableFeedback              | ArbinCommandGetMetaVariablesFeed                  |
-| ***Channel Control***                |                                                   |
-| StartChannelFeedback                 | ArbinCommandStartChannelFeed                      |
-| StopChannelFeedback                  | ArbinCommandStopChannelFeed                       |
-| ResumeChannelFeedback                | ArbinCommandResumeChannelFeed                     |
-| JumpChannelFeedback                  | ArbinCommandJumpChannelFeed                       |
-| ContinueChannelFeedback              | ArbinCommandContinueChannelFeed                   |
-| ***File Operation***                 |                                                   |
-| UploadFileFeedback                   | ArbinCommandUpLoadFileFeed                        |
-| DownloadFileFeedback                 | ArbinCommandDownloadFileFeed                      |
-| BrowseDirectoryFeedback              | ArbinCommandBrowseDirectoryFeed                   |
-| CheckFileExistFeedback               | ArbinCommandCheckFileExFeed                       |
-| NewFolderFeedback                    | ArbinCommandNewFolderFeed                         |
-| DeleteFileFeedback                   | ArbinCommandDeleteFileFeed                        |
-| NewOrDeleteFeedback                  | ArbinCommandNewOrDeleteFeed                       |
-| ***Request Information***            |                                                   |
-| GetChannelDataFeedback               | ArbinCommandGetChannelDataFeed                    |
-| GetStartDataFeedback                 | ArbinCommandGetStartDataFeed                      |
-| GetResumeDataFeedback                | ArbinCommandGetResumeDataFeed                     |
-| GetSerialNumberFeedback              | ArbinCommandGetSerialNumberFeed                   |
-| GetMITSVersionFeedback               | ArbinCommandGetServerSoftwareVersionNumberFeed    |
-
-> Ignoring namespace `ArbinCTI.Core` in the second column for simplicity.
 
 ## Usage Examples
 Please see `EXAMPLE.md`.
