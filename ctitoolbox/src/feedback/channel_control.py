@@ -372,15 +372,39 @@ class GetChannelDataFeedback(DictReprBase):
             self.acr                    = float(info.ACR)
             self.aci                    = float(info.ACI)
             self.aci_phase              = float(info.ACIPhase)
-            self.can_data               = [GetChannelDataFeedback.CANMonitorInfo(item) for item in info.CANs] 
-            self.smb_data               = [GetChannelDataFeedback.SMBMonitorInfo(item) for item in info.SMBs]
-            self.eq_data                = [GetChannelDataFeedback.CTISPTTEQData(item) for item in info.EQDatas]
-            self.cell_data              = [GetChannelDataFeedback.CTISPTTCellData(item) for item in info.CellDatas]
-            self.aux_data               = [
-                [GetChannelDataFeedback.AuxMonitorData(item) for item in aux_list] if aux_list is not None 
-                else []
-                for aux_list in info.AuxeDatas
-            ]
+            try:
+                self.can_data = [GetChannelDataFeedback.CANMonitorInfo(item) for item in info.CANs]
+            except Exception as e:
+                self.can_data = []
+                print(f"Error processing CAN data: {e}")
+
+            try:
+                self.smb_data = [GetChannelDataFeedback.SMBMonitorInfo(item) for item in info.SMBs]
+            except Exception as e:
+                self.smb_data = []
+                print(f"Error processing SMB data: {e}")
+
+            try:
+                self.eq_data = [GetChannelDataFeedback.CTISPTTEQData(item) for item in info.EQDatas]
+            except Exception as e:
+                self.eq_data = []
+                print(f"Error processing EQ data: {e}")
+
+            try:
+                self.cell_data = [GetChannelDataFeedback.CTISPTTCellData(item) for item in info.CellDatas]
+            except Exception as e:
+                self.cell_data = []
+                print(f"Error processing Cell data: {e}")
+
+            try:
+                self.aux_data = [
+                    [GetChannelDataFeedback.AuxMonitorData(item) for item in aux_list] if aux_list is not None 
+                    else []
+                    for aux_list in info.AuxeDatas
+                ]
+            except Exception as e:
+                self.aux_data = []
+                print(f"Error processing Aux data: {e}")
 
         def to_dict(self):
             data = copy.deepcopy(self.__dict__)
