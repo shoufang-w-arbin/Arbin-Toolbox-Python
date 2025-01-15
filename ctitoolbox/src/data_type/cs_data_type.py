@@ -4,6 +4,7 @@ import copy
 from System import ( # type: ignore
     Byte,
     Boolean,
+    Int16,
     Int32,
     UInt16,
     UInt32,
@@ -20,6 +21,7 @@ Supported data types:
 - byte
 - byte[]
 - bool
+- short
 - int
 - ushort
 - uint
@@ -32,6 +34,7 @@ class CSTypeConverter:
     class EDataType(Enum):
         BYTE    = Byte
         BOOL    = Boolean
+        SHORT   = Int16
         INT     = Int32
         USHORT  = UInt16
         UINT    = UInt32
@@ -52,6 +55,13 @@ class CSTypeConverter:
         if not isinstance(value, bool):
             raise ValueError("Value must be a boolean")
         return Boolean(value)
+    
+    @staticmethod
+    def to_short(value):
+        """Convert a python 'int' to a csharp 'short'."""
+        if not isinstance(value, int):
+            raise ValueError("Value must be an integer")
+        return Int16(value)
 
     @staticmethod
     def to_int(value):
@@ -120,6 +130,7 @@ class CSTypeConverter:
             _conversion_map = {
                 CSTypeConverter.EDataType.BYTE:   CSTypeConverter.to_byte,
                 CSTypeConverter.EDataType.BOOL:   CSTypeConverter.to_bool,
+                CSTypeConverter.EDataType.SHORT:  CSTypeConverter.to_short,
                 CSTypeConverter.EDataType.INT:    CSTypeConverter.to_int,
                 CSTypeConverter.EDataType.USHORT: CSTypeConverter.to_ushort,
                 CSTypeConverter.EDataType.UINT:   CSTypeConverter.to_uint,

@@ -3,6 +3,7 @@ import unittest
 from System import ( # type: ignore
     Byte,
     Boolean,
+    Int16,
     Int32,
     UInt16,
     UInt32,
@@ -49,6 +50,12 @@ class TestCSTypeConverter(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             CSTypeConverter.to_byte_array([1, 2, 3])  # list, not bytes or bytearray
+    
+    def test_to_short(self):
+        self.assertIsInstance(CSTypeConverter.to_short(5), Int16)
+        self.assertEqual(CSTypeConverter.to_short(5), Int16(5))
+        with self.assertRaises(ValueError):
+            CSTypeConverter.to_short("5")
 
     def test_to_int32(self):
         self.assertIsInstance(CSTypeConverter.to_int(5), Int32)
