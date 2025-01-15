@@ -41,23 +41,39 @@ class AssignScheduleFeedback(DictReprBase):
         self.result = AssignScheduleFeedback.EAssignToken(int(feedback.Result))
 
 class AssignFileFeedback(DictReprBase):
+    class EFileKind(IntEnum):
+        None_ = -1
+        Schedule = 0
+        CANBMS = 1
+        SMB = 2
+        Simulation = 3
+        BatterySimulation = 4
+        TestObject = 5
+        Chart = 6
+        BaseFileCount = 6
+        FileKindCount = 7
+
+        def to_cs(self) -> ArbinCTI.ArbinCommandAssignFileFeed.EFileKind:
+            return ArbinCTI.ArbinCommandAssignFileFeed.EFileKind(self.value)
+
     class EAssignToken(IntEnum):
         CTI_ASSIGN_SUCCESS = 0
+        CTI_ASSIGN_FAILED = 1
         CTI_ASSIGN_INDEX = 0x10
         CTI_ASSIGN_ERROR = 0x11
-        CTI_ASSIGN_SCHEDULE_NAME_EMPTY_ERROR = 0x12
-        CTI_ASSIGN_SCHEDULE_NOT_FIND_ERROR = 0x13
+        CTI_ASSIGN_FILE_NAME_EMPTY_ERROR = 0x12
+        CTI_ASSIGN_FILE_NOT_FIND_ERROR = 0x13
         CTI_ASSIGN_CHANNEL_RUNNING_ERROR = 0x14
         CTI_ASSIGN_CHANNEL_DOWNLOAD_ERROR = 0x15
         CTI_ASSIGN_BACTH_FILE_OPENED = 0x16
-        CTI_ASSIGN_SDU_CANNOT_ASSIGN_SCHEDULE = 0x17
-        CTI_ASSIGN_SDU_SAVE_FAILED = 0x18
+        CTI_ASSIGN_FILE_CANNOT_ASSIGN = 0x17
+        CTI_ASSIGN_FILE_SAVE_FAILED = 0x18
         CTI_ASSIGN_FILE_UNSUPPORTED_FILE_TYPE = 0x19
         CTI_ASSIGN_FILE_NOT_ASSIGN_SCHEDULE = 0x1A
         CTI_ASSIGN_FILE_SCHEDULE_NOT_AUX_REQUIREMENT = 0x1B
         CTI_ASSIGN_FILE_SCHEDULE_IS_RUNNING = 0x1C
         CTI_ASSIGN_SCHEDULE_MUID_NOT_SAME = 0x1D
-        CTI_ASSIGN_SCHEDULE_CLEAR = 0x1E
+        CTI_ASSIGN_FILE_CLEAR = 0x1E
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandAssignFileFeed):
         if not isinstance(feedback, ArbinCTI.ArbinCommandAssignFileFeed):
