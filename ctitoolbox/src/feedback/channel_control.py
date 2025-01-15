@@ -128,7 +128,8 @@ class JumpChannelFeedback(DictReprBase):
         CTI_JUMP_SAFETY = 0x26
         CTI_JUMP_SECHEDULE_NAME_DIFFERENT = 0x27
         CTI_JUMP_BATTERYSIMULATION_NOT_PARALLEL = 0x28
-        CTI_JUMP_CHANNEL_SUSPENT = 0x29
+        CTI_JUMP_CHANNEL_SUSPENT = 0x29,
+        CTI_JUMP_ACIM_TESTING = 0x2A
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandJumpChannelFeed):
         if not isinstance(feedback, ArbinCTI.ArbinCommandJumpChannelFeed):
