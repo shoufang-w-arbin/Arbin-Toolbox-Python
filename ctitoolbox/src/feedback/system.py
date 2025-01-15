@@ -29,17 +29,21 @@ class GetMITSVersionFeedback(DictReprBase):
     
 class LoginFeedback(DictReprBase):
     class ECTIVersion(IntEnum):
-        NONE = 0
+        None_ = 0
         CTI_PRO7 = 0
         CTI_PRO8 = 1
         Pro8_2 = 2
         MitsX_1 = 0x01000001
         MitsX_2 = 0x01000002
         MitsX_3 = 0x01000003
+        MitsX_4 = 0x01000004
+        MitsX_5 = 0x01000005
+        MitsX_6 = 0x01000006
         MitsX_SPTT = 0x01001001
         Pro7_MVUD = 0x02000001
         TY_Pro7_2 = 0x02000002
         TY_Pro7_3 = 0x02000003
+        TY_Pro7_4 = 0x02000004
         TY_Pro8_1 = 0x04000001
         TY_Pro8_2 = 0x04000002
         TY_Pro8_SPTT = 0x04001001
