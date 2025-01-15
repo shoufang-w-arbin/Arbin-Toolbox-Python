@@ -267,9 +267,9 @@ class TimeSensitiveSetMVArgs:
         Raises:
             ValueError: If invalid number or types of arguments
         """
-        global_index        : int
-        mv_list  : list = field(default_factory=list)
-        log                 : bool = True
+        global_index : int
+        mv_list      : list = field(default_factory=list)
+        log          : bool = True
 
         def to_cs(self) -> ArbinCTI.TimeSensitiveSetMVArgs.TimeSensitiveSetMVChannel: 
             try:
