@@ -54,6 +54,7 @@ class AssignFileFeedback(DictReprBase):
         FileKindCount = 7
 
         def to_cs(self) -> ArbinCTI.ArbinCommandAssignFileFeed.EFileKind:
+            """Convert to C# ArbinCommandAssignFileFeed.EFileKind"""
             return ArbinCTI.ArbinCommandAssignFileFeed.EFileKind(self.value)
 
     class EAssignToken(IntEnum):
