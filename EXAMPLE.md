@@ -14,13 +14,15 @@ Pythonnet doesn't handle casting between Python and C# data types perfectly. Exp
 |-------------|-------------------|----------|------------------------|------------------|
 | `bool`      | `Boolean`         | `bool`   | Yes                    | Yes              |
 | `int`       | `Int32`           | `int`    | Yes                    | Yes              |
+| `int`       | `UInt32`          | `uint`   | Yes                    | Yes              |
 | `float`     | `Single`          | `float`  | Yes                    | Yes              |
 | `float`     | `Double`          | `double` | Yes                    | Yes              |
 | `str`       | `String`          | `string` | Yes                    | Yes              |
 |-|-|-|-|-|
 | `bytearray` | `Array` of `Byte` | `byte[]` | **No**                 | Yes              |
+| `int`       | `Int16`           | `short`  | **No**                 | Yes              |
 | `int`       | `UInt16`          | `ushort` | **No**                 | Yes              |
-| `int`       | `UInt32`          | `uint`   | **No**                 | Yes              |
+
 
 #### Safe Implicit Casting Examples
 ```python
