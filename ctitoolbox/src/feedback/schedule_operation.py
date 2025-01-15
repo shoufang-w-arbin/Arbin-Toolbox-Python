@@ -67,12 +67,12 @@ class AssignFileFeedback(DictReprBase):
         self.reason              = str(feedback.Reason)
 
     def _unpack_channel_result(self, cs_dict):
-        python_dict = dict()
+        _python_dict = dict()
         for pair in cs_dict:
             token              = AssignFileFeedback.EAssignToken(int(pair.Key))
             channels           = list(pair.Value)
-            python_dict[token] = channels
-        return python_dict
+            _python_dict[token] = channels
+        return _python_dict
     
     def to_dict(self):
         _channel_list_result = dict()
