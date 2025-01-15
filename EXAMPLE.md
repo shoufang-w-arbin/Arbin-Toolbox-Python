@@ -105,9 +105,9 @@ Creating **ArbinCTI general objects** is straightforward. First, create a Python
 from ctitoolbox import MetaVariableInfo, TE_DATA_TYPE
 
 info = MetaVariableInfo(
-    channel_index=0,
-    mv_meta_code=0,
-    mv_data_type=TE_DATA_TYPE.MP_DATA_TYPE_MetaValue
+    channel_index = 0,
+    mv_meta_code  = 0,
+    mv_data_type  =TE_DATA_TYPE.MP_DATA_TYPE_MetaValue
 )
 
 info_cs = info.to_cs()  # Now it is a C# 'MetaVariableInfo' instance
