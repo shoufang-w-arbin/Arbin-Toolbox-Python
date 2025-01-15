@@ -159,3 +159,32 @@ class TestFileManagementFeedbackClasses(unittest.TestCase):
             with self.subTest(kind=kind):
                 cs_kind = kind.to_cs()
                 self.assertEqual(cs_kind, ArbinCTI.ArbinCommandNewOrDeleteFeed.NEW_OR_DELETE_TYPE(kind.value))
+
+    def test_to_async_callback(self):
+        def mock_callback(result):
+            self.assertIsInstance(result, ArbinCTI.ArbinCommandUpLoadFileFeed.CUpLoadFileResult)
+            self.assertEqual(result.ResultCode, ArbinCTI.ArbinCommandUpLoadFileFeed.UPLOAD_RESULT.CTI_UPLOAD_SUCCESS)
+            self.assertFalse(result.IsCancelUploadFile)
+            self.assertEqual(result.ProgressRate, 100.0)
+
+        # Valid callback
+        async_callback = UploadFileFeedback.UploadFileResult.to_async_callback(mock_callback)
+        self.assertIsInstance(async_callback, ArbinCTI.ArbinCommandUpLoadFileFeed.CUpLoadFileResult.AsyncCallback)
+
+        # Simulate C# callback execution
+        cs_result = ArbinCTI.ArbinCommandUpLoadFileFeed.CUpLoadFileResult()
+        cs_result.ResultCode = ArbinCTI.ArbinCommandUpLoadFileFeed.UPLOAD_RESULT.CTI_UPLOAD_SUCCESS
+        cs_result.IsCancelUploadFile = False
+        cs_result.ProgressRate = 100.0
+        async_callback(cs_result)
+
+        # Invalid callback: not callable
+        with self.assertRaises(TypeError):
+            UploadFileFeedback.UploadFileResult.to_async_callback("not a callable")
+
+        # Invalid callback: wrong argument count
+        def invalid_callback():
+            pass
+
+        with self.assertRaises(ValueError):
+            UploadFileFeedback.UploadFileResult.to_async_callback(invalid_callback)

@@ -372,12 +372,12 @@ class GetChannelDataFeedback(DictReprBase):
             self.acr                    = float(info.ACR)
             self.aci                    = float(info.ACI)
             self.aci_phase              = float(info.ACIPhase)
-            self.can_data  = [GetChannelDataFeedback.CANMonitorInfo(item) for item in info.CANs] if info.CANs is not None else [] # default to null
-            self.smb_data  = [GetChannelDataFeedback.SMBMonitorInfo(item) for item in info.SMBs] if info.SMBs is not None else [] # default to null
+            self.can_data  = [GetChannelDataFeedback.CANMonitorInfo(item) for item in info.CANs] if info.CANs else [] # default to 'null' in C#
+            self.smb_data  = [GetChannelDataFeedback.SMBMonitorInfo(item) for item in info.SMBs] if info.SMBs else [] # default to 'null' in C#
             self.eq_data   = [GetChannelDataFeedback.CTISPTTEQData(item) for item in info.EQDatas]
             self.cell_data = [GetChannelDataFeedback.CTISPTTCellData(item) for item in info.CellDatas]
             self.aux_data  = [
-                [GetChannelDataFeedback.AuxMonitorData(item) for item in aux_list] if aux_list is not None else []
+                [GetChannelDataFeedback.AuxMonitorData(item) for item in aux_list] if aux_list else []
                 for aux_list in info.AuxeDatas
             ]
             

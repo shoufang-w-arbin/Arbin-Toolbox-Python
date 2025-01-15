@@ -37,7 +37,7 @@ class UploadFileFeedback(DictReprBase):
             if not callable(upload_file_result_callback):
                 raise TypeError("'upload_file_result_callback' must be callable")
             if upload_file_result_callback.__code__.co_argcount != 1:
-                raise ValueError("'upload_file_result_callback' must accept one argument, where an C# ArbinCommandUpLoadFileFeed.CUpLoadFileResult will be passed")
+                raise ValueError("'upload_file_result_callback' must accept one argument, which will be an instance of 'ArbinCTI.ArbinCommandUpLoadFileFeed.CUpLoadFileResult'")
             return ArbinCTI.ArbinCommandUpLoadFileFeed.CUpLoadFileResult.AsyncCallback(upload_file_result_callback)
         
         def __init__(self, upload_file_result: ArbinCTI.ArbinCommandUpLoadFileFeed.CUpLoadFileResult):
@@ -92,7 +92,7 @@ class BrowseDirectoryFeedback(DictReprBase):
         if not isinstance(feedback, ArbinCTI.ArbinCommandBrowseDirectoryFeed):
             raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandBrowseDirectoryFeed', got '{type(feedback)}'")
         self.result         = BrowseDirectoryFeedback.EResult(int(feedback.Result))
-        self.dir_file_info  = [BrowseDirectoryFeedback.DirFileInfo(info) for info in feedback.DirFileInfoList]
+        self.dir_file_info  = [BrowseDirectoryFeedback.DirFileInfo(info) for info in feedback.DirFileInfoList] if feedback.DirFileInfoList else [] # default to 'null' in C#
     
 class CheckFileExistFeedback(DictReprBase):
     def __init__(self, feedback: ArbinCTI.ArbinCommandCheckFileExFeed):
