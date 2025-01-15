@@ -58,12 +58,12 @@ class TestFeedbackClasses(unittest.TestCase):
     def test_JumpChannelFeedback_instantiation(self):
         cs_instance = ArbinCTI.ArbinCommandJumpChannelFeed()
         cs_instance.Result = ArbinCTI.ArbinCommandJumpChannelFeed.JUMP_TOKEN.CTI_JUMP_SCHEDULE_VALID
-        cs_instance.ErrorChannelIndex = 5
+        cs_instance.errorChannel = 5
 
         feedback_instance = JumpChannelFeedback(cs_instance)
         
         self.assertEqual(feedback_instance.result, JumpChannelFeedback.EJumpToken.CTI_JUMP_SCHEDULE_VALID)
-        self.assertEqual(feedback_instance.error_channel_index, 5)
+        self.assertEqual(feedback_instance.error_channel, 5)
         
         if UNITTEST_VIEW_DICT:
             print("JumpChannelFeedback:", feedback_instance.to_dict())
@@ -221,8 +221,8 @@ class TestFeedbackClasses(unittest.TestCase):
         channel_info_instance.CellDatas = cell_list_instance
 
         cs_instance = ArbinCTI.ArbinCommandGetChannelDataFeed()
-        cs_instance.m_ChannelInfo = List[ArbinCTI.ArbinCommandGetChannelDataFeed.ChannelInfo]()
-        cs_instance.m_ChannelInfo.Add(channel_info_instance)
+        cs_instance.m_Channels = List[ArbinCTI.ArbinCommandGetChannelDataFeed.ChannelInfo]()
+        cs_instance.m_Channels.Add(channel_info_instance)
 
         feedback_instance = GetChannelDataFeedback(cs_instance)
 

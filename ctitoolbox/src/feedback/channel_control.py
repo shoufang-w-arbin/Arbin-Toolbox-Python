@@ -134,8 +134,8 @@ class JumpChannelFeedback(DictReprBase):
     def __init__(self, feedback: ArbinCTI.ArbinCommandJumpChannelFeed):
         if not isinstance(feedback, ArbinCTI.ArbinCommandJumpChannelFeed):
             raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandJumpChannelFeed', got '{type(feedback)}'")
-        self.result                 = JumpChannelFeedback.EJumpToken(int(feedback.Result))
-        self.error_channel_index    = int(feedback.ErrorChannelIndex)
+        self.result        = JumpChannelFeedback.EJumpToken(int(feedback.Result))
+        self.error_channel = int(feedback.errorChannel)
 
 class ContinueChannelFeedback(DictReprBase):
     class EContinueToken(IntEnum):
@@ -219,7 +219,7 @@ class GetChannelDataFeedback(DictReprBase):
     class AuxData(DictReprBase):
         def __init__(self, data: ArbinCTI.ArbinCommandGetChannelDataFeed.AuxData):
             self.value    = float(data.Value)
-            self.value_dt = float(data.DTValue)
+            self.value_dt = float(data.dtValue)
 
     class CANInfo(DictReprBase):
         def __init__(self, data: ArbinCTI.ArbinCommandGetChannelDataFeed.CANInfo):
@@ -392,7 +392,7 @@ class GetChannelDataFeedback(DictReprBase):
         if not isinstance(feedback, ArbinCTI.ArbinCommandGetChannelDataFeed):
             raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetChannelDataFeed', got '{type(feedback)}'")
         
-        self.channel_data = [GetChannelDataFeedback.ChannelInfo(info) for info in feedback.m_ChannelInfo]
+        self.channel_data = [GetChannelDataFeedback.ChannelInfo(info) for info in feedback.m_Channels]
 
 class GetResumeDataFeedback(DictReprBase):
     class EResult(IntEnum):
