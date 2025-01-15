@@ -100,7 +100,7 @@ control.PostStartChannelEx(client, resumeEx_list, "-", "-")
 All supported ArbinCTI general objects have a `to_cs` method, which allows `CSTypeConverter.to_list` to convert them without requiring a data type flag (`EDataType`). This simplifies the conversion process for these objects when creating C# Lists.
 
 ## ArbinCTI Object Creation
-Creating ArbinCTI general objects is straightforward. First, create a Python wrapper object defined in `ctitoolbox`. Then, convert the object to the required C# instance by calling `to_cs`:
+Creating **ArbinCTI general objects** is straightforward. First, create a Python wrapper object defined in `ctitoolbox`. Then, convert the object to the required C# instance by calling `to_cs`:
 ```python
 from ctitoolbox import MetaVariableInfo, TE_DATA_TYPE
 
@@ -113,7 +113,7 @@ info = MetaVariableInfo(
 info_cs = info.to_cs()  # Now it is a C# 'MetaVariableInfo' instance
 ```
 
-In addition to general objects, certain C# Enum types required when sending ArbinCTI commands are also supported and can be accessed using `to_cs`. For example:
+In addition to general objects, certain **C# Enum types** required when sending ArbinCTI commands are also supported and can be accessed using `to_cs`. For example:
 ```python
 from ctitoolbox import NewOrDeleteFeedback
 
