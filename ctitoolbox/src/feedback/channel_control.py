@@ -164,6 +164,10 @@ class GetChannelDataFeedback(DictReprBase):
         ALLCHANNEL = 1
         RUNNING = 2
         UNSAFE = 3
+
+        def to_cs(self) -> ArbinCTI.ArbinCommandGetChannelDataFeed.GET_CHANNEL_TYPE:
+            """Convert to C# ArbinCommandGetChannelDataFeed.GET_CHANNEL_TYPE"""
+            return ArbinCTI.ArbinCommandGetChannelDataFeed.GET_CHANNEL_TYPE(self.value)
     
     class EChannelStatus(IntEnum):
         Idle = 0
