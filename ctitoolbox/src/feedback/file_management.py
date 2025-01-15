@@ -147,7 +147,7 @@ class NewOrDeleteFeedback(DictReprBase):
         CTI_DELETE_FAILED_TEXT_RUNNING = 7
         CTI_DELETE_FAILED_EXIST = 8
 
-    class ENewOrDelete(IntEnum):
+    class ENewOrDeleteType(IntEnum):
         CTI_NEW = 0
         CTI_DELETE = 1
 

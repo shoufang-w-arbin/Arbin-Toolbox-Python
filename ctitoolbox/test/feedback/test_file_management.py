@@ -155,7 +155,7 @@ class TestFileManagementFeedbackClasses(unittest.TestCase):
             print("NewOrDeleteFeedback:", feedback_instance.to_dict())
 
     def test_AssignFileFeedback_EFileKind_to_cs(self):
-        for kind in NewOrDeleteFeedback.ENewOrDelete:
+        for kind in NewOrDeleteFeedback.ENewOrDeleteType:
             with self.subTest(kind=kind):
                 cs_kind = kind.to_cs()
                 self.assertEqual(cs_kind, ArbinCTI.ArbinCommandNewOrDeleteFeed.NEW_OR_DELETE_TYPE(kind.value))
