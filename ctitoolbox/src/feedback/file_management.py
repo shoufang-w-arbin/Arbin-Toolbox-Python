@@ -31,7 +31,18 @@ class UploadFileFeedback(DictReprBase):
         CTI_UPLOAD_IN_PROGRESS = 11
 
     class UploadFileResult(DictReprBase):
-        def __init__(self, upload_file_result: ArbinCTI.ArbinCommandUpLoadFileFeed.CUpLoadFileResult):  
+        @classmethod
+        def to_async_callback(cls, upload_file_result_callback: callable) -> ArbinCTI.ArbinCommandUpLoadFileFeed.CUpLoadFileResult.AsyncCallback:
+            """Converts a Python callback to a C# AsyncCallback for 'PostUpLoadFile' command"""
+            if not callable(upload_file_result_callback):
+                raise TypeError("'upload_file_result_callback' must be callable")
+            if upload_file_result_callback.__code__.co_argcount != 1:
+                raise ValueError("'upload_file_result_callback' must accept one argument, where an C# ArbinCommandUpLoadFileFeed.CUpLoadFileResult will be passed")
+            return ArbinCTI.ArbinCommandUpLoadFileFeed.CUpLoadFileResult.AsyncCallback(upload_file_result_callback)
+        
+        def __init__(self, upload_file_result: ArbinCTI.ArbinCommandUpLoadFileFeed.CUpLoadFileResult):
+            if not isinstance(upload_file_result, ArbinCTI.ArbinCommandUpLoadFileFeed.CUpLoadFileResult):
+                raise TypeError(f"'upload_file_result' must be an instance of 'ArbinCTI.Core.ArbinCommandUpLoadFileFeed.CUpLoadFileResult', got '{type(upload_file_result)}'")
             self.result_code    = UploadFileFeedback.EResult(int(upload_file_result.ResultCode))
             self.canceled       = bool(upload_file_result.IsCancelUploadFile)
             self.progress_rate  = float(upload_file_result.ProgressRate)
@@ -139,6 +150,10 @@ class NewOrDeleteFeedback(DictReprBase):
     class ENewOrDelete(IntEnum):
         CTI_NEW = 0
         CTI_DELETE = 1
+
+        def to_cs(self) -> ArbinCTI.ArbinCommandNewOrDeleteFeed.NEW_OR_DELETE_TYPE:
+            """Convert to C# ArbinCommandNewOrDeleteFeed.NEW_OR_DELETE_TYPE"""
+            return ArbinCTI.ArbinCommandNewOrDeleteFeed.NEW_OR_DELETE_TYPE(self.value)
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandNewOrDeleteFeed):
         if not isinstance(feedback, ArbinCTI.ArbinCommandNewOrDeleteFeed):
