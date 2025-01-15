@@ -105,12 +105,23 @@ Creating ArbinCTI general objects is straightforward. First, create a Python wra
 from ctitoolbox import MetaVariableInfo, TE_DATA_TYPE
 
 info = MetaVariableInfo(
-  channel_index = 0,
-  mv_meta_code  = 0,
-  mv_data_type  = TE_DATA_TYPE.MP_DATA_TYPE_MetaValue
+    channel_index=0,
+    mv_meta_code=0,
+    mv_data_type=TE_DATA_TYPE.MP_DATA_TYPE_MetaValue
 )
 
 info_cs = info.to_cs()  # Now it is a C# 'MetaVariableInfo' instance
+```
+
+In addition to general objects, certain C# Enum types required when sending ArbinCTI commands are also supported and can be accessed using `to_cs`. For example:
+```python
+from ctitoolbox import NewOrDeleteFeedback
+
+control.PostNewOrDelete(
+    client, 
+    "file_path", 
+    NewOrDeleteFeedback.ENewOrDeleteType.CTI_NEW.to_cs()
+)
 ```
 
 ## ArbinCTI Feedback Accessing
