@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ctitoolbox"
-version = "0.2.5"
+version = "0.2.6"
 license = { file = "LICENSE.txt" }
 authors = [{name="Shou-Fang Wu", email="shoufang.w@arbin.com" },]
 description = "A toolbox that provides a smoother and more Pythonic programming experience for users who want to use ArbinCTI in Python"
