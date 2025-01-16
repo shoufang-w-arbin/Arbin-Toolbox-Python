@@ -372,10 +372,16 @@ class GetChannelDataFeedback(DictReprBase):
             self.acr                    = float(info.ACR)
             self.aci                    = float(info.ACI)
             self.aci_phase              = float(info.ACIPhase)
-            self.can_data  = [GetChannelDataFeedback.CANMonitorInfo(item) for item in info.CANs] if info.CANs else [] # default to 'null' in C#
-            self.smb_data  = [GetChannelDataFeedback.SMBMonitorInfo(item) for item in info.SMBs] if info.SMBs else [] # default to 'null' in C#
             self.eq_data   = [GetChannelDataFeedback.CTISPTTEQData(item) for item in info.EQDatas]
             self.cell_data = [GetChannelDataFeedback.CTISPTTCellData(item) for item in info.CellDatas]
+            self.cans      = [GetChannelDataFeedback.CANInfo(item) for item in info.CAN] if info.CAN else []            # default to 'null' in C#
+            self.can_data  = [GetChannelDataFeedback.CANMonitorInfo(item) for item in info.CANs] if info.CANs else []   # default to 'null' in C#
+            self.smbs      = [GetChannelDataFeedback.SMBInfo(item) for item in info.SMB] if info.SMB else []            # default to 'null' in C#
+            self.smb_data  = [GetChannelDataFeedback.SMBMonitorInfo(item) for item in info.SMBs] if info.SMBs else []   # default to 'null' in C#
+            self.auxs  = [
+                [GetChannelDataFeedback.AuxData(item) for item in aux_list] if aux_list else []
+                for aux_list in info.Auxs
+            ]
             self.aux_data  = [
                 [GetChannelDataFeedback.AuxMonitorData(item) for item in aux_list] if aux_list else []
                 for aux_list in info.AuxeDatas
@@ -384,10 +390,13 @@ class GetChannelDataFeedback(DictReprBase):
         def to_dict(self):
             data = copy.deepcopy(self.__dict__)
             data['status']      = self.status.name
+            data['cans']        = [can.to_dict() for can in self.cans]
             data['can_data']    = [can.to_dict() for can in self.can_data]
+            data['smbs']        = [smb.to_dict() for smb in self.smbs]
             data['smb_data']    = [smb.to_dict() for smb in self.smb_data]
             data['eq_data']     = [eq.to_dict() for eq in self.eq_data]
             data['cell_data']   = [cell.to_dict() for cell in self.cell_data]
+            data['auxs']        = [[aux.to_dict() for aux in aux_list] for aux_list in self.auxs]
             data['aux_data']    = [[aux.to_dict() for aux in aux_list] for aux_list in self.aux_data]
             return data
 
