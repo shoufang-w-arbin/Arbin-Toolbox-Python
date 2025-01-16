@@ -18,7 +18,7 @@ Test Control
 """""""""""""""""""""""""""
 class StartChannelFeedback(DictReprBase):
     class EStartToken(IntEnum):
-        CTI_START_SUCCESS = 1
+        CTI_START_SUCCESS = 0
         CTI_START_INDEX = 0x10
         CTI_START_ERROR = 0x11
         CTI_START_CHANNEL_RUNNING = 0x12
