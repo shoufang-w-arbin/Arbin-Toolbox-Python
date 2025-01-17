@@ -36,30 +36,22 @@ control.PostResumeChannel(client, True, 0)
 ### Handling TypeError
 Some operations may lead to `TypeError` if not properly cast. For example:
 ```python
-# bool PostUpLoadFile(IArbinSocket socket, string strPath, byte[] FileData, double time, uint uGeneralPackage, uint PackageIndex)
-control.PostUpLoadFile(
-    client, 
-    "path",         # -
-    b'filedata',    # 'bytearray' -> 'byte[]'
-    0.0,            # -
-    1,              # 'int' -> 'uint'          
-    0               # 'int' -> 'uint'        
+# bool PostGetChannelsDataMminimalistMode(IArbinSocket socket, short onlyGetChannelNumber = -1)
+control.PostGetChannelsDataMminimalistMode(
+    client,
+    0        # 'int' -> 'short'
 ) 
 ```
 This code will raise a TypeError with a message similar to:
 ```
-TypeError: No method matches given arguments for PostUpLoadFile: ...
+TypeError: No method matches given arguments for PostGetChannelsDataMminimalistMode: ...
 ```
 
 To resolve this issue, use explicit casting. Here's an example using the CSTypeConverter:
 ```python
-control.PostUpLoadFile(
-    client, 
-    "path",     
-    CSTypeConverter.to_cs_byte_array(b'filedata'),  
-    0.0,        
-    CSTypeConverter.to_uint(1),
-    CSTypeConverter.to_uint(0) 
+control.PostGetChannelsDataMminimalistMode(
+    client,   
+    CSTypeConverter.to_short(0)
 ) 
 ```
 By applying these explicit casts, you can ensure proper data type compatibility between Python and C# when using ArbinCTI.
