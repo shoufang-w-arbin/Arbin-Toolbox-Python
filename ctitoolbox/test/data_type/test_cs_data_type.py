@@ -153,7 +153,23 @@ class TestCSTypeConverter(unittest.TestCase):
             self.assertEqual(cs_list[i], int(item))
 
     def test_to_cs_sorted_dict(self):
-        # Test with valid input
+        # Test update parameter feedback
+        from ctitoolbox.src.feedback.schedule_operation import UpdateParameterFeedback
+        python_list = [
+            (UpdateParameterFeedback.EParameterDataType.NormCapacity, "value1"),
+            (UpdateParameterFeedback.EParameterDataType.IMax, "value2"),
+        ]
+        cs_dict = CSTypeConverter.to_cs_sorted_dict(
+            python_list,
+            CSTypeConverter.EDataType.USHORT,
+            CSTypeConverter.EDataType.STRING
+        )
+        self.assertIsInstance(cs_dict, SortedDictionary[UInt16, String])
+        self.assertEqual(len(cs_dict), len(python_list))
+        for key, value in python_list:
+            self.assertEqual(cs_dict[key], String(value))
+
+        # Test general case
         python_list = [(1, "one"), (2, "two"), (3, "three")]
         cs_dict = CSTypeConverter.to_cs_sorted_dict(python_list, CSTypeConverter.EDataType.INT, CSTypeConverter.EDataType.STRING)
         self.assertIsInstance(cs_dict, SortedDictionary[Int32, String])
