@@ -227,13 +227,13 @@ class GetChannelDataFeedback(DictReprBase):
 
     class CANInfo(DictReprBase):
         def __init__(self, data: ArbinCTI.ArbinCommandGetChannelDataFeed.CANInfo):
-            self.index = int(data.nIndex)
+            self.idx   = int(data.nIndex)
             self.value = float(data.Value)
             self.unit  = str(data.Unit)
 
     class SMBInfo(DictReprBase):
         def __init__(self, data: ArbinCTI.ArbinCommandGetChannelDataFeed.SMBInfo):
-            self.index = int(data.nIndex)
+            self.idx   = int(data.nIndex)
             self.type  = int(data.nType)
             self.unit  = str(data.Unit)
             self.value = data.Value  # Keeping this generic as 'object'
@@ -374,30 +374,30 @@ class GetChannelDataFeedback(DictReprBase):
             self.aci_phase              = float(info.ACIPhase)
             self.eq_data   = [GetChannelDataFeedback.CTISPTTEQData(item) for item in info.EQDatas]
             self.cell_data = [GetChannelDataFeedback.CTISPTTCellData(item) for item in info.CellDatas]
-            self.cans      = [GetChannelDataFeedback.CANInfo(item) for item in info.CAN] if info.CAN else []            # default to 'null' in C#
-            self.can_data  = [GetChannelDataFeedback.CANMonitorInfo(item) for item in info.CANs] if info.CANs else []   # default to 'null' in C#
-            self.smbs      = [GetChannelDataFeedback.SMBInfo(item) for item in info.SMB] if info.SMB else []            # default to 'null' in C#
-            self.smb_data  = [GetChannelDataFeedback.SMBMonitorInfo(item) for item in info.SMBs] if info.SMBs else []   # default to 'null' in C#
+            self.can       = [GetChannelDataFeedback.CANInfo(item) for item in info.CAN] if info.CAN else []            # default to 'null' in C#
+            self.smb       = [GetChannelDataFeedback.SMBInfo(item) for item in info.SMB] if info.SMB else []            # default to 'null' in C#
             self.auxs  = [
-                [GetChannelDataFeedback.AuxData(item) for item in aux_list] if aux_list else []
-                for aux_list in info.Auxs
+                [GetChannelDataFeedback.AuxData(aux) for aux in aux_type] if aux_type else []
+                for aux_type in info.Auxs
             ]
-            self.aux_data  = [
-                [GetChannelDataFeedback.AuxMonitorData(item) for item in aux_list] if aux_list else []
-                for aux_list in info.AuxeDatas
-            ]
+            # self.can_data  = [GetChannelDataFeedback.CANMonitorInfo(item) for item in info.CANs] if info.CANs else []   # default to 'null' in C#
+            # self.smb_data  = [GetChannelDataFeedback.SMBMonitorInfo(item) for item in info.SMBs] if info.SMBs else []   # default to 'null' in C#
+            # self.aux_data  = [
+            #     [GetChannelDataFeedback.AuxMonitorData(item) for item in aux_list] if aux_list else []
+            #     for aux_list in info.AuxeDatas
+            # ]
             
         def to_dict(self):
             data = copy.deepcopy(self.__dict__)
             data['status']      = self.status.name
-            data['cans']        = [can.to_dict() for can in self.cans]
-            data['can_data']    = [can.to_dict() for can in self.can_data]
-            data['smbs']        = [smb.to_dict() for smb in self.smbs]
-            data['smb_data']    = [smb.to_dict() for smb in self.smb_data]
+            data['cans']        = [can.to_dict() for can in self.can]
+            data['smbs']        = [smb.to_dict() for smb in self.smb]
             data['eq_data']     = [eq.to_dict() for eq in self.eq_data]
             data['cell_data']   = [cell.to_dict() for cell in self.cell_data]
             data['auxs']        = [[aux.to_dict() for aux in aux_list] for aux_list in self.auxs]
-            data['aux_data']    = [[aux.to_dict() for aux in aux_list] for aux_list in self.aux_data]
+            # data['can_data']    = [can.to_dict() for can in self.can_data]
+            # data['smb_data']    = [smb.to_dict() for smb in self.smb_data]
+            # data['aux_data']    = [[aux.to_dict() for aux in aux_list] for aux_list in self.aux_data]
             return data
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandGetChannelDataFeed):
