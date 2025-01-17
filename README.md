@@ -13,96 +13,9 @@
 Wrappers of C# objects built on top of Pythonnet, providing a smoother and more Pythonic programming experience for users who want to use ArbinCTI in Python.
 
 ### Background
-When calling `public bool PostTimeSensitiveSetMV(IArbinSocket socket, TimeSensitiveSetMVArgs args)`, creating a `TimeSensitiveSetMVArgs` object in Python without the toolbox can be quite cumbersome. Here's an example:
+When calling `public bool PostTimeSensitiveSetMV(IArbinSocket socket, TimeSensitiveSetMVArgs args)`, creating a `TimeSensitiveSetMVArgs` object in Python without the toolbox can be quite cumbersome:
 
-<table>
-<thead>
-<tr>
-<th>Without Toolbox</th>
-<th>With Toolbox</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="vertical-align: top;">
-
-```python
-import clr
-clr.AddReference("ArbinCTI")
-
-from System.Collections.Generic import List
-from ArbinCTI.Core import (
-    TimeSensitiveSetMVArgs, 
-    TimeSensitiveSetMV
-)
-
-mv1 = TimeSensitiveSetMV()
-mv1.MVUD  = TimeSensitiveSetMV.EMVUD.MVUD1
-mv1.Value = 12.3
-
-mv2 = TimeSensitiveSetMV()
-mv2.MVUD  = TimeSensitiveSetMV.EMVUD.MVUD2
-mv2.Value = 5.46
-
-mv_list = List[TimeSensitiveSetMV]()
-mv_list.Add(mv1)
-mv_list.Add(mv2)
-
-mv_channel1 = TimeSensitiveSetMVArgs.TimeSensitiveSetMVChannel(
-    1,
-    mv_list, 
-    True
-)
-
-mv_args = TimeSensitiveSetMVArgs()
-mv_args.Timeout = 5.0
-mv_args.Channels.Add(mv_channel1)
-
-control.PostTimeSensitiveSetMV(client, mv_args)
-```
-
-</td>
-<td style="vertical-align: top;">
-
-```python
-‎ 
-
-
-
-from ctitoolbox import (
-    TimeSensitiveSetMVArgs,
-    TimeSensitiveSetMV
-)
-
-mv1 = TimeSensitiveSetMV(TimeSensitiveSetMV.EMVUD.MVUD1, 12.3)
-mv2 = TimeSensitiveSetMV(TimeSensitiveSetMV.EMVUD.MVUD2, 4.56)
-
-
-
-
-
-
-
-
-
-
-mv_channel1 = TimeSensitiveSetMVArgs.TimeSensitiveSetMVChannel(
-    1, 
-    [mv1, mv2], 
-    True
-)
-
-mv_args = TimeSensitiveSetMVArgs(5.0, [mv_channel1])
-
-
-
-control.PostTimeSensitiveSetMV(client, mv_args.to_cs())
-```
-
-</td>
-</tr>
-</tbody>
-</table>
+![](resource/compare.png)
 
 As you can see, the toolbox provides a smoother and more Pythonic way to interact with C# objects, making your code cleaner and easier to maintain.
 
