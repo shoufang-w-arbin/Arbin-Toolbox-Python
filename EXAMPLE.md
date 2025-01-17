@@ -39,7 +39,7 @@ Some operations may lead to `TypeError` if not properly cast. For example:
 # bool PostGetChannelsDataMminimalistMode(IArbinSocket socket, short onlyGetChannelNumber = -1)
 control.PostGetChannelsDataMminimalistMode(
     client,
-    0        # 'int' -> 'short'
+    0        # py 'int' -> cs 'short'
 ) 
 ```
 This code will raise a TypeError with a message similar to:
