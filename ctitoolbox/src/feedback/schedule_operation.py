@@ -15,6 +15,7 @@ Schedule Operation
 - SetMetaVariableFeedback
 - SetMetaVariableTimeSensitiveFeedback
 - GetMetaVariableFeedback
+- UpdateParameterFeedback
 """""""""""""""""""""""""""
 class AssignScheduleFeedback(DictReprBase):
     class EAssignToken(IntEnum):
@@ -221,3 +222,43 @@ class GetMetaVariableFeedback(DictReprBase):
         if not isinstance(feedback, ArbinCTI.ArbinCommandGetMetaVariablesFeed):
             raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetMetaVariablesFeed', got '{type(feedback)}'")
         self.meta_variable_info = [GetMetaVariableFeedback.MetaVariableInfo(info) for info in feedback.MetaVariableInfos]
+
+class UpdateParameterFeedback(DictReprBase):
+    class EUpdateToken(IntEnum):
+        CTI_UPDATE_SUCCESS = 0
+        CTI_UPDATE_INDEX = 0x10
+        CTI_UPDATE_ERROR = 0x11
+        CTI_UPDATE_TESTOBJECT_NAME_EMPTY_ERROR = 0x12
+        CTI_UPDATE_TESTOBJECT_NOT_FIND_ERROR = 0x13
+        CTI_UPDATE_CHANNEL_RUNNING_ERROR = 0x14
+        CTI_UPDATE_CHANNEL_DOWNLOAD_ERROR = 0x15
+        CTI_UPDATE_BACTH_FILE_OPENED = 0x16
+        CTI_UPDATE_TO_CANNOT_ASSIGN_TESTOBJECT = 0x17
+        CTI_UPDATE_TESTOBJECT_SAVE_FAILED = 0x18
+    
+    class EParameterDataType(IntEnum):
+        NormCapacity = 0
+        IMax = 1
+        VMax = 2
+        VMin = 3
+        Mass = 4
+        SCapacity = 5
+        NIR = 6
+        NVoltage = 7
+        NCapacitance = 8
+        IsAutoCalculate = 9
+
+    def __init__(self, feedback: ArbinCTI.ArbinCommandUpdateParameterFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandUpdateParameterFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandUpdateParameterFeed', got '{type(feedback)}'")
+        self.reason          = str(feedback.Reason)
+        self.result          = UpdateParameterFeedback.EUpdateToken(int(feedback.Result))
+        self.chan_list_pairs = self._unpack_channel_list(feedback.ResultChanListPairs)
+
+    def _unpack_channel_list(self, result):
+        _python_dict = dict()
+        for pair in result:
+            token = UpdateParameterFeedback.EUpdateToken(int(pair.Key))
+            channels = list(pair.Value)
+            _python_dict[token] = channels
+        return _python_dict

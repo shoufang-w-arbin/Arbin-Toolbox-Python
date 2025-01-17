@@ -17,7 +17,8 @@ from ctitoolbox.src.feedback.schedule_operation import (
     AssignFileFeedback,
     SetMetaVariableFeedback,
     SetMetaVariableTimeSensitiveFeedback,
-    GetMetaVariableFeedback
+    GetMetaVariableFeedback,
+    UpdateParameterFeedback
 )
 
 UNITTEST_VIEW_DICT = os.getenv("UNITTEST_VIEW_DICT", False)
@@ -142,3 +143,27 @@ class TestFeedbackClasses(unittest.TestCase):
             with self.subTest(kind=kind):
                 cs_kind = kind.to_cs()
                 self.assertEqual(cs_kind, ArbinCTI.ArbinCommandAssignFileFeed.EFileKind(kind.value))
+
+    def test_UpdateParameterFeedback_instantiation(self):
+        cs_instance = ArbinCTI.ArbinCommandUpdateParameterFeed()
+        cs_instance.Result = ArbinCTI.ArbinCommandUpdateParameterFeed.UPDATE_TOKEN.CTI_UPDATE_SUCCESS
+        cs_instance.Reason = "Update successful"
+        cs_instance.ResultChanListPairs = SortedDictionary[ArbinCTI.ArbinCommandUpdateParameterFeed.UPDATE_TOKEN, List[Int32]]()
+
+        list_instance1, list_instance2 = List[Int32](), List[Int32]()
+        for i in range(1, 4):
+            list_instance1.Add(i)
+            list_instance2.Add(i + 3)
+
+        cs_instance.ResultChanListPairs.Add(ArbinCTI.ArbinCommandUpdateParameterFeed.UPDATE_TOKEN.CTI_UPDATE_SUCCESS, list_instance1)
+        cs_instance.ResultChanListPairs.Add(ArbinCTI.ArbinCommandUpdateParameterFeed.UPDATE_TOKEN.CTI_UPDATE_ERROR, list_instance2)
+
+        feedback_instance = UpdateParameterFeedback(cs_instance)
+
+        self.assertEqual(feedback_instance.result, UpdateParameterFeedback.EUpdateToken.CTI_UPDATE_SUCCESS)
+        self.assertEqual(feedback_instance.reason, "Update successful")
+        self.assertEqual(feedback_instance.chan_list_pairs[UpdateParameterFeedback.EUpdateToken.CTI_UPDATE_SUCCESS], list(list_instance1))
+        self.assertEqual(feedback_instance.chan_list_pairs[UpdateParameterFeedback.EUpdateToken.CTI_UPDATE_ERROR], list(list_instance2))
+
+        if UNITTEST_VIEW_DICT:
+            print("UpdateParameterFeedback:", feedback_instance.to_dict())

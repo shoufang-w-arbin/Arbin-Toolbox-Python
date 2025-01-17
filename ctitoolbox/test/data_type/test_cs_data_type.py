@@ -12,7 +12,7 @@ from System import ( # type: ignore
     String,
     Array
 )
-from System.Collections.Generic import List # type: ignore
+from System.Collections.Generic import List, SortedDictionary # type: ignore
 
 from ctitoolbox.src.data_type.cs_data_type import CSTypeConverter
 
@@ -151,3 +151,36 @@ class TestCSTypeConverter(unittest.TestCase):
         self.assertEqual(len(cs_list), len(python_list))
         for i, item in enumerate(python_list):
             self.assertEqual(cs_list[i], int(item))
+
+    def test_to_cs_sorted_dict(self):
+        # Test with valid input
+        python_list = [(1, "one"), (2, "two"), (3, "three")]
+        cs_dict = CSTypeConverter.to_cs_sorted_dict(python_list, CSTypeConverter.EDataType.INT, CSTypeConverter.EDataType.STRING)
+        self.assertIsInstance(cs_dict, SortedDictionary[Int32, String])
+        self.assertEqual(len(cs_dict), len(python_list))
+        for key, value in python_list:
+            self.assertEqual(cs_dict[Int32(key)], String(value))
+
+        # Test with invalid input: not a list
+        with self.assertRaises(ValueError):
+            CSTypeConverter.to_cs_sorted_dict("not a list", CSTypeConverter.EDataType.INT, CSTypeConverter.EDataType.STRING)
+
+        # Test with invalid input: list elements not tuples
+        with self.assertRaises(ValueError):
+            CSTypeConverter.to_cs_sorted_dict([1, 2, 3], CSTypeConverter.EDataType.INT, CSTypeConverter.EDataType.STRING)
+
+        # Test with invalid input: tuples not of length 2
+        with self.assertRaises(ValueError):
+            CSTypeConverter.to_cs_sorted_dict([(1, "one", "extra")], CSTypeConverter.EDataType.INT, CSTypeConverter.EDataType.STRING)
+
+        # Test with invalid key data type
+        with self.assertRaises(ValueError):
+            CSTypeConverter.to_cs_sorted_dict(python_list, "invalid type", CSTypeConverter.EDataType.STRING)
+
+        # Test with invalid value data type
+        with self.assertRaises(ValueError):
+            CSTypeConverter.to_cs_sorted_dict(python_list, CSTypeConverter.EDataType.INT, "invalid type")
+
+        # Test with invalid key-value pair conversion
+        with self.assertRaises(ValueError):
+            CSTypeConverter.to_cs_sorted_dict([(1, 2)], CSTypeConverter.EDataType.INT, CSTypeConverter.EDataType.STRING)

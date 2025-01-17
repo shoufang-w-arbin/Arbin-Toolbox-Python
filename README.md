@@ -107,8 +107,9 @@ control.PostTimeSensitiveSetMV(client, mv_args.to_cs())
 As you can see, the toolbox provides a smoother and more Pythonic way to interact with C# objects, making your code cleaner and easier to maintain.
 
 ### Additional Benefits
-- **Keyword arguments** are allowed in this toolbox, compared to using `pythonnet` directly. 
-- **Attributes are discoverable by Pylance**, reducing human error when programming. \
+- **Py-C# Data structure conversions** are backed by `CSTypeConverter` in this toolbox.
+- **Keyword arguments are allowed**, compared to using `pythonnet` directly. 
+- **Object Attributes are discoverable by Pylance**, reducing human error when programming. \
     ![](resource/pylance.png)
 
 > We are adding more wrapper classes. If you require immediate implementation of a certain CTI object, please create an issue or submit a pull request with your work.
@@ -166,6 +167,7 @@ See [EXAMPLE.md](EXAMPLE.md#arbincti-feedback-accessing) for detailed usage.
 | SetMetaVariableFeedback              | ArbinCommandSetMetaVariableFeed                   |
 | SetMetaVariableTimeSensitiveFeedback | ArbinCommandTimeSensitiveSetMVFeed                |
 | GetMetaVariableFeedback              | ArbinCommandGetMetaVariablesFeed                  |
+| UpdateParameterFeedback              | ArbinCommandUpdateParamenterFeed                  |
 | ***Channel Control***                |                                                   |
 | StartChannelFeedback                 | ArbinCommandStartChannelFeed                      |
 | StopChannelFeedback                  | ArbinCommandStopChannelFeed                       |

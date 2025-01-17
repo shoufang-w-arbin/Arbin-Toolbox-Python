@@ -1,9 +1,11 @@
 # Usage Examples
 ## About
 Here are some example how to use "pythonnet" and "ctitoolbox" in order to interact smoothly with ArbinCTI.
+
 - [Data Type Casting in Pythonnet](#data-type-casting-in-pythonnet)
   - [Handling TypeError](#handling-typeerror)
-- [C# List Conversion using `CSTypeConverter`](#c-list-conversion-using-cstypeconverter)
+- [C# `List` Conversion](#c-list-conversion)
+- [C# `SortedDictionary` Conversion](#c-sorteddictionary-conversion)
 - [ArbinCTI Object Creation](#arbincti-object-creation)
 - [ArbinCTI Feedback Accessing](#arbincti-feedback-accessing)
 
@@ -56,8 +58,9 @@ control.PostGetChannelsDataMminimalistMode(
 ```
 By applying these explicit casts, you can ensure proper data type compatibility between Python and C# when using ArbinCTI.
 
-## C# List Conversion using `CSTypeConverter`
-This section explains how to create C# List instances from Python data using the CSTypeConverter class.
+## C# `List` Conversion
+This section explains how to create C# `List` instances from Python data using the `CSTypeConverter` class.
+
 ### Basic Data Types
 To create a C# List instance of basic data types:
 ```python
@@ -67,6 +70,7 @@ ushort_list = CSTypeConverter.to_list([1, 2, 3], CSTypeConverter.EDataType.USHOR
 # Create a C# 'List<string>' instance containing items ["a", "b", "c"]
 string_list = CSTypeConverter.to_list(["a", "b", "c"], CSTypeConverter.EDataType.STRING)
 ```
+
 ### ArbinCTI General Objects
 For creating a C# List of supported [ArbinCTI general objects](README.md#general-objects), use the following approach:
 ```python
@@ -91,6 +95,32 @@ control.PostStartChannelEx(client, resumeEx_list, "-", "-")
 ```
 All supported ArbinCTI general objects have a `to_cs` method, which allows `CSTypeConverter.to_list` to convert them without requiring a data type flag (`EDataType`). This simplifies the conversion process for these objects when creating C# Lists.
 
+## C# `SortedDictionary` Conversion
+This section explains how to create C# `SortedDictionary` instances from Python data using the `CSTypeConverter` class, specifically for the `PostUpdateParameters` method in ArbinCTI.
+
+### Example
+
+```python
+from ctitoolbox import CSTypeConverter
+from ctitoolbox.UpdateParameterFeedback import EParameterDataType
+
+# Create a list of key-value pairs. Ensure that the list consists of tuples, each of size 2.
+obj_list = [
+    (EParameterDataType.NormCapacity, 1.2), 
+    (EParameterDataType.IMax, 2.3), 
+    (EParameterDataType.VMin, 4.5)
+]
+
+# Convert to C# SortedDictionary<ushort, double>
+sorted_dict = CSTypeConverter.to_cs_sorted_dict(obj_list, CSTypeConverter.EDataType.USHORT, CSTypeConverter.EDataType.DOUBLE)
+
+# Use the sorted dictionary in a method
+control.PostUpdateParameters(client, _, _, sorted_dict)
+```
+
+This method ensures that the key-value pairs are properly converted to the specified C# data types, allowing seamless integration with ArbinCTI methods that require `SortedDictionary` instances.
+
+
 ## ArbinCTI Object Creation
 Creating **ArbinCTI general objects** is straightforward. First, create a Python wrapper object defined in `ctitoolbox`. Then, convert the object to the required C# instance by calling `to_cs`:
 ```python
@@ -99,7 +129,7 @@ from ctitoolbox import MetaVariableInfo, TE_DATA_TYPE
 info = MetaVariableInfo(
     channel_index = 0,
     mv_meta_code  = 0,
-    mv_data_type  =TE_DATA_TYPE.MP_DATA_TYPE_MetaValue
+    mv_data_type  = TE_DATA_TYPE.MP_DATA_TYPE_MetaValue
 )
 
 info_cs = info.to_cs()  # Now it is a C# 'MetaVariableInfo' instance
