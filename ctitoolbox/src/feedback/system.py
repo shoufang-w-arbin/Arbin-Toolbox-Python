@@ -1,8 +1,10 @@
-from enum import IntEnum
-
 import ArbinCTI.Core as ArbinCTI # type: ignore
 
-from ctitoolbox.src.base import DictReprBase
+from ctitoolbox.src.base import (
+    DictReprBase,
+    SafeIntEnumBase
+)
+
 """""""""""""""""""""""""""
 System & Connection
 - GetSerailNumberFeedback
@@ -11,7 +13,7 @@ System & Connection
 - LogicConnectFeedback
 """""""""""""""""""""""""""
 class GetSerailNumberFeedback(DictReprBase):
-    class EAssignToken(IntEnum):
+    class EAssignToken(SafeIntEnumBase):
         CTI_GET_SERIAL_SUCCESS = 0,
         CTI_ASSIGN_ERROR = 0x10,
 
@@ -28,7 +30,7 @@ class GetMITSVersionFeedback(DictReprBase):
         self.version = str(feedback.ServerVersionNumber)
     
 class LoginFeedback(DictReprBase):
-    class ECTIVersion(IntEnum):
+    class ECTIVersion(SafeIntEnumBase):
         None_ = 0
         CTI_PRO7 = 0
         CTI_PRO8 = 1
@@ -50,7 +52,7 @@ class LoginFeedback(DictReprBase):
         TY_Pro8_SPTT = 0x04001001
         ZY_Pro8_GX = 0x08000001
 
-    class ELoginResult(IntEnum):
+    class ELoginResult(SafeIntEnumBase):
         CTI_LOGIN_SUCCESS = 1
         CTI_LOGIN_FAILED = 2
         CTI_LOGIN_BEFORE_SUCCESS = 3

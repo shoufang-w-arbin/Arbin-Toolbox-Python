@@ -1,9 +1,11 @@
-from enum import IntEnum
 import copy
 
 import ArbinCTI.Core as ArbinCTI # type: ignore
 
-from ctitoolbox.src.base import DictReprBase
+from ctitoolbox.src.base import (
+    DictReprBase,
+    SafeIntEnumBase
+)
 
 """""""""""""""""""""""""""
 Test Control
@@ -17,7 +19,7 @@ Test Control
 - GetStartDataFeedback
 """""""""""""""""""""""""""
 class StartChannelFeedback(DictReprBase):
-    class EStartToken(IntEnum):
+    class EStartToken(SafeIntEnumBase):
         CTI_START_SUCCESS = 0
         CTI_START_INDEX = 0x10
         CTI_START_ERROR = 0x11
@@ -54,7 +56,7 @@ class StartChannelFeedback(DictReprBase):
         self.result = StartChannelFeedback.EStartToken(int(feedback.Result))
 
 class StopChannelFeedback(DictReprBase):
-    class EStopToken(IntEnum):
+    class EStopToken(SafeIntEnumBase):
         SUCCESS = 0
         STOP_INDEX = 0x10
         STOP_ERROR = 0x11
@@ -67,7 +69,7 @@ class StopChannelFeedback(DictReprBase):
         self.result = StopChannelFeedback.EStopToken(int(feedback.Result))
 
 class ResumeChannelFeedback(DictReprBase):
-    class EResumeToken(IntEnum):
+    class EResumeToken(SafeIntEnumBase):
         RESUME_SUCCESS = 0
         RESUME_INDEX = 0x10
         RESUME_ERROR = 0x11
@@ -101,7 +103,7 @@ class ResumeChannelFeedback(DictReprBase):
         self.result = ResumeChannelFeedback.EResumeToken(int(feedback.Result))
 
 class JumpChannelFeedback(DictReprBase):
-    class EJumpToken(IntEnum):
+    class EJumpToken(SafeIntEnumBase):
         CTI_JUMP_SUCCESS = 0
         CTI_JUMP_INDEX = 0x10
         CTI_JUMP_ERROR = 0x11
@@ -138,7 +140,7 @@ class JumpChannelFeedback(DictReprBase):
         self.error_channel = int(feedback.errorChannel)
 
 class ContinueChannelFeedback(DictReprBase):
-    class EContinueToken(IntEnum):
+    class EContinueToken(SafeIntEnumBase):
         CTI_CONTINUE_SUCCESS = 0
         CTI_CONTINUE_ERROR = 0x11
         CTI_CONTINUE_CHANNEL_RUNNING = 0x12
@@ -153,14 +155,14 @@ class ContinueChannelFeedback(DictReprBase):
         self.result = ContinueChannelFeedback.EContinueToken(int(feedback.Result))
 
 class GetChannelDataFeedback(DictReprBase):
-    class EChannelNeedType(IntEnum):
+    class EChannelNeedType(SafeIntEnumBase):
         THIRD_PARTY_GET_CHANNELS_INFO_NEED_TYPE_BMS = 0x100
         THIRD_PARTY_GET_CHANNELS_INFO_NEED_TYPE_SMB = 0x200
         THIRD_PARTY_GET_CHANNELS_INFO_NEED_TYPE_AUX = 0x400
         THIRD_PARTY_GET_CHANNELS_INFO_NEED_TYPE_EQ = 0x800
         THIRD_PARTY_GET_CHANNELS_INFO_NEED_TYPE_CELL = 0x1000
     
-    class EGetChannelType(IntEnum):
+    class EGetChannelType(SafeIntEnumBase):
         ALLCHANNEL = 1
         RUNNING = 2
         UNSAFE = 3
@@ -169,7 +171,7 @@ class GetChannelDataFeedback(DictReprBase):
             """Convert to C# ArbinCommandGetChannelDataFeed.GET_CHANNEL_TYPE"""
             return ArbinCTI.ArbinCommandGetChannelDataFeed.GET_CHANNEL_TYPE(self.value)
     
-    class EChannelStatus(IntEnum):
+    class EChannelStatus(SafeIntEnumBase):
         Idle = 0
         Transition = 1
         Charge = 2
@@ -203,14 +205,14 @@ class GetChannelDataFeedback(DictReprBase):
         ACR = 30
         CS_SUSPENT = 31
 
-    class ECTISPTTEQStatus(IntEnum):
+    class ECTISPTTEQStatus(SafeIntEnumBase):
         Idle = 0
         Charging = 1
         Discharging = 2
         CurrentUnsafe = 3
         VoltageUnsafe = 4
 
-    class ECTISPTTCellStatus(IntEnum):
+    class ECTISPTTCellStatus(SafeIntEnumBase):
         Null = 0 
         UnUse = 1
         NoCell = 2
@@ -315,7 +317,7 @@ class GetChannelDataFeedback(DictReprBase):
             self.position_y                 = int(data.PositionY)
 
     class ChannelInfo(DictReprBase):
-        class AuxType(IntEnum):
+        class AuxType(SafeIntEnumBase):
             AuxV = 0
             T = 1
             P = 2
@@ -407,7 +409,7 @@ class GetChannelDataFeedback(DictReprBase):
         self.channel_data = [GetChannelDataFeedback.ChannelInfo(info) for info in feedback.m_Channels]
 
 class GetResumeDataFeedback(DictReprBase):
-    class EResult(IntEnum):
+    class EResult(SafeIntEnumBase):
         SUCCESS = 0,
         ERROR = 0x10
 
@@ -480,7 +482,7 @@ class GetResumeDataFeedback(DictReprBase):
 
 class GetStartDataFeedback(DictReprBase):
     """Get the channel assignments, including the channel number, channel code, schedule, MVs, and test names."""
-    class EResult(IntEnum):
+    class EResult(SafeIntEnumBase):
         SUCCESS = 0,
         ERROR = 0x10
 

@@ -17,7 +17,7 @@ class DictReprBase:
     def __repr__(self):
         return json.dumps(self.to_dict(), indent=2)
     
-class SafeEnumBase(IntEnum):
+class SafeIntEnumBase(IntEnum):
     @classmethod
     def _missing_(cls, value):
         return cls._create_pseudo_member_(value)

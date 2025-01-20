@@ -1,8 +1,9 @@
-from enum import IntEnum
-
 import ArbinCTI.Core as ArbinCTI # type: ignore
 
-from ctitoolbox.src.base import DictReprBase
+from ctitoolbox.src.base import (
+    DictReprBase,
+    SafeIntEnumBase
+)
 from ctitoolbox.src.data_type.cti_data_type import (
     TimeSensitiveSetMV,
     TE_DATA_TYPE
@@ -18,7 +19,7 @@ Schedule Operation
 - UpdateParameterFeedback
 """""""""""""""""""""""""""
 class AssignScheduleFeedback(DictReprBase):
-    class EAssignToken(IntEnum):
+    class EAssignToken(SafeIntEnumBase):
         CTI_ASSIGN_SUCCESS = 0
         CTI_ASSIGN_INDEX = 0x10
         CTI_ASSIGN_ERROR = 0x11
@@ -42,7 +43,7 @@ class AssignScheduleFeedback(DictReprBase):
         self.result = AssignScheduleFeedback.EAssignToken(int(feedback.Result))
 
 class AssignFileFeedback(DictReprBase):
-    class EFileKind(IntEnum):
+    class EFileKind(SafeIntEnumBase):
         None_ = -1
         Schedule = 0
         CANBMS = 1
@@ -58,7 +59,7 @@ class AssignFileFeedback(DictReprBase):
             """Convert to C# ArbinCommandAssignFileFeed.EFileKind"""
             return ArbinCTI.ArbinCommandAssignFileFeed.EFileKind(self.value)
 
-    class EAssignToken(IntEnum):
+    class EAssignToken(SafeIntEnumBase):
         CTI_ASSIGN_SUCCESS = 0
         CTI_ASSIGN_FAILED = 1
         CTI_ASSIGN_INDEX = 0x10
@@ -102,7 +103,7 @@ class AssignFileFeedback(DictReprBase):
         }
     
 class SetMetaVariableFeedback(DictReprBase):
-    class EResult(IntEnum):
+    class EResult(SafeIntEnumBase):
         CTI_SET_MV_SUCCESS = 0
         CTI_SET_MV_FAILED = 16
         CTI_SET_MV_METACODE_NOTEXIST = 17
@@ -115,7 +116,7 @@ class SetMetaVariableFeedback(DictReprBase):
         self.result = SetMetaVariableFeedback.EResult(int(feedback.Result))
     
 class SetMetaVariableTimeSensitiveFeedback(DictReprBase):
-    class EControlStatus(IntEnum):
+    class EControlStatus(SafeIntEnumBase):
         Idle = 0
         Transition = 1
         Charge = 2
@@ -149,7 +150,7 @@ class SetMetaVariableTimeSensitiveFeedback(DictReprBase):
         ACR = 30
         CS_SUSPENT = 31
 
-    class EResult(IntEnum):
+    class EResult(SafeIntEnumBase):
         SUCCESS = 0
         SUCCESS_NOTRUNNING = 1
         ERROR = 0x10
@@ -184,7 +185,7 @@ class SetMetaVariableTimeSensitiveFeedback(DictReprBase):
         self.results = [SetMetaVariableTimeSensitiveFeedback.TimeSensitiveSetMVResult(result) for result in feedback.Results]
 
 class GetMetaVariableFeedback(DictReprBase):
-    class EResult(IntEnum):
+    class EResult(SafeIntEnumBase):
         CTI_GET_MV_SUCCESS = 0x0
         CTI_GET_MV_ERROR = 0x10
         CTI_GET_MV_DATATYPE_NOTSUPPORT = 0x11
@@ -224,7 +225,7 @@ class GetMetaVariableFeedback(DictReprBase):
         self.meta_variable_info = [GetMetaVariableFeedback.MetaVariableInfo(info) for info in feedback.MetaVariableInfos]
 
 class UpdateParameterFeedback(DictReprBase):
-    class EUpdateToken(IntEnum):
+    class EUpdateToken(SafeIntEnumBase):
         CTI_UPDATE_SUCCESS = 0
         CTI_UPDATE_INDEX = 0x10
         CTI_UPDATE_ERROR = 0x11
@@ -236,7 +237,7 @@ class UpdateParameterFeedback(DictReprBase):
         CTI_UPDATE_TO_CANNOT_ASSIGN_TESTOBJECT = 0x17
         CTI_UPDATE_TESTOBJECT_SAVE_FAILED = 0x18
     
-    class EParameterDataType(IntEnum):
+    class EParameterDataType(SafeIntEnumBase):
         NormCapacity = 0
         IMax = 1
         VMax = 2

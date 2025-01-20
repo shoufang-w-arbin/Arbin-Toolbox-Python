@@ -1,9 +1,11 @@
-from enum import IntEnum
 import base64
 
 import ArbinCTI.Core as ArbinCTI # type: ignore
 
-from ctitoolbox.src.base import DictReprBase
+from ctitoolbox.src.base import (
+    DictReprBase,
+    SafeIntEnumBase
+)
 
 """""""""""""""""""""""""""
 File Management Feedback
@@ -17,7 +19,7 @@ File Management Feedback
 """""""""""""""""""""""""""
 
 class UploadFileFeedback(DictReprBase):
-    class EResult(IntEnum):
+    class EResult(SafeIntEnumBase):
         CTI_UPLOAD_SUCCESS = 1
         CTI_UPLOAD_FAILED = 2
         CTI_UPLOAD_MD5_ERR = 3
@@ -56,7 +58,7 @@ class UploadFileFeedback(DictReprBase):
         self.packet_index = int(feedback.uPackageIndex)
     
 class DownloadFileFeedback(DictReprBase):
-    class EResult(IntEnum):
+    class EResult(SafeIntEnumBase):
         CTI_DOWNLOAD_SUCCESS = 1,
         CTI_DOWNLOAD_FAILED = 2,
         CTI_DOWNLOAD_MD5_ERR = 3,
@@ -75,7 +77,7 @@ class DownloadFileFeedback(DictReprBase):
         self.package_index  = int(feedback.uPackageIndex)
 
 class BrowseDirectoryFeedback(DictReprBase):
-    class EResult(IntEnum):
+    class EResult(SafeIntEnumBase):
         CTI_BROWSE_DIRECTORY_SUCCESS = 1,
         CTI_BROWSE_SCHEDULE_SUCCESS = 2,
         CTI_BROWSE_SCHEDULE_VERSION1_SUCCESS = 3,
@@ -105,7 +107,7 @@ class CheckFileExistFeedback(DictReprBase):
         self.reason              = str(feedback.Reason)
     
 class NewFolderFeedback(DictReprBase):
-    class EResult(IntEnum):
+    class EResult(SafeIntEnumBase):
         CTI_NEW_SUCCESS = 1
         CTI_DELETE_SUCCESS = 2
         CTI_NEW_FAILED = 3
@@ -121,7 +123,7 @@ class NewFolderFeedback(DictReprBase):
         self.result = NewFolderFeedback.EResult(int(feedback.Result))
     
 class DeleteFileFeedback(DictReprBase):
-    class EResult(IntEnum):
+    class EResult(SafeIntEnumBase):
         CTI_NEW_SUCCESS = 1
         CTI_DELETE_SUCCESS = 2
         CTI_NEW_FAILED = 3
@@ -137,7 +139,7 @@ class DeleteFileFeedback(DictReprBase):
         self.result = DeleteFileFeedback.EResult(int(feedback.Result))
     
 class NewOrDeleteFeedback(DictReprBase):
-    class EResult(IntEnum):
+    class EResult(SafeIntEnumBase):
         CTI_NEW_SUCCESS = 1
         CTI_DELETE_SUCCESS = 2
         CTI_NEW_FAILED = 3
@@ -147,7 +149,7 @@ class NewOrDeleteFeedback(DictReprBase):
         CTI_DELETE_FAILED_TEXT_RUNNING = 7
         CTI_DELETE_FAILED_EXIST = 8
 
-    class ENewOrDeleteType(IntEnum):
+    class ENewOrDeleteType(SafeIntEnumBase):
         CTI_NEW = 0
         CTI_DELETE = 1
 

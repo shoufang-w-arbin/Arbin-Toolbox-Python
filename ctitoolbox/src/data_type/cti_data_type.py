@@ -1,4 +1,3 @@
-from enum import IntEnum
 from dataclasses import dataclass, field
 
 import ArbinCTI.Core as ArbinCTI                # type: ignore
@@ -6,7 +5,10 @@ from System.Collections.Generic import List     # type: ignore
 
 from ctitoolbox.src.data_type.cs_data_type import CSTypeConverter
 
-from ctitoolbox.src.base import DictReprBase
+from ctitoolbox.src.base import (
+    DictReprBase,
+    SafeIntEnumBase
+)
 
 """
 CTI DATA TYPE WRAPPERS
@@ -19,7 +21,7 @@ Classes:
 - TimeSensitiveSetMVArgs
 - CMetavariableDataCodeApply
 """
-class TE_DATA_TYPE(IntEnum):
+class TE_DATA_TYPE(SafeIntEnumBase):
     MP_DATA_TYPE_MetaValue = 1
     MP_DATA_TYPE_AuxTemperature = 10
     MP_DATA_TYPE_AuxdTdt = 11
@@ -206,7 +208,7 @@ class TimeSensitiveSetMV(DictReprBase):
             - Two arguments (mvud: Enum_MvUd, value: float) to initialize a new instance
             - A single argument of type ArbinCTI.Core.TimeSensitiveSetMV to convert to Python wrapper object
     """
-    class EMVUD(IntEnum):
+    class EMVUD(SafeIntEnumBase):
         MVUD1 = 52
         MVUD2 = 53
         MVUD3 = 54
@@ -306,7 +308,7 @@ class CMetavariableDataCodeApply:
     """
     Python wrapper of 'ArbinCTI.Core.CMetavariableDataCodeApply'
     """
-    class EReadWriteMode(IntEnum):
+    class EReadWriteMode(SafeIntEnumBase):
         Read = 0
         WriteAndRead = 1
 
