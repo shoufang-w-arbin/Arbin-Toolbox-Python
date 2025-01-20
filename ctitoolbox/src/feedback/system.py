@@ -39,11 +39,12 @@ class LoginFeedback(DictReprBase):
         MitsX_4 = 0x01000004
         MitsX_5 = 0x01000005
         MitsX_6 = 0x01000006
+        MitsX_7 = 0x01000007
+        MitsX_8 = 0x01000008
         MitsX_SPTT = 0x01001001
         Pro7_MVUD = 0x02000001
         TY_Pro7_2 = 0x02000002
         TY_Pro7_3 = 0x02000003
-        TY_Pro7_4 = 0x02000004
         TY_Pro8_1 = 0x04000001
         TY_Pro8_2 = 0x04000002
         TY_Pro8_SPTT = 0x04001001
