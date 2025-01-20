@@ -291,6 +291,6 @@ class TestFeedbackClasses(unittest.TestCase):
             print("GetChannelDataFeedback:", feedback_instance.to_dict())
 
     def test_EChannelType_to_cs(self):
-        self.assertEqual(GetChannelDataFeedback.EChannelType.ALLCHANNEL.to_cs(), ArbinCTI.ArbinCommandGetChannelDataFeed.GET_CHANNEL_TYPE.ALLCHANNEL)
-        self.assertEqual(GetChannelDataFeedback.EChannelType.RUNNING.to_cs(), ArbinCTI.ArbinCommandGetChannelDataFeed.GET_CHANNEL_TYPE.RUNNING)
-        self.assertEqual(GetChannelDataFeedback.EChannelType.UNSAFE.to_cs(), ArbinCTI.ArbinCommandGetChannelDataFeed.GET_CHANNEL_TYPE.UNSAFE)
+        self.assertEqual(GetChannelDataFeedback.EGetChannelType.ALLCHANNEL.to_cs(), ArbinCTI.ArbinCommandGetChannelDataFeed.GET_CHANNEL_TYPE.ALLCHANNEL)
+        self.assertEqual(GetChannelDataFeedback.EGetChannelType.RUNNING.to_cs(), ArbinCTI.ArbinCommandGetChannelDataFeed.GET_CHANNEL_TYPE.RUNNING)
+        self.assertEqual(GetChannelDataFeedback.EGetChannelType.UNSAFE.to_cs(), ArbinCTI.ArbinCommandGetChannelDataFeed.GET_CHANNEL_TYPE.UNSAFE)
