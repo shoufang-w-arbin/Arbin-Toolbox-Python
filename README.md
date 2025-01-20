@@ -41,9 +41,9 @@ pip install dist/ctitoolbox-{version}-py3-none-any.whl
 
 ## Supported ArbinCTI Objects
 ### General Objects
-The ArbinCTI wrapper provides Python classes for objects commonly used in ArbinCTI commands. These wrapper classes:
-- Allow object creation using Pythonic syntax and handle conversion to C# objects internally
-- Eliminate the need for direct C# syntax in your Python code
+The ArbinCTI wrapper provides Python classes for objects commonly used in ArbinCTI commands. These wrapper classes allow object creation using Pythonic syntax and handle conversion to C# objects internally. 
+
+See [EXAMPLE.md](EXAMPLE.md#arbincti-object-creation) for detailed usage.
 
 | Wrapper Class              | Original Object                                           |
 |----------------------------|-----------------------------------------------------------|
@@ -53,14 +53,18 @@ The ArbinCTI wrapper provides Python classes for objects commonly used in ArbinC
 | TimeSensitiveSetMVArgs     | ArbinCommandTimeSensitiveSetMVArgs                        |
 | CMetavariableDataCodeApply | ArbinCommandCMetavariableDataCodeApply                    |
 
-Additional Objects/Enums required for generating the above wrapper classes are also provided in this toolbox:
+Additional Objects/Enums required for generating the above wrapper classes and sending ArbinCTI commands are also provided in this toolbox:
 
-| Wrapper Class           | Original Object       | Required By                                                      |
-|-------------------------|-----------------------|------------------------------------------------------------------|
-| TE_DATA_TYPE            | TE_DATA_TYPE          | MetaVariableInfo, MetaVariableInfoEx, CMetavariableDataCodeApply |
-| TimeSensitiveSetMV      | TimeSensitiveSetMV    | TimeSensitiveSetMVArgs                                           |
+| Wrapper Class                          | Original Object                                      | Required By                            |
+|----------------------------------------|------------------------------------------------------|----------------------------------------|
+| TE_DATA_TYPE                           | TE_DATA_TYPE                                         | MetaVariableInfo, MetaVariableInfoEx, CMetavariableDataCodeApply |
+| TimeSensitiveSetMV                     | TimeSensitiveSetMV                                   | TimeSensitiveSetMVArgs                 |
+| NewOrDeleteFeedback.ENewOrDeleteType   | ArbinCommandNewOrDeleteFeed.NEW_OR_DELETE_TYPE       | *PostNewOrDelete*                      |
+| UploadFileFeedback.UploadFileResult    | ArbinCommandUpLoadFileFeed.CUpLoadFileResult         | *PostUpLoadFile*                       |
+| AssignFileFeedback.EFileKind           | ArbinCommandAssignFileFeed.EFileKind                 | *PostAssignFile*                       |
+| GetChannelDataFeedback.EGetChannelType | ArbinCommandGetChannelFeed.GET_CHANNEL_TYPE          | *PostGetChannelsData*                  |
 
-> Ignoring namespace `ArbinCTI.Core` in the second column for simplicity.
+> Ignoring namespace `ArbinCTI.Core` in the second/third columns for simplicity.
 
 ### Feedback Objects
 The wrapper class provides a convenient way to work with ArbinCTI feedback objects in Python.
