@@ -3,7 +3,7 @@ import copy
 
 import ArbinCTI.Core as ArbinCTI # type: ignore
 
-from ctitoolbox.src.feedback.dict_repr_base import DictReprBase
+from ctitoolbox.src.base import DictReprBase
 
 """""""""""""""""""""""""""
 Test Control
@@ -160,7 +160,7 @@ class GetChannelDataFeedback(DictReprBase):
         THIRD_PARTY_GET_CHANNELS_INFO_NEED_TYPE_EQ = 0x800
         THIRD_PARTY_GET_CHANNELS_INFO_NEED_TYPE_CELL = 0x1000
     
-    class EChannelType(IntEnum):
+    class EGetChannelType(IntEnum):
         ALLCHANNEL = 1
         RUNNING = 2
         UNSAFE = 3
