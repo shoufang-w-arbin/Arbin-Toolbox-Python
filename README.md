@@ -109,7 +109,7 @@ See [EXAMPLE.md](EXAMPLE.md#arbincti-feedback-accessing) for detailed usage.
 > Ignoring namespace `ArbinCTI.Core` in the second column for simplicity.
 
 ## Usage Examples
-Please see `EXAMPLE.md`.
+Please see [EXAMPLE.md](EXAMPLE.md).
 
 ## Developing `ctitoolbox`
 ### Testing
