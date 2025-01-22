@@ -41,4 +41,4 @@ exclude = ["arbintoolbox.test*"]
 
 
 [tool.setuptools.package-data]
-ctitoolbox = ["bin/ArbinCTI.dll"]
+arbintoolbox = ["bin/ArbinCTI.dll"]
