@@ -1,10 +1,10 @@
 import ArbinCTI.Core as ArbinCTI # type: ignore
 
-from ctitoolbox.src.base import (
+from arbintoolbox.src.base import (
     DictReprBase,
     SafeIntEnumBase
 )
-from ctitoolbox.src.data_type.cti_data_type import (
+from arbintoolbox.src.arbincti.data_type.cti_data_type import (
     TimeSensitiveSetMV,
     TE_DATA_TYPE
 )

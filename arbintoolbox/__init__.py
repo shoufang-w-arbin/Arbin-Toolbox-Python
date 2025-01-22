@@ -6,8 +6,8 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 clr.AddReference("System")
 clr.AddReference(os.path.join(current_dir, "bin", "ArbinCTI"))
 
-from ctitoolbox.src.data_type.cs_data_type import CSConv
-from ctitoolbox.src.data_type.cti_data_type import (
+from arbintoolbox.src.cs_conv import CSConv
+from arbintoolbox.src.arbincti.data_type.cti_data_type import (
     TE_DATA_TYPE, 
     StartResumeEx,
     MetaVariableInfo,
@@ -16,7 +16,7 @@ from ctitoolbox.src.data_type.cti_data_type import (
     TimeSensitiveSetMVArgs,
     CMetavariableDataCodeApply
 )
-from ctitoolbox.src.feedback.channel_control import (
+from arbintoolbox.src.arbincti.feedback.channel_control import (
     StartChannelFeedback,
     StopChannelFeedback,
     ResumeChannelFeedback,
@@ -26,7 +26,7 @@ from ctitoolbox.src.feedback.channel_control import (
     GetResumeDataFeedback,
     GetStartDataFeedback
 )
-from ctitoolbox.src.feedback.file_management import (
+from arbintoolbox.src.arbincti.feedback.file_management import (
     UploadFileFeedback,
     DownloadFileFeedback,
     BrowseDirectoryFeedback,
@@ -35,14 +35,14 @@ from ctitoolbox.src.feedback.file_management import (
     DeleteFileFeedback,
     NewOrDeleteFeedback
 )
-from ctitoolbox.src.feedback.schedule_operation import (
+from arbintoolbox.src.arbincti.feedback.schedule_operation import (
     AssignScheduleFeedback,
     AssignFileFeedback,
     SetMetaVariableFeedback,
     SetMetaVariableTimeSensitiveFeedback,
     GetMetaVariableFeedback
 )
-from ctitoolbox.src.feedback.system import (
+from arbintoolbox.src.arbincti.feedback.system import (
     GetSerailNumberFeedback,
     GetMITSVersionFeedback,
     LoginFeedback

@@ -5,7 +5,7 @@ import base64
 from System.Collections.Generic import List  # type: ignore
 import ArbinCTI.Core as ArbinCTI  # type: ignore
 
-from ctitoolbox.src.feedback.file_management import (
+from arbintoolbox.src.arbincti.feedback.file_management import (
     UploadFileFeedback,
     DownloadFileFeedback,
     BrowseDirectoryFeedback,

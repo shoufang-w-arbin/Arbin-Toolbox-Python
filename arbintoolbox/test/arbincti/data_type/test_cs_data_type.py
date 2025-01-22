@@ -14,7 +14,7 @@ from System import ( # type: ignore
 )
 from System.Collections.Generic import List, SortedDictionary # type: ignore
 
-from ctitoolbox.src.data_type.cs_data_type import CSConv
+from arbintoolbox.src.cs_conv import CSConv
 
 class TestCSTypeConverter(unittest.TestCase):
 
@@ -154,7 +154,7 @@ class TestCSTypeConverter(unittest.TestCase):
 
     def test_to_cs_sorted_dict(self):
         # Test update parameter feedback
-        from ctitoolbox.src.feedback.schedule_operation import UpdateParameterFeedback
+        from arbintoolbox.src.arbincti.feedback.schedule_operation import UpdateParameterFeedback
         python_list = [
             (UpdateParameterFeedback.EParameterDataType.NormCapacity, "value1"),
             (UpdateParameterFeedback.EParameterDataType.IMax, "value2"),

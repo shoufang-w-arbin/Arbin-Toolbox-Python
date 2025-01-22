@@ -8,7 +8,7 @@ from System import ( # type: ignore
 )
 from System.Collections.Generic import List # type: ignore
 
-from ctitoolbox.src.feedback.channel_control import (
+from arbintoolbox.src.arbincti.feedback.channel_control import (
     StartChannelFeedback,
     StopChannelFeedback,
     ResumeChannelFeedback,

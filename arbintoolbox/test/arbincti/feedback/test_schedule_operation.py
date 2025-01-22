@@ -8,11 +8,11 @@ from System.Collections.Generic import ( # type: ignore
 )
 import ArbinCTI.Core as ArbinCTI # type: ignore
 
-from ctitoolbox.src.data_type.cti_data_type import (
+from arbintoolbox.src.arbincti.data_type.cti_data_type import (
     TE_DATA_TYPE,
     TimeSensitiveSetMV
 )
-from ctitoolbox.src.feedback.schedule_operation import (
+from arbintoolbox.src.arbincti.feedback.schedule_operation import (
     AssignScheduleFeedback,
     AssignFileFeedback,
     SetMetaVariableFeedback,

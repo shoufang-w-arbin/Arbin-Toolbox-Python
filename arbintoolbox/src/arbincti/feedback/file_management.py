@@ -2,7 +2,7 @@ import base64
 
 import ArbinCTI.Core as ArbinCTI # type: ignore
 
-from ctitoolbox.src.base import (
+from arbintoolbox.src.base import (
     DictReprBase,
     SafeIntEnumBase
 )

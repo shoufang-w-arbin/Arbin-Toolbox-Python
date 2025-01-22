@@ -3,9 +3,9 @@ from dataclasses import dataclass, field
 import ArbinCTI.Core as ArbinCTI                # type: ignore
 from System.Collections.Generic import List     # type: ignore
 
-from ctitoolbox.src.data_type.cs_data_type import CSConv
+from arbintoolbox.src.cs_conv import CSConv
 
-from ctitoolbox.src.base import (
+from arbintoolbox.src.base import (
     DictReprBase,
     SafeIntEnumBase
 )
