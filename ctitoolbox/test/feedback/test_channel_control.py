@@ -4,7 +4,8 @@ import os
 import ArbinCTI.Core as ArbinCTI # type: ignore
 from System import ( # type: ignore
     String,
-    Array
+    Array,
+    Int32
 )
 from System.Collections.Generic import List # type: ignore
 
@@ -15,7 +16,8 @@ from ctitoolbox.src.feedback.channel_control import (
     JumpChannelFeedback,
     ContinueChannelFeedback,
     GetStartDataFeedback,
-    GetChannelDataFeedback
+    GetChannelDataFeedback,
+    StartChannelAdvancedFeedback,
 )
 
 UNITTEST_VIEW_DICT = os.getenv("UNITTEST_VIEW_DICT", False)
@@ -294,3 +296,32 @@ class TestFeedbackClasses(unittest.TestCase):
         self.assertEqual(GetChannelDataFeedback.EGetChannelType.ALLCHANNEL.to_cs(), ArbinCTI.ArbinCommandGetChannelDataFeed.GET_CHANNEL_TYPE.ALLCHANNEL)
         self.assertEqual(GetChannelDataFeedback.EGetChannelType.RUNNING.to_cs(), ArbinCTI.ArbinCommandGetChannelDataFeed.GET_CHANNEL_TYPE.RUNNING)
         self.assertEqual(GetChannelDataFeedback.EGetChannelType.UNSAFE.to_cs(), ArbinCTI.ArbinCommandGetChannelDataFeed.GET_CHANNEL_TYPE.UNSAFE)
+
+    def test_StartChannelAdvancedFeedback_instantiation(self):
+        result_instance = ArbinCTI.ArbinCommandStartChannelAdvancedFeed.StartChannelResult()
+        result_instance.ChannelIndex = 1
+        result_instance.StartResult = ArbinCTI.ArbinCommandStartChannelFeed.START_TOKEN.CTI_START_SUCCESS
+        result_instance.Message = "Success"
+
+        success_list_instance = List[Int32]()
+        success_list_instance.Add(1)
+
+        failed_results_instance = List[ArbinCTI.ArbinCommandStartChannelAdvancedFeed.StartChannelResult]()
+        failed_results_instance.Add(result_instance)
+
+        cs_instance = ArbinCTI.ArbinCommandStartChannelAdvancedFeed()
+        cs_instance.TaskID = 123
+        cs_instance.SuccessfulChannelIDs = success_list_instance
+        cs_instance.FailedResults = failed_results_instance
+        feedback_instance = StartChannelAdvancedFeedback(cs_instance)
+
+        self.assertEqual(feedback_instance.task_id, 123)
+        self.assertEqual(feedback_instance.successful_channel_id, [1])
+        self.assertEqual(len(feedback_instance.failed_result), 1)
+        self.assertEqual(feedback_instance.failed_result[0].channel_index, 1)
+        self.assertEqual(feedback_instance.failed_result[0].result, StartChannelFeedback.EStartToken.CTI_START_SUCCESS)
+        self.assertEqual(feedback_instance.failed_result[0].message, "Success")
+        self.assertFalse(feedback_instance.is_success)
+
+        if UNITTEST_VIEW_DICT:
+            print("StartChannelAdvancedFeedback:", feedback_instance.to_dict())

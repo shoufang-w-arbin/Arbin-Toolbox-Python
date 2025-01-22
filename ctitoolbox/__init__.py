@@ -14,7 +14,10 @@ from ctitoolbox.src.data_type.cti_data_type import (
     MetaVariableInfoEx,
     TimeSensitiveSetMV,
     TimeSensitiveSetMVArgs,
-    CMetavariableDataCodeApply
+    CMetavariableDataCodeApply,
+    TestObjectSetting,
+    StartChannelInfo,
+    StartChannelAdvancedArgs,
 )
 from ctitoolbox.src.feedback.channel_control import (
     StartChannelFeedback,

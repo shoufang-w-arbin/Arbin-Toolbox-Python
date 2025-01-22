@@ -20,6 +20,9 @@ Classes:
 - TimeSensitiveSetMV
 - TimeSensitiveSetMVArgs
 - CMetavariableDataCodeApply
+- TestObjectSetting
+- StartChannelInfo
+- StartChannelAdvancedArgs
 """
 class TE_DATA_TYPE(SafeIntEnumBase):
     MP_DATA_TYPE_MetaValue = 1
@@ -274,34 +277,23 @@ class TimeSensitiveSetMVArgs:
         log          : bool = True
 
         def to_cs(self) -> ArbinCTI.TimeSensitiveSetMVArgs.TimeSensitiveSetMVChannel: 
-            try:
-                self._convert_time_sensitive_mvs()
-            except Exception as e:
-                raise ValueError(f"Error converting TimeSensitiveSetMVChannel: {str(e)}")
+            if not all(isinstance(obj, TimeSensitiveSetMV) for obj in self.mv_list):
+                raise ValueError("All items in 'mv_list' must be of type TimeSensitiveSetMV")
 
             instance = ArbinCTI.TimeSensitiveSetMVArgs.TimeSensitiveSetMVChannel( 
                 CSTypeConverter.to_int(self.global_index),
-                self.mv_list,
+                CSTypeConverter.to_list(self.mv_list),
                 CSTypeConverter.to_bool(self.log)
             )     
             return instance
         
-        def _convert_time_sensitive_mvs(self):
-            list_instance = List[ArbinCTI.TimeSensitiveSetMV]()
-            try:
-                [list_instance.Add(obj.to_cs()) for obj in self.mv_list]
-            except Exception as e:
-                raise ValueError(f"Error converting TimeSensitiveSetMV: {str(e)}")
-            finally:
-                self.mv_list = list_instance
-        
     def to_cs(self) -> ArbinCTI.TimeSensitiveSetMVArgs:
+        if not all(isinstance(obj, TimeSensitiveSetMVArgs.TimeSensitiveSetMVChannel) for obj in self.channels):
+            raise ValueError("All items in 'channels' must be of type TimeSensitiveSetMVChannel")
+        
         instance         = ArbinCTI.TimeSensitiveSetMVArgs()
         instance.Timeout = CSTypeConverter.to_float(self.timeout)
-        try:
-            [instance.Channels.Add(obj.to_cs()) for obj in self.channels]
-        except Exception as e:
-            raise ValueError(f"Error converting TimeSensitiveSetMVChannel: {str(e)}")
+        instance.Channels = CSTypeConverter.to_list(self.channels)
         return instance    
 
 class CMetavariableDataCodeApply:
@@ -324,4 +316,68 @@ class CMetavariableDataCodeApply:
         instance.m_MV_ValueType = ArbinCTI.TE_DATA_TYPE(self.mv_value_type.value) 
         instance.m_MV_MetaCode  = CSTypeConverter.to_ushort(self.mv_meta_code)
         instance.ReadWriteMode  = ArbinCTI.EReadWriteMode(self.mode.value)      
+        return instance
+
+@dataclass
+class TestObjectSetting:
+    """Python wrapper of 'ArbinCTI.Core.Common.Start.TestObjectSetting'"""
+    mass                     : float = 0.0
+    specific_capacity        : float = 0.0
+    nominal_capacity         : float = 0.0
+    nominal_ir               : float = 0.0
+    nominal_voltage          : float = 0.0
+    nominal_capacitor        : float = 0.0
+    max_current_charge       : float = 0.0
+    min_voltage_charge       : float = 0.0
+    max_voltage_charge       : float = 0.0
+    is_auto_calc_n_capacity  : bool  = False
+
+    def to_cs(self) -> ArbinCTI.Common.Start.TestObjectSetting:
+        instance = ArbinCTI.Common.Start.TestObjectSetting()
+        instance.Mass                    = CSTypeConverter.to_float(self.mass)
+        instance.SpecificCapacity        = CSTypeConverter.to_double(self.specific_capacity)
+        instance.NorminalCapacity        = CSTypeConverter.to_double(self.nominal_capacity)
+        instance.NorminalIR              = CSTypeConverter.to_double(self.nominal_ir)
+        instance.NorminalVoltage         = CSTypeConverter.to_double(self.nominal_voltage)
+        instance.NorminalCapacitor       = CSTypeConverter.to_double(self.nominal_capacitor)
+        instance.MaxCurrentCharge        = CSTypeConverter.to_double(self.max_current_charge)
+        instance.MinVoltageCharge        = CSTypeConverter.to_double(self.min_voltage_charge)
+        instance.MaxVoltageCharge        = CSTypeConverter.to_double(self.max_voltage_charge)
+        instance.IsAutoCalcNCapacity     = CSTypeConverter.to_bool(self.is_auto_calc_n_capacity)
+        return instance
+    
+@dataclass
+class StartChannelInfo:
+    """Python wrapper of 'ArbinCTI.Core.Common.Start.StartChannelInfo'"""
+    channel_index : int = -1
+    test_name : str = ""
+    schedule_name : str = ""
+    barcode : str = ""
+    test_object: TestObjectSetting = None
+
+    def to_cs(self) -> ArbinCTI.Common.Start.StartChannelInfo:
+        if not isinstance(self.test_object, TestObjectSetting):
+            raise TypeError("'test_object' must be of type TestObjectSetting")
+        
+        instance = ArbinCTI.Common.Start.StartChannelInfo()
+        instance.ChannelIndex = CSTypeConverter.to_int(self.channel_index)
+        instance.TestName     = CSTypeConverter.to_string(self.test_name)
+        instance.ScheduleName = CSTypeConverter.to_string(self.schedule_name)
+        instance.Barcode      = CSTypeConverter.to_string(self.barcode)
+        instance.TestObject   = self.test_object.to_cs()
+        return instance
+    
+@dataclass
+class StartChannelAdvancedArgs:
+    """Python wrapper of 'ArbinCTI.Core.Common.Start.StartChannelAdvancedArgs'"""
+    task_id : int = 0
+    channels : list = field(default_factory=list)
+
+    def to_cs(self) -> ArbinCTI.Common.Start.StartChannelAdvancedArgs:
+        if not all(isinstance(obj, StartChannelInfo) for obj in self.channels):
+            raise ValueError("All items in 'channels' must be of type StartChannelInfo")
+        
+        instance = ArbinCTI.Common.Start.StartChannelAdvancedArgs()
+        instance.TaskID   = CSTypeConverter.to_long(self.task_id)
+        instance.Channels = CSTypeConverter.to_list(self.channels)
         return instance

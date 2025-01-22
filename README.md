@@ -63,8 +63,12 @@ Additional Objects/Enums required for generating the above wrapper classes and s
 | UploadFileFeedback.UploadFileResult    | ArbinCommandUpLoadFileFeed.CUpLoadFileResult         | *PostUpLoadFile*                       |
 | AssignFileFeedback.EFileKind           | ArbinCommandAssignFileFeed.EFileKind                 | *PostAssignFile*                       |
 | GetChannelDataFeedback.EGetChannelType | ArbinCommandGetChannelFeed.GET_CHANNEL_TYPE          | *PostGetChannelsData*                  |
+| TestObjectSetting                      | Common.Start.TestObjectSetting                       | *PostStartChannelAdvanced*             |
+| StartChannelInfo                       | Common.Start.StartChannelInfo                        | *PostStartChannelAdvanced*             |
+| StartChannelAdvancedArgs               | Common.Start.StartChannelAdvancedArgs                | *PostStartChannelAdvanced*             |
 
-> Ignoring namespace `ArbinCTI.Core` in the second/third columns for simplicity.
+
+> Ignoring namespace `ArbinCTI.Core` in the second columns for simplicity.
 
 ### Feedback Objects
 The wrapper class provides a convenient way to work with ArbinCTI feedback objects in Python.

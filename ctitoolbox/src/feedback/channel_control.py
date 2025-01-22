@@ -1,4 +1,5 @@
 import copy
+from dataclasses import dataclass
 
 import ArbinCTI.Core as ArbinCTI # type: ignore
 
@@ -17,6 +18,7 @@ Test Control
 - GetChannelDataFeedback
 - GetResumeDataFeedback
 - GetStartDataFeedback
+- StartChannelAdvancedFeedback
 """""""""""""""""""""""""""
 class StartChannelFeedback(DictReprBase):
     class EStartToken(SafeIntEnumBase):
@@ -514,3 +516,18 @@ class GetStartDataFeedback(DictReprBase):
         if not isinstance(feedback, ArbinCTI.ArbinCommandGetStartDataFeed):
             raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetStartDataFeed', got '{type(feedback)}'")
         self.channel_data = [GetStartDataFeedback.StartDataInfo(info) for info in feedback.m_Channels]
+
+class StartChannelAdvancedFeedback(DictReprBase):
+    class StartChannelResult:
+        def __init__(self, result: ArbinCTI.ArbinCommandStartChannelAdvancedFeed.StartChannelResult):
+            self.channel_index = int(result.ChannelIndex)
+            self.result        = StartChannelFeedback.EStartToken(int(result.StartResult))
+            self.message       = str(result.Message)
+
+    def __init__(self, feedback: ArbinCTI.ArbinCommandStartChannelAdvancedFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandStartChannelAdvancedFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandStartChannelAdvancedFeed', got '{type(feedback)}'")
+        self.task_id                = int(feedback.TaskID)
+        self.successful_channel_id  = list(feedback.SuccessfulChannelIDs)
+        self.failed_result          = [StartChannelAdvancedFeedback.StartChannelResult(result) for result in feedback.FailedResults]
+        self.is_success             = len(self.failed_result) == 0

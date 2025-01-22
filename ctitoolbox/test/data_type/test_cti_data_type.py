@@ -10,7 +10,10 @@ from ctitoolbox.src.data_type.cti_data_type import (
     MetaVariableInfoEx,
     TimeSensitiveSetMV,
     TimeSensitiveSetMVArgs,
-    CMetavariableDataCodeApply
+    CMetavariableDataCodeApply,
+    TestObjectSetting,
+    StartChannelInfo,
+    StartChannelAdvancedArgs,
 )
 
 UNITTEST_VIEW_DICT = os.getenv("UNITTEST_VIEW_DICT", False)
@@ -143,3 +146,118 @@ class TestArbinCTIClasses(unittest.TestCase):
 
         self.assertEqual(cs_instance.DataType, ArbinCTI.TE_DATA_TYPE.MP_DATA_TYPE_AuxdTdt)
         self.assertEqual(cs_instance.Error, 1)
+
+    def test_test_object_setting_to_cs(self):
+        """Test conversion of TestObjectSetting to C# object"""
+        test_object_setting = TestObjectSetting(
+            mass=1.0,
+            specific_capacity=2.0,
+            nominal_capacity=3.0,
+            nominal_ir=4.0,
+            nominal_voltage=5.0,
+            nominal_capacitor=6.0,
+            max_current_charge=7.0,
+            min_voltage_charge=8.0,
+            max_voltage_charge=9.0,
+            is_auto_calc_n_capacity=True
+        )
+
+        cs_instance = test_object_setting.to_cs()
+
+        self.assertEqual(cs_instance.Mass, 1.0)
+        self.assertEqual(cs_instance.SpecificCapacity, 2.0)
+        self.assertEqual(cs_instance.NorminalCapacity, 3.0)
+        self.assertEqual(cs_instance.NorminalIR, 4.0)
+        self.assertEqual(cs_instance.NorminalVoltage, 5.0)
+        self.assertEqual(cs_instance.NorminalCapacitor, 6.0)
+        self.assertEqual(cs_instance.MaxCurrentCharge, 7.0)
+        self.assertEqual(cs_instance.MinVoltageCharge, 8.0)
+        self.assertEqual(cs_instance.MaxVoltageCharge, 9.0)
+        self.assertEqual(cs_instance.IsAutoCalcNCapacity, True)
+
+    def test_start_channel_info_to_cs(self):
+        """Test conversion of StartChannelInfo to C# object"""
+        test_object_setting = TestObjectSetting(
+            mass=1.0,
+            specific_capacity=2.0,
+            nominal_capacity=3.0,
+            nominal_ir=4.0,
+            nominal_voltage=5.0,
+            nominal_capacitor=6.0,
+            max_current_charge=7.0,
+            min_voltage_charge=8.0,
+            max_voltage_charge=9.0,
+            is_auto_calc_n_capacity=True
+        )
+
+        start_channel_info = StartChannelInfo(
+            channel_index=1,
+            test_name="TestName",
+            schedule_name="ScheduleName",
+            barcode="Barcode",
+            test_object=test_object_setting
+        )
+
+        cs_instance = start_channel_info.to_cs()
+
+        self.assertEqual(cs_instance.ChannelIndex, 1)
+        self.assertEqual(cs_instance.TestName, "TestName")
+        self.assertEqual(cs_instance.ScheduleName, "ScheduleName")
+        self.assertEqual(cs_instance.Barcode, "Barcode")
+        self.assertEqual(cs_instance.TestObject.Mass, 1.0)
+        self.assertEqual(cs_instance.TestObject.SpecificCapacity, 2.0)
+        self.assertEqual(cs_instance.TestObject.NorminalCapacity, 3.0)
+        self.assertEqual(cs_instance.TestObject.NorminalIR, 4.0)
+        self.assertEqual(cs_instance.TestObject.NorminalVoltage, 5.0)
+        self.assertEqual(cs_instance.TestObject.NorminalCapacitor, 6.0)
+        self.assertEqual(cs_instance.TestObject.MaxCurrentCharge, 7.0)
+        self.assertEqual(cs_instance.TestObject.MinVoltageCharge, 8.0)
+        self.assertEqual(cs_instance.TestObject.MaxVoltageCharge, 9.0)
+        self.assertEqual(cs_instance.TestObject.IsAutoCalcNCapacity, True)
+
+    def test_start_channel_advanced_args_to_cs(self):
+        """Test conversion of StartChannelAdvancedArgs to C# object"""
+        test_object_setting = TestObjectSetting(
+            mass=1.0,
+            specific_capacity=2.0,
+            nominal_capacity=3.0,
+            nominal_ir=4.0,
+            nominal_voltage=5.0,
+            nominal_capacitor=6.0,
+            max_current_charge=7.0,
+            min_voltage_charge=8.0,
+            max_voltage_charge=9.0,
+            is_auto_calc_n_capacity=True
+        )
+
+        start_channel_info = StartChannelInfo(
+            channel_index=1,
+            test_name="TestName",
+            schedule_name="ScheduleName",
+            barcode="Barcode",
+            test_object=test_object_setting
+        )
+
+        start_channel_advanced_args = StartChannelAdvancedArgs(
+            task_id=123,
+            channels=[start_channel_info]
+        )
+
+        cs_instance = start_channel_advanced_args.to_cs()
+
+        self.assertEqual(cs_instance.TaskID, 123)
+        self.assertEqual(len(cs_instance.Channels), 1)
+        self.assertEqual(cs_instance.Channels[0].ChannelIndex, 1)
+        self.assertEqual(cs_instance.Channels[0].TestName, "TestName")
+        self.assertEqual(cs_instance.Channels[0].ScheduleName, "ScheduleName")
+        self.assertEqual(cs_instance.Channels[0].Barcode, "Barcode")
+        self.assertEqual(cs_instance.Channels[0].TestObject.Mass, 1.0)
+        self.assertEqual(cs_instance.Channels[0].TestObject.SpecificCapacity, 2.0)
+        self.assertEqual(cs_instance.Channels[0].TestObject.NorminalCapacity, 3.0)
+        self.assertEqual(cs_instance.Channels[0].TestObject.NorminalIR, 4.0)
+        self.assertEqual(cs_instance.Channels[0].TestObject.NorminalVoltage, 5.0)
+        self.assertEqual(cs_instance.Channels[0].TestObject.NorminalCapacitor, 6.0)
+        self.assertEqual(cs_instance.Channels[0].TestObject.MaxCurrentCharge, 7.0)
+        self.assertEqual(cs_instance.Channels[0].TestObject.MinVoltageCharge, 8.0)
+        self.assertEqual(cs_instance.Channels[0].TestObject.MaxVoltageCharge, 9.0)
+        self.assertEqual(cs_instance.Channels[0].TestObject.IsAutoCalcNCapacity, True)
