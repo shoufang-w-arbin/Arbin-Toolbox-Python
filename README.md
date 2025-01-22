@@ -20,7 +20,7 @@ When calling `public bool PostTimeSensitiveSetMV(IArbinSocket socket, TimeSensit
 As you can see, the toolbox provides a smoother and more Pythonic way to interact with C# objects, making your code cleaner and easier to maintain.
 
 ### Additional Benefits
-- **Py-C# Data structure conversions** are backed by `CSTypeConverter` in this toolbox.
+- **Py-C# Data structure conversions** are backed by `CSConv` in this toolbox.
 - **Keyword arguments are allowed**, compared to using `pythonnet` directly. 
 - **Object Attributes are discoverable by Pylance**, reducing human error when programming. \
     ![](resource/pylance.png)

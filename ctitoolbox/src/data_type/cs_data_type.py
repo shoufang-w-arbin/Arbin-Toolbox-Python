@@ -30,7 +30,7 @@ Supported data types:
 - string
 - list of basic data types
 """""""""""""""""""""""""""
-class CSTypeConverter:
+class CSConv:
     class EDataType(Enum):
         BYTE    = Byte
         BOOL    = Boolean
@@ -45,15 +45,15 @@ class CSTypeConverter:
     @staticmethod
     def _get_converter(data_type: EDataType):
         _conversion = {
-            CSTypeConverter.EDataType.BYTE:   CSTypeConverter.to_byte,
-            CSTypeConverter.EDataType.BOOL:   CSTypeConverter.to_bool,
-            CSTypeConverter.EDataType.SHORT:  CSTypeConverter.to_short,
-            CSTypeConverter.EDataType.INT:    CSTypeConverter.to_int,
-            CSTypeConverter.EDataType.USHORT: CSTypeConverter.to_ushort,
-            CSTypeConverter.EDataType.UINT:   CSTypeConverter.to_uint,
-            CSTypeConverter.EDataType.FLOAT:  CSTypeConverter.to_float,
-            CSTypeConverter.EDataType.DOUBLE: CSTypeConverter.to_double,
-            CSTypeConverter.EDataType.STRING: CSTypeConverter.to_string,
+            CSConv.EDataType.BYTE:   CSConv.to_byte,
+            CSConv.EDataType.BOOL:   CSConv.to_bool,
+            CSConv.EDataType.SHORT:  CSConv.to_short,
+            CSConv.EDataType.INT:    CSConv.to_int,
+            CSConv.EDataType.USHORT: CSConv.to_ushort,
+            CSConv.EDataType.UINT:   CSConv.to_uint,
+            CSConv.EDataType.FLOAT:  CSConv.to_float,
+            CSConv.EDataType.DOUBLE: CSConv.to_double,
+            CSConv.EDataType.STRING: CSConv.to_string,
         }
         return _conversion[data_type]
 
@@ -138,7 +138,7 @@ class CSTypeConverter:
 
         # EDataType is provided
         if len(args) == 1:
-            if not isinstance(args[0], CSTypeConverter.EDataType):
+            if not isinstance(args[0], CSConv.EDataType):
                 raise ValueError(f"Unsupported data type: {args[0]}. Must be EItemType.")
             
             item_type = args[0]
@@ -146,11 +146,11 @@ class CSTypeConverter:
             for i in range(len(_object_list)):
                 obj = _object_list[i]
                 try:
-                    _object_list[i] = CSTypeConverter._get_converter(item_type)(obj)
+                    _object_list[i] = CSConv._get_converter(item_type)(obj)
                 except Exception as e:
                     raise ValueError(f"Error converting item {obj}, object type {type(obj)}, to {item_type.name}.")
                 
-            return CSTypeConverter._to_cs_list(_object_list, item_type.value)
+            return CSConv._to_cs_list(_object_list, item_type.value)
         
         # No EDataType provided
         elif len(args) == 0:
@@ -159,7 +159,7 @@ class CSTypeConverter:
             
             _object_list = [obj.to_cs() for obj in _object_list]
 
-            return CSTypeConverter._to_cs_list(_object_list, _object_list[0].GetType())
+            return CSConv._to_cs_list(_object_list, _object_list[0].GetType())
         
         else:
             raise ValueError("Invalid arguments passed to to_cs_list")
@@ -178,9 +178,9 @@ class CSTypeConverter:
             raise ValueError("'obj_list must' be a list.")
         if not all(isinstance(obj, tuple) and len(obj) == 2 for obj in obj_list):
             raise ValueError("All objects in the list must be tuples of length 2 (key, value).")
-        if not isinstance(key_data_type, CSTypeConverter.EDataType):
+        if not isinstance(key_data_type, CSConv.EDataType):
             raise ValueError(f"Unsupported key data type: {key_data_type}. Must be EDataType.")
-        if not isinstance(value_data_tyle, CSTypeConverter.EDataType):
+        if not isinstance(value_data_tyle, CSConv.EDataType):
             raise ValueError(f"Unsupported value data type: {value_data_tyle}. Must be EDataType.")
         
         _obj_list = copy.deepcopy(obj_list)
@@ -189,8 +189,8 @@ class CSTypeConverter:
 
         for (key, value) in _obj_list:
             try:
-                cs_key   = CSTypeConverter._get_converter(key_data_type)(key)
-                cs_value = CSTypeConverter._get_converter(value_data_tyle)(value)
+                cs_key   = CSConv._get_converter(key_data_type)(key)
+                cs_value = CSConv._get_converter(value_data_tyle)(value)
                 cs_dict.Add(cs_key, cs_value)
             except Exception as e:
                 raise ValueError(f"Error converting key-value pair ({key}, {value}) to ({key_data_type.name}, {value_data_tyle.name}).")

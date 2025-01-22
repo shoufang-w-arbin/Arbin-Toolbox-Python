@@ -49,26 +49,26 @@ This code will raise a TypeError with a message similar to:
 TypeError: No method matches given arguments for PostGetChannelsDataMminimalistMode: ...
 ```
 
-To resolve this issue, use explicit casting. Here's an example using the CSTypeConverter:
+To resolve this issue, use explicit casting. Here's an example using the `CSConv`:
 ```python
 control.PostGetChannelsDataMminimalistMode(
     client,   
-    CSTypeConverter.to_short(0)
+    CSConv.to_short(0)
 ) 
 ```
 By applying these explicit casts, you can ensure proper data type compatibility between Python and C# when using ArbinCTI.
 
 ## C# `List` Conversion
-This section explains how to create C# `List` instances from Python data using the `CSTypeConverter` class.
+This section explains how to create C# `List` instances from Python data using the `CSConv` class.
 
 ### Basic Data Types
 To create a C# List instance of basic data types:
 ```python
 # Create a C# 'List<ushort>' instance containing items [1, 2, 3]
-ushort_list = CSTypeConverter.to_list([1, 2, 3], CSTypeConverter.EDataType.USHORT)
+ushort_list = CSConv.to_list([1, 2, 3], CSConv.EDataType.USHORT)
 
 # Create a C# 'List<string>' instance containing items ["a", "b", "c"]
-string_list = CSTypeConverter.to_list(["a", "b", "c"], CSTypeConverter.EDataType.STRING)
+string_list = CSConv.to_list(["a", "b", "c"], CSConv.EDataType.STRING)
 ```
 
 ### ArbinCTI General Objects
@@ -77,7 +77,7 @@ For creating a C# List of supported [ArbinCTI general objects](README.md#general
 """
 Example: Calling 'bool PostStartChannelEx (IArbinSocket socket, List<StartResumeEx> resumeEx, string Creators, string Comments)'
 """
-from ctitoolbox import CSTypeConverter, StartResumeEx
+from ctitoolbox import CSConv, StartResumeEx
 
 # Create StartResumeEx objects
 a = StartResumeEx(
@@ -88,20 +88,20 @@ b = StartResumeEx(
 )
 
 # Convert to C# List
-resumeEx_list = CSTypeConverter.to_list([a, b]) # Now it is a C# List<StartResumeEx> instance
+resumeEx_list = CSConv.to_list([a, b]) # Now it is a C# List<StartResumeEx> instance
 
 # Send command
 control.PostStartChannelEx(client, resumeEx_list, "-", "-")
 ```
-All supported ArbinCTI general objects have a `to_cs` method, which allows `CSTypeConverter.to_list` to convert them without requiring a data type flag (`EDataType`). This simplifies the conversion process for these objects when creating C# Lists.
+All supported ArbinCTI general objects have a `to_cs` method, which allows `CSConv.to_list` to convert them without requiring a data type flag (`EDataType`). This simplifies the conversion process for these objects when creating C# Lists.
 
 ## C# `SortedDictionary` Conversion
-This section explains how to create C# `SortedDictionary` instances from Python data using the `CSTypeConverter` class, specifically for the `PostUpdateParameters` method in ArbinCTI.
+This section explains how to create C# `SortedDictionary` instances from Python data using the `CSConv` class, specifically for the `PostUpdateParameters` method in ArbinCTI.
 
 ### Example
 
 ```python
-from ctitoolbox import CSTypeConverter
+from ctitoolbox import CSConv
 from ctitoolbox.UpdateParameterFeedback import EParameterDataType
 
 # Create a list of key-value pairs. Ensure that the list consists of tuples, each of size 2.
@@ -112,7 +112,7 @@ obj_list = [
 ]
 
 # Convert to C# SortedDictionary<ushort, double>
-sorted_dict = CSTypeConverter.to_cs_sorted_dict(obj_list, CSTypeConverter.EDataType.USHORT, CSTypeConverter.EDataType.DOUBLE)
+sorted_dict = CSConv.to_cs_sorted_dict(obj_list, CSConv.EDataType.USHORT, CSConv.EDataType.DOUBLE)
 
 # Use the sorted dictionary in a method
 control.PostUpdateParameters(client, _, _, sorted_dict)
