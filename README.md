@@ -3,6 +3,8 @@
 - [About](#about)
 - [Installation](#installation)
 - [Supported ArbinCTI Objects](#supported-arbincti-objects)
+    - [General Objects](#general-objects)
+    - [Feedback Objects](#feedback-objects)
 - [Usage Examples](#usage-examples)
 - [Developing `ctitoolbox`](#developing-ctitoolbox)
     - [Requirements](#requirements)
@@ -17,7 +19,7 @@ When calling `public bool PostTimeSensitiveSetMV(IArbinSocket socket, TimeSensit
 
 ![](resource/compare.png)
 
-As you can see, the toolbox provides a smoother and more Pythonic way to interact with C# objects, making your code cleaner and easier to maintain.
+In short, the toolbox provides a smoother and more Pythonic way to interact with C# objects, making your code cleaner and easier to maintain.
 
 ### Additional Benefits
 - **Py-C# Data structure conversions** are backed by `CSTypeConverter` in this toolbox.
@@ -97,6 +99,7 @@ See [EXAMPLE.md](EXAMPLE.md#arbincti-feedback-accessing) for detailed usage.
 | SetMetaVariableTimeSensitiveFeedback | ArbinCommandTimeSensitiveSetMVFeed                |
 | GetMetaVariableFeedback              | ArbinCommandGetMetaVariablesFeed                  |
 | UpdateParameterFeedback              | ArbinCommandUpdateParamenterFeed                  |
+| ModifyScheduleFeedback               | ArbinCommandModifyScheduleFeed                    |
 | ***Channel Control***                |                                                   |
 | StartChannelFeedback                 | ArbinCommandStartChannelFeed                      |
 | StopChannelFeedback                  | ArbinCommandStopChannelFeed                       |
