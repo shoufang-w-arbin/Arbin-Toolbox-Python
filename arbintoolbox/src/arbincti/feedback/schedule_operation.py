@@ -17,6 +17,7 @@ Schedule Operation
 - SetMetaVariableTimeSensitiveFeedback
 - GetMetaVariableFeedback
 - UpdateParameterFeedback
+- ModifyScheduleFeedback
 """""""""""""""""""""""""""
 class AssignScheduleFeedback(DictReprBase):
     class EAssignToken(SafeIntEnumBase):
@@ -263,3 +264,29 @@ class UpdateParameterFeedback(DictReprBase):
             channels = list(pair.Value)
             _python_dict[token] = channels
         return _python_dict
+    
+class ModifyScheduleFeedback(DictReprBase):
+    class EModifyScheduleToken(SafeIntEnumBase):
+        CTI_MODIFY_SUCCESS = 0
+        CTI_MODIFY_ERROR = 0x10
+        CTI_MODIFY_SCHEDUL_NAME_EMPTY_ERROR = 0x11
+        CTI_MODIFY_SCHEDUL_NOT_EXIST_ERROR = 0x12
+        CTI_MODIFY_SCHEDUL_RUNNING_ERROR = 0x13
+        CTI_MODIFY_AUX_COUNT_EXCEED_MAPPING_ERROR = 0x14
+        CTI_MODIFY_AUX_COUNT_EXCEED_SYSCONFIG_ERROR = 0x15
+        CTI_MODIFY_AUX_SAFETY_SCOPE_ERROR = 0x16
+        CTI_MODIFY_NO_SN_CYCLER_ERROR = 0x17
+        CTI_MODIFY_NO_LOGIN_ERROR = 0x18
+        CTI_MODIFY_NO_PERMISSION_ERROR = 0x19
+
+    class ModifyScheduleResult(DictReprBase):
+        def __init__(self, result: ArbinCTI.Common.ModifySchedule.ModifyScheduleResult):
+            self.schedule_name  = str(result.ScheduleName)
+            self.result         = ModifyScheduleFeedback.EModifyScheduleToken(int(result.Result))
+            self.message        = str(result.Message)
+
+    def __init__(self, feedback: ArbinCTI.ArbinCommandModifyScheduleFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandModifyScheduleFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandModifyScheduleFeed', got '{type(feedback)}'")
+        self.task_id               = int(feedback.TaskID)
+        self.schedule_modify_info  = [ModifyScheduleFeedback.ModifyScheduleResult(info) for info in feedback.ScheduleModifyInfos]

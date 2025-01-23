@@ -6,6 +6,7 @@ from System import ( # type: ignore
     Boolean,
     Int16,
     Int32,
+    Int64,
     UInt16,
     UInt32,
     Single,
@@ -25,6 +26,7 @@ Supported data types:
 - int
 - ushort
 - uint
+- long
 - float
 - double
 - string
@@ -36,6 +38,7 @@ class CSConv:
         BOOL    = Boolean
         SHORT   = Int16
         INT     = Int32
+        LONG    = Int64
         USHORT  = UInt16
         UINT    = UInt32
         FLOAT   = Single
@@ -49,6 +52,7 @@ class CSConv:
             CSConv.EDataType.BOOL:   CSConv.to_bool,
             CSConv.EDataType.SHORT:  CSConv.to_short,
             CSConv.EDataType.INT:    CSConv.to_int,
+            CSConv.EDataType.LONG:   CSConv.to_long,
             CSConv.EDataType.USHORT: CSConv.to_ushort,
             CSConv.EDataType.UINT:   CSConv.to_uint,
             CSConv.EDataType.FLOAT:  CSConv.to_float,
@@ -84,6 +88,13 @@ class CSConv:
         if not isinstance(value, int):
             raise ValueError("Value must be an integer")
         return Int32(value)
+    
+    @staticmethod
+    def to_long(value):
+        """Convert a python 'int' to a csharp 'long'."""
+        if not isinstance(value, int):
+            raise ValueError("Value must be an integer")
+        return Int64(value)
 
     @staticmethod
     def to_ushort(value):

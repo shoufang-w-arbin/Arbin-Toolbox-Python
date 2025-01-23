@@ -17,9 +17,11 @@ Classes:
 - StartResumeEx
 - MetaVariableInfo
 - MetaVariableInfoEx
-- TimeSensitiveSetMV
-- TimeSensitiveSetMVArgs
 - CMetavariableDataCodeApply
+- TimeSensitiveSetMV:           TimeSensitiveSetMV, TimeSensitiveSetMVArgs
+- StartChannelAdvanced:         TestObjectSetting, StartChannelInfo, StartChannelAdvancedArgs
+- ModifySchedule:               SafetyScope, AuxChannelRequirementBase, AuxChannelRequirement, AuxSafetyRequirement, ScheduleModifyInfo, ModifyScheduleArgs
+
 """
 class TE_DATA_TYPE(SafeIntEnumBase):
     MP_DATA_TYPE_MetaValue = 1
@@ -274,28 +276,20 @@ class TimeSensitiveSetMVArgs:
         log          : bool = True
 
         def to_cs(self) -> ArbinCTI.TimeSensitiveSetMVArgs.TimeSensitiveSetMVChannel: 
-            try:
-                self._convert_time_sensitive_mvs()
-            except Exception as e:
-                raise ValueError(f"Error converting TimeSensitiveSetMVChannel: {str(e)}")
+            if not all(isinstance(obj, TimeSensitiveSetMV) for obj in self.mv_list):
+                raise ValueError("All items in 'mv_list' must be of type TimeSensitiveSetMV")
 
             instance = ArbinCTI.TimeSensitiveSetMVArgs.TimeSensitiveSetMVChannel( 
                 CSConv.to_int(self.global_index),
-                self.mv_list,
+                CSConv.to_list(self.mv_list),
                 CSConv.to_bool(self.log)
             )     
             return instance
         
-        def _convert_time_sensitive_mvs(self):
-            list_instance = List[ArbinCTI.TimeSensitiveSetMV]()
-            try:
-                [list_instance.Add(obj.to_cs()) for obj in self.mv_list]
-            except Exception as e:
-                raise ValueError(f"Error converting TimeSensitiveSetMV: {str(e)}")
-            finally:
-                self.mv_list = list_instance
-        
     def to_cs(self) -> ArbinCTI.TimeSensitiveSetMVArgs:
+        if not all(isinstance(obj, TimeSensitiveSetMVArgs.TimeSensitiveSetMVChannel) for obj in self.channels):
+            raise ValueError("All items in 'channels' must be of type TimeSensitiveSetMVChannel")
+        
         instance         = ArbinCTI.TimeSensitiveSetMVArgs()
         instance.Timeout = CSConv.to_float(self.timeout)
         try:
@@ -324,4 +318,170 @@ class CMetavariableDataCodeApply:
         instance.m_MV_ValueType = ArbinCTI.TE_DATA_TYPE(self.mv_value_type.value) 
         instance.m_MV_MetaCode  = CSConv.to_ushort(self.mv_meta_code)
         instance.ReadWriteMode  = ArbinCTI.EReadWriteMode(self.mode.value)      
+        return instance
+
+@dataclass
+class TestObjectSetting:
+    """Python wrapper of 'ArbinCTI.Core.Common.Start.TestObjectSetting'"""
+    mass                     : float = 0.0
+    specific_capacity        : float = 0.0
+    nominal_capacity         : float = 0.0
+    nominal_ir               : float = 0.0
+    nominal_voltage          : float = 0.0
+    nominal_capacitor        : float = 0.0
+    max_current_charge       : float = 0.0
+    min_voltage_charge       : float = 0.0
+    max_voltage_charge       : float = 0.0
+    is_auto_calc_n_capacity  : bool  = False
+
+    def to_cs(self) -> ArbinCTI.Common.Start.TestObjectSetting:
+        instance = ArbinCTI.Common.Start.TestObjectSetting()
+        instance.Mass                    = CSConv.to_float(self.mass)
+        instance.SpecificCapacity        = CSConv.to_double(self.specific_capacity)
+        instance.NorminalCapacity        = CSConv.to_double(self.nominal_capacity)
+        instance.NorminalIR              = CSConv.to_double(self.nominal_ir)
+        instance.NorminalVoltage         = CSConv.to_double(self.nominal_voltage)
+        instance.NorminalCapacitor       = CSConv.to_double(self.nominal_capacitor)
+        instance.MaxCurrentCharge        = CSConv.to_double(self.max_current_charge)
+        instance.MinVoltageCharge        = CSConv.to_double(self.min_voltage_charge)
+        instance.MaxVoltageCharge        = CSConv.to_double(self.max_voltage_charge)
+        instance.IsAutoCalcNCapacity     = CSConv.to_bool(self.is_auto_calc_n_capacity)
+        return instance
+    
+@dataclass
+class StartChannelInfo:
+    """Python wrapper of 'ArbinCTI.Core.Common.Start.StartChannelInfo'"""
+    channel_index : int               = -1
+    test_name     : str               = ""
+    schedule_name : str               = ""
+    barcode       : str               = ""
+    test_object   : TestObjectSetting = field(default_factory=TestObjectSetting)
+
+    def to_cs(self) -> ArbinCTI.Common.Start.StartChannelInfo:
+        if not isinstance(self.test_object, TestObjectSetting):
+            raise TypeError("'test_object' must be of type TestObjectSetting")
+        
+        instance = ArbinCTI.Common.Start.StartChannelInfo()
+        instance.ChannelIndex = CSConv.to_int(self.channel_index)
+        instance.TestName     = CSConv.to_string(self.test_name)
+        instance.ScheduleName = CSConv.to_string(self.schedule_name)
+        instance.Barcode      = CSConv.to_string(self.barcode)
+        instance.TestObject   = self.test_object.to_cs()
+        return instance
+    
+@dataclass
+class StartChannelAdvancedArgs:
+    """Python wrapper of 'ArbinCTI.Core.Common.Start.StartChannelAdvancedArgs'"""
+    task_id  : int  = 0
+    channels : list = field(default_factory=list)
+
+    def to_cs(self) -> ArbinCTI.Common.Start.StartChannelAdvancedArgs:
+        if not all(isinstance(obj, StartChannelInfo) for obj in self.channels):
+            raise ValueError("All items in 'channels' must be of type StartChannelInfo")
+        
+        instance = ArbinCTI.Common.Start.StartChannelAdvancedArgs()
+        instance.TaskID   = CSConv.to_long(self.task_id)
+        instance.Channels = CSConv.to_list(self.channels)
+        return instance
+    
+@dataclass
+class GetMappingAuxArgs:
+    task_id : int = 0
+
+    def to_cs(self) -> ArbinCTI.Common.GetMappingAux.GetMappingAuxArgs:
+        instance = ArbinCTI.Common.GetMappingAux.GetMappingAuxArgs()
+        instance.TaskID = CSConv.to_long(self.task_id)
+        return instance
+
+@dataclass
+class SafetyScope:
+    low  : float = 0
+    high : float = 0
+
+    def to_cs(self) -> ArbinCTI.Common.ModifySchedule.SafetyScope:
+        instance = ArbinCTI.Common.ModifySchedule.SafetyScope()
+        instance.Low  = CSConv.to_double(self.low)
+        instance.High = CSConv.to_double(self.high)
+        return instance
+
+@dataclass
+class AuxChannelRequirementBase:
+    enable    : bool = False
+    aux_count : int  = 0
+    
+    def to_cs(self) -> ArbinCTI.Common.ModifySchedule.AuxChannelRequirementBase:
+        instance = ArbinCTI.Common.ModifySchedule.AuxChannelRequirementBase()
+        instance.Enable    = CSConv.to_bool(self.enable)
+        instance.AuxCount  = CSConv.to_uint(self.aux_count)
+        return instance
+
+@dataclass
+class AuxChannelRequirement(AuxChannelRequirementBase):
+    safety_scope : SafetyScope = field(default_factory=SafetyScope)
+
+    def to_cs(self) -> ArbinCTI.Common.ModifySchedule.AuxChannelRequirement:
+        instance = ArbinCTI.Common.ModifySchedule.AuxChannelRequirement()
+        instance.Enable      = CSConv.to_bool(self.enable)
+        instance.AuxCount    = CSConv.to_uint(self.aux_count)
+        instance.SafetyScope = self.safety_scope.to_cs()
+        return instance
+
+@dataclass
+class AuxSafetyRequirement(AuxChannelRequirementBase):
+    temperature_safety_scope : SafetyScope = field(default_factory=SafetyScope)
+    current_safety_scope     : SafetyScope = field(default_factory=SafetyScope)
+    voltage_safety_scope     : SafetyScope = field(default_factory=SafetyScope)
+
+    def to_cs(self) -> ArbinCTI.Common.ModifySchedule.AuxSafelyRequirement:
+        instance = ArbinCTI.Common.ModifySchedule.AuxSafelyRequirement()
+        instance.Enable                  = CSConv.to_bool(self.enable)
+        instance.AuxCount                = CSConv.to_uint(self.aux_count)
+        instance.TemperatureSafetyScope  = self.temperature_safety_scope.to_cs()
+        instance.CurrentSafetyScope      = self.current_safety_scope.to_cs()
+        instance.VoltageSafetyScope      = self.voltage_safety_scope.to_cs()
+        return instance
+
+@dataclass
+class ScheduleModifyInfo:
+    schedule_name                    : str                       = ""
+    aux_do_requirement               : AuxChannelRequirementBase = field(default_factory=AuxChannelRequirementBase)
+    aux_ao_requirement               : AuxChannelRequirementBase = field(default_factory=AuxChannelRequirementBase)
+    canbms_requirement               : AuxChannelRequirementBase = field(default_factory=AuxChannelRequirementBase)
+    smb_requirement                  : AuxChannelRequirementBase = field(default_factory=AuxChannelRequirementBase)
+    aux_voltage_requirement          : AuxChannelRequirement     = field(default_factory=AuxChannelRequirement)
+    aux_temperature_requirement      : AuxChannelRequirement     = field(default_factory=AuxChannelRequirement)
+    aux_pressure_requirement         : AuxChannelRequirement     = field(default_factory=AuxChannelRequirement)
+    aux_di_requirement               : AuxChannelRequirement     = field(default_factory=AuxChannelRequirement)
+    aux_external_charge_requirement  : AuxChannelRequirement     = field(default_factory=AuxChannelRequirement)
+    aux_humidity_requirement         : AuxChannelRequirement     = field(default_factory=AuxChannelRequirement)
+    aux_safety_requirement           : AuxSafetyRequirement      = field(default_factory=AuxSafetyRequirement)
+
+    def to_cs(self) -> ArbinCTI.Common.ModifySchedule.ScheduleModifyInfo:
+        instance = ArbinCTI.Common.ModifySchedule.ScheduleModifyInfo()
+        instance.ScheduleName                   = CSConv.to_string(self.schedule_name)
+        instance.AuxDORequirement               = self.aux_do_requirement.to_cs()
+        instance.AuxAORequirement               = self.aux_ao_requirement.to_cs()
+        instance.CANBMSRequirement              = self.canbms_requirement.to_cs()
+        instance.SMBRequirement                 = self.smb_requirement.to_cs()
+        instance.AuxVoltageRequirement          = self.aux_voltage_requirement.to_cs()
+        instance.AuxTemperatureRequirement      = self.aux_temperature_requirement.to_cs()
+        instance.AuxPressureRequirement         = self.aux_pressure_requirement.to_cs()
+        instance.AuxDIRequirement               = self.aux_di_requirement.to_cs()
+        instance.AuxExternalChargeRequirement   = self.aux_external_charge_requirement.to_cs()
+        instance.AuxHumidityRequirement         = self.aux_humidity_requirement.to_cs()
+        instance.AuxSafelyRequirement           = self.aux_safety_requirement.to_cs()
+        return instance
+
+@dataclass
+class ModifyScheduleArgs:
+    task_id: int = 0
+    schedule_modify_info: list = field(default_factory=list)
+
+    def to_cs(self) -> ArbinCTI.Common.ModifySchedule.ModifyScheduleArgs:
+        if not all(isinstance(obj, ScheduleModifyInfo) for obj in self.schedule_modify_info):
+            raise ValueError("All items in 'schedule_modify_info' must be of type ScheduleModifyInfo")
+        
+        instance = ArbinCTI.Common.ModifySchedule.ModifyScheduleArgs()
+        instance.TaskID = CSConv.to_long(self.task_id)
+        instance.ScheduleModifyInfo = CSConv.to_list(self.schedule_modify_info)
         return instance

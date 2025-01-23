@@ -18,7 +18,8 @@ from arbintoolbox.src.arbincti.feedback.schedule_operation import (
     SetMetaVariableFeedback,
     SetMetaVariableTimeSensitiveFeedback,
     GetMetaVariableFeedback,
-    UpdateParameterFeedback
+    UpdateParameterFeedback,
+    ModifyScheduleFeedback,
 )
 
 UNITTEST_VIEW_DICT = os.getenv("UNITTEST_VIEW_DICT", False)
@@ -167,3 +168,26 @@ class TestFeedbackClasses(unittest.TestCase):
 
         if UNITTEST_VIEW_DICT:
             print("UpdateParameterFeedback:", feedback_instance.to_dict())
+
+    def test_ModifyScheduleFeedback_instantiation(self):
+        modify_schedule_result = ArbinCTI.Common.ModifySchedule.ModifyScheduleResult()
+        modify_schedule_result.ScheduleName = "TestSchedule"
+        modify_schedule_result.Result = ArbinCTI.Common.Enumeration.MODIFY_SCHEDULE_TOKEN.CTI_MODIFY_SUCCESS
+        modify_schedule_result.Message = "Modification successful"
+
+        modify_schedule_result_list = List[ArbinCTI.Common.ModifySchedule.ModifyScheduleResult]()
+        modify_schedule_result_list.Add(modify_schedule_result)
+
+        cs_instance = ArbinCTI.ArbinCommandModifyScheduleFeed()
+        cs_instance.TaskID = 123
+        cs_instance.ScheduleModifyInfos = modify_schedule_result_list
+
+        feedback_instance = ModifyScheduleFeedback(cs_instance)
+
+        self.assertEqual(feedback_instance.task_id, 123)
+        self.assertEqual(feedback_instance.schedule_modify_info[0].schedule_name, "TestSchedule")
+        self.assertEqual(feedback_instance.schedule_modify_info[0].result, ModifyScheduleFeedback.EModifyScheduleToken.CTI_MODIFY_SUCCESS)
+        self.assertEqual(feedback_instance.schedule_modify_info[0].message, "Modification successful")
+
+        if UNITTEST_VIEW_DICT:
+            print("ModifyScheduleFeedback:", feedback_instance.to_dict())

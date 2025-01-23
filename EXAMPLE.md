@@ -12,18 +12,19 @@ Here are some example how to use "pythonnet" and "ctitoolbox" in order to intera
 ## Data Type Casting in Pythonnet
 Pythonnet doesn't handle casting between Python and C# data types perfectly. Explicit casting is recommended for certain data types. Below is a known data type casting compatibility in Pythonnet.
 
-| Python Type | Pythonnet Type    | C# Type  | Implicit Casting       | Explicit Casting |
-|-------------|-------------------|----------|------------------------|------------------|
-| `bool`      | `Boolean`         | `bool`   | Yes                    | Yes              |
-| `int`       | `Int32`           | `int`    | Yes                    | Yes              |
-| `int`       | `UInt32`          | `uint`   | Yes                    | Yes              |
-| `float`     | `Single`          | `float`  | Yes                    | Yes              |
-| `float`     | `Double`          | `double` | Yes                    | Yes              |
-| `str`       | `String`          | `string` | Yes                    | Yes              |
-|-|-|-|-|-|
-| `bytearray` | `Array` of `Byte` | `byte[]` | **No**                 | Yes              |
-| `int`       | `Int16`           | `short`  | **No**                 | Yes              |
-| `int`       | `UInt16`          | `ushort` | **No**                 | Yes              |
+| Python Type | Pythonnet Type    | C# Type  | Implicit Casting       |
+|-------------|-------------------|----------|------------------------|
+| `bool`      | `Boolean`         | `bool`   | Yes                    |
+| `int`       | `Int32`           | `int`    | Yes                    |
+| `int`       | `UInt32`          | `uint`   | Yes                    |
+| `float`     | `Single`          | `float`  | Yes                    |
+| `float`     | `Double`          | `double` | Yes                    |
+| `str`       | `String`          | `string` | Yes                    |
+|-|-|-|-|
+| `bytearray` | `Array` of `Byte` | `byte[]` | **No**                 |
+| `int`       | `Int16`           | `short`  | **No**                 |
+| `int`       | `UInt16`          | `ushort` | **No**                 |
+| `int`       | `Int64`           | `long`   | **No**                 |
 
 
 #### Safe Implicit Casting Examples
