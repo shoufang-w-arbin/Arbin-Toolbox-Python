@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "arbintoolbox"
-version = "0.1.0"
+version = "0.2.0"
 license = { file = "LICENSE.txt" }
 authors = [{name="Shou-Fang Wu", email="shoufang.w@arbin.com" },]
 description = "A toolbox that provides a smoother and more Pythonic programming experience for users who want to use ArbinCTI and ArbinClient in Python"
