@@ -156,11 +156,12 @@ class ContinueChannelFeedback(DictReprBase):
         self.result = ContinueChannelFeedback.EContinueToken(int(feedback.Result))
 
 class StartChannelAdvancedFeedback(DictReprBase):
-    class StartChannelResult:
+    class StartChannelResult(DictReprBase):
         def __init__(self, result: ArbinCTI.ArbinCommandStartChannelAdvancedFeed.StartChannelResult):
             self.channel_index = int(result.ChannelIndex)
             self.result        = StartChannelFeedback.EStartToken(int(result.StartResult))
             self.message       = str(result.Message)
+        
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandStartChannelAdvancedFeed):
         if not isinstance(feedback, ArbinCTI.ArbinCommandStartChannelAdvancedFeed):
