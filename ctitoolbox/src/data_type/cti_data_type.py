@@ -381,3 +381,12 @@ class StartChannelAdvancedArgs:
         instance.TaskID   = CSTypeConverter.to_long(self.task_id)
         instance.Channels = CSTypeConverter.to_list(self.channels)
         return instance
+    
+@dataclass
+class GetMappingAuxArgs:
+    task_id : int = 0
+
+    def to_cs(self) -> ArbinCTI.Common.GetMappingAux.GetMappingAuxArgs:
+        instance = ArbinCTI.Common.GetMappingAux.GetMappingAuxArgs()
+        instance.TaskID = CSTypeConverter.to_long(self.task_id)
+        return instance

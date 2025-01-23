@@ -374,3 +374,33 @@ class GetStartDataFeedback(DictReprBase):
         if not isinstance(feedback, ArbinCTI.ArbinCommandGetStartDataFeed):
             raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetStartDataFeed', got '{type(feedback)}'")
         self.channel_data = [GetStartDataFeedback.StartDataInfo(info) for info in feedback.m_Channels]
+
+class GetMappingAuxFeedback(DictReprBase):
+    class EAuxChannelType(SafeIntEnumBase):
+        Voltage = 0
+        Temperature = 1
+        Pressure = 2
+        DI = 3
+        DO = 4
+        ExternalCharge = 5
+        Safety = 6
+        Humidity = 7
+        AO = 8
+        CANBMS = 9
+        SMB = 10
+
+    class AuxChannelInfo(DictReprBase):
+        def __init__(self, info: ArbinCTI.Common.GetMappingAux.AuxChannelInfo):
+            self.aux_channel_type = GetMappingAuxFeedback.EAuxChannelType(int(info.AuxChannelType))
+            self.aux_count        = int(info.AuxCount)
+
+    class MappingInfo(DictReprBase):
+        def __init__(self, info: ArbinCTI.Common.GetMappingAux.MappingInfo):
+            self.channel_index    = int(info.ChannelIndex)
+            self.aux_channel_info = [GetMappingAuxFeedback.AuxChannelInfo(info) for info in info.AuxChannelInfos]
+
+    def __init__(self, feedback: ArbinCTI.ArbinCommandGetMappingAuxFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandGetMappingAuxFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetMappingAuxFeed', got '{type(feedback)}'")
+        self.task_id      = int(feedback.TaskID)
+        self.mapping_info = [GetMappingAuxFeedback.MappingInfo(info) for info in feedback.MappingInfos]

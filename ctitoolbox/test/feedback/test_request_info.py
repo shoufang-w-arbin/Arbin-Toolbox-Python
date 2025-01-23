@@ -12,6 +12,9 @@ from System.Collections.Generic import List # type: ignore
 from ctitoolbox.src.feedback.request_info import (
     GetStartDataFeedback,
     GetChannelDataFeedback,
+    GetResumeDataFeedback,
+    GetMappingAuxFeedback,
+
 )
 
 UNITTEST_VIEW_DICT = os.getenv("UNITTEST_VIEW_DICT", False)
@@ -232,3 +235,102 @@ class TestFeedbackClasses(unittest.TestCase):
         self.assertEqual(GetChannelDataFeedback.EGetChannelType.ALLCHANNEL.to_cs(), ArbinCTI.ArbinCommandGetChannelDataFeed.GET_CHANNEL_TYPE.ALLCHANNEL)
         self.assertEqual(GetChannelDataFeedback.EGetChannelType.RUNNING.to_cs(), ArbinCTI.ArbinCommandGetChannelDataFeed.GET_CHANNEL_TYPE.RUNNING)
         self.assertEqual(GetChannelDataFeedback.EGetChannelType.UNSAFE.to_cs(), ArbinCTI.ArbinCommandGetChannelDataFeed.GET_CHANNEL_TYPE.UNSAFE)
+
+    def test_GetMappingAuxFeedback_instantiation(self):
+        aux_channel_info_instance = ArbinCTI.Common.GetMappingAux.AuxChannelInfo()
+        aux_channel_info_instance.AuxChannelType = ArbinCTI.EAuxChannelType.Voltage
+        aux_channel_info_instance.AuxCount = 5
+
+        mapping_info_instance = ArbinCTI.Common.GetMappingAux.MappingInfo()
+        mapping_info_instance.ChannelIndex = 1
+        mapping_info_instance.AuxChannelInfos = List[ArbinCTI.Common.GetMappingAux.AuxChannelInfo]()
+        mapping_info_instance.AuxChannelInfos.Add(aux_channel_info_instance)
+
+        feedback_instance = ArbinCTI.ArbinCommandGetMappingAuxFeed()
+        feedback_instance.TaskID = 123
+        feedback_instance.MappingInfos = List[ArbinCTI.Common.GetMappingAux.MappingInfo]()
+        feedback_instance.MappingInfos.Add(mapping_info_instance)
+
+        feedback = GetMappingAuxFeedback(feedback_instance)
+
+        self.assertEqual(feedback.task_id, 123)
+        self.assertEqual(len(feedback.mapping_info), 1)
+        mapping_info = feedback.mapping_info[0]
+        self.assertEqual(mapping_info.channel_index, 1)
+        self.assertEqual(len(mapping_info.aux_channel_info), 1)
+        aux_channel_info = mapping_info.aux_channel_info[0]
+        self.assertEqual(aux_channel_info.aux_channel_type, GetMappingAuxFeedback.EAuxChannelType.Voltage)
+        self.assertEqual(aux_channel_info.aux_count, 5)
+
+        if UNITTEST_VIEW_DICT:
+            print("GetMappingAuxFeedback:", feedback.to_dict())
+
+    def test_GetResumeDataFeedback_instantiation(self):
+        resume_data_instance = ArbinCTI.ArbinCommandGetResumeDataFeed.ResumeDatalInfo.RESUME_DATA()
+        resume_data_instance.TestID = 1
+        resume_data_instance.Cycle = 2
+        resume_data_instance.StepIndex = 3
+        resume_data_instance.TestTime = 123.45
+        resume_data_instance.StepTime = 12.34
+        resume_data_instance.CCapacity = 100.0
+        resume_data_instance.DCapacity = 80.0
+        resume_data_instance.CEnergy = 50.0
+        resume_data_instance.DEnergy = 40.0
+        resume_data_instance.TC_Time1 = 1.1
+        resume_data_instance.TC_CCapacity1 = 10.0
+        resume_data_instance.TC_DCapacity1 = 15.0
+        resume_data_instance.TC_CEnergy1 = 5.0
+        resume_data_instance.TC_DEnergy1 = 7.0
+        resume_data_instance.TC_Counter1 = 1
+        resume_data_instance.MVUD1 = 1.1
+
+        assignment_info_instance = ArbinCTI.ArbinCommandGetResumeDataFeed.ResumeDatalInfo()
+        assignment_info_instance.Channel = 1
+        assignment_info_instance.channelCode = ArbinCTI.ArbinCommandGetResumeDataFeed.EGetDataResult.SUCCESS
+        assignment_info_instance.ResumeData = resume_data_instance
+        assignment_info_instance.TestName = "TestName"
+        assignment_info_instance.Schedule = "TestSchedule"
+        assignment_info_instance.Createor = "Creator"
+        assignment_info_instance.Comment = "Comment"
+        assignment_info_instance.StartTime = "StartTime"
+        assignment_info_instance.Steps = List[String]()
+        assignment_info_instance.Steps.Add("Step1")
+        assignment_info_instance.Steps.Add("Step2")
+
+        cs_instance = ArbinCTI.ArbinCommandGetResumeDataFeed()
+        cs_instance.m_Channels = List[ArbinCTI.ArbinCommandGetResumeDataFeed.ResumeDatalInfo]()
+        cs_instance.m_Channels.Add(assignment_info_instance)
+
+        feedback_instance = GetResumeDataFeedback(cs_instance)
+
+        self.assertEqual(len(feedback_instance.channel_data), 1)
+        channel = feedback_instance.channel_data[0]
+        self.assertEqual(channel.channel_index, 1)
+        self.assertEqual(channel.channel_code, GetResumeDataFeedback.EResult.SUCCESS)
+        self.assertEqual(channel.test_name, "TestName")
+        self.assertEqual(channel.schedule, "TestSchedule")
+        self.assertEqual(channel.creator, "Creator")
+        self.assertEqual(channel.comment, "Comment")
+        self.assertEqual(channel.start_time, "StartTime")
+        self.assertEqual(channel.step_names, ["Step1", "Step2"])
+
+        resume_data = channel.resume_data
+        self.assertEqual(resume_data.test_id, 1)
+        self.assertEqual(resume_data.cycle, 2)
+        self.assertEqual(resume_data.step_index, 3)
+        self.assertAlmostEqual(resume_data.test_time, 123.45, places=6)
+        self.assertAlmostEqual(resume_data.step_time, 12.34, places=6)
+        self.assertAlmostEqual(resume_data.c_capacity, 100.0, places=6)
+        self.assertAlmostEqual(resume_data.d_capacity, 80.0, places=6)
+        self.assertAlmostEqual(resume_data.c_energy, 50.0, places=6)
+        self.assertAlmostEqual(resume_data.d_energy, 40.0, places=6)
+        self.assertAlmostEqual(resume_data.tc_time1, 1.1, places=6)
+        self.assertAlmostEqual(resume_data.tc_c_capacity1, 10.0, places=6)
+        self.assertAlmostEqual(resume_data.tc_d_capacity1, 15.0, places=6)
+        self.assertAlmostEqual(resume_data.tc_c_energy1, 5.0, places=6)
+        self.assertAlmostEqual(resume_data.tc_d_energy1, 7.0, places=6)
+        self.assertAlmostEqual(resume_data.tc_counter1, 1, places=6)
+        self.assertAlmostEqual(resume_data.mvud1, 1.1, places=6)
+
+        if UNITTEST_VIEW_DICT:
+            print("GetResumeDataFeedback:", feedback_instance.to_dict())

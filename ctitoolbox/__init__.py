@@ -25,6 +25,8 @@ from ctitoolbox.src.feedback.channel_control import (
     ResumeChannelFeedback,
     JumpChannelFeedback,
     ContinueChannelFeedback,
+)
+from ctitoolbox.src.feedback.request_info import (
     GetChannelDataFeedback,
     GetResumeDataFeedback,
     GetStartDataFeedback

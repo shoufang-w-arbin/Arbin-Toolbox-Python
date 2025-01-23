@@ -45,30 +45,33 @@ The ArbinCTI wrapper provides Python classes for objects commonly used in ArbinC
 
 See [EXAMPLE.md](EXAMPLE.md#arbincti-object-creation) for detailed usage.
 
-| Wrapper Class              | Original Object                                           |
-|----------------------------|-----------------------------------------------------------|
-| StartResumeEx              | StartResumeEx                                             |
-| MetaVariableInfo           | ArbinCommandGetMetaVariablesFeed.MetaVariableInfo         |
-| MetaVariableInfoEx         | MetaVariableInfoEx                                        |
-| TimeSensitiveSetMVArgs     | ArbinCommandTimeSensitiveSetMVArgs                        |
-| CMetavariableDataCodeApply | ArbinCommandCMetavariableDataCodeApply                    |
+| Wrapper Class                          | Required By                            | Original Object                                           |
+|----------------------------------------|----------------------------------------|-----------------------------------------------------------|
+| ***Arguments***                        |                                        |                                                           | 
+| StartResumeEx                          | *PostStartChannelEx*                   | StartResumeEx                                             |
+| MetaVariableInfo                       | *PostGetMetaVariables*                 | ArbinCommandGetMetaVariablesFeed.MetaVariableInfo         |
+| MetaVariableInfoEx                     | *PostUpdateMetaVariableAdvancedEx*     | MetaVariableInfoEx                                        |
+| TimeSensitiveSetMVArgs                 | *PostTimeSensitiveSetMV*               | ArbinCommandTimeSensitiveSetMVArgs                        |
+| StartChannelAdvancedArgs               | *PostStartChannelAdvanced*             | Common.Start.StartChannelAdvancedArgs                     |
+|GetMappingAuxArgs| *PostGetMappingAux* |Common.GetMappingAux.GetMappingAuxArgs|
+| CMetavariableDataCodeApply             | *PostApplyForUDPCommunication*         | ArbinCommandCMetavariableDataCodeApply                    |
+| ***Enum Class***                       |                                        |                                                           | 
+| NewOrDeleteFeedback.ENewOrDeleteType   | *PostNewOrDelete*                      | ArbinCommandNewOrDeleteFeed.NEW_OR_DELETE_TYPE            |
+| UploadFileFeedback.UploadFileResult    | *PostUpLoadFile*                       | ArbinCommandUpLoadFileFeed.CUpLoadFileResult              |
+| AssignFileFeedback.EFileKind           | *PostAssignFile*                       | ArbinCommandAssignFileFeed.EFileKind                      |
+| GetChannelDataFeedback.EGetChannelType | *PostGetChannelsData*                  | ArbinCommandGetChannelFeed.GET_CHANNEL_TYPE               |
 
+### Additional Objects/Enums
 Additional Objects/Enums required for generating the above wrapper classes and sending ArbinCTI commands are also provided in this toolbox:
 
-| Wrapper Class                          | Original Object                                      | Required By                            |
-|----------------------------------------|------------------------------------------------------|----------------------------------------|
-| TE_DATA_TYPE                           | TE_DATA_TYPE                                         | MetaVariableInfo, MetaVariableInfoEx, CMetavariableDataCodeApply |
-| TimeSensitiveSetMV                     | TimeSensitiveSetMV                                   | TimeSensitiveSetMVArgs                 |
-| NewOrDeleteFeedback.ENewOrDeleteType   | ArbinCommandNewOrDeleteFeed.NEW_OR_DELETE_TYPE       | *PostNewOrDelete*                      |
-| UploadFileFeedback.UploadFileResult    | ArbinCommandUpLoadFileFeed.CUpLoadFileResult         | *PostUpLoadFile*                       |
-| AssignFileFeedback.EFileKind           | ArbinCommandAssignFileFeed.EFileKind                 | *PostAssignFile*                       |
-| GetChannelDataFeedback.EGetChannelType | ArbinCommandGetChannelFeed.GET_CHANNEL_TYPE          | *PostGetChannelsData*                  |
-| TestObjectSetting                      | Common.Start.TestObjectSetting                       | *PostStartChannelAdvanced*             |
-| StartChannelInfo                       | Common.Start.StartChannelInfo                        | *PostStartChannelAdvanced*             |
-| StartChannelAdvancedArgs               | Common.Start.StartChannelAdvancedArgs                | *PostStartChannelAdvanced*             |
+| Wrapper Class                          | Required By                            | Original Object                                      |
+|----------------------------------------|----------------------------------------|------------------------------------------------------|
+| TE_DATA_TYPE                           | MetaVariableInfo, MetaVariableInfoEx, CMetavariableDataCodeApply | TE_DATA_TYPE               |
+| TimeSensitiveSetMV                     | TimeSensitiveSetMVArgs                 | TimeSensitiveSetMV                                   |
+| TestObjectSetting                      | StartChannelInfo          | Common.Start.TestObjectSetting                       |
+| StartChannelInfo                       | StartChannelAdvancedArgs  | Common.Start.StartChannelInfo                        |
 
-
-> Ignoring namespace `ArbinCTI.Core` in the second columns for simplicity.
+> Ignoring namespace `ArbinCTI.Core` in the third columns for simplicity.
 
 ### Feedback Objects
 The wrapper class provides a convenient way to work with ArbinCTI feedback objects in Python.
@@ -95,6 +98,7 @@ See [EXAMPLE.md](EXAMPLE.md#arbincti-feedback-accessing) for detailed usage.
 | ResumeChannelFeedback                | ArbinCommandResumeChannelFeed                     |
 | JumpChannelFeedback                  | ArbinCommandJumpChannelFeed                       |
 | ContinueChannelFeedback              | ArbinCommandContinueChannelFeed                   |
+| StartChannelAdvancedFeedback         | ArbinCommandStartChannelAdvancedFeed              |
 | ***File Operation***                 |                                                   |
 | UploadFileFeedback                   | ArbinCommandUpLoadFileFeed                        |
 | DownloadFileFeedback                 | ArbinCommandDownloadFileFeed                      |
@@ -107,6 +111,7 @@ See [EXAMPLE.md](EXAMPLE.md#arbincti-feedback-accessing) for detailed usage.
 | GetChannelDataFeedback               | ArbinCommandGetChannelDataFeed                    |
 | GetStartDataFeedback                 | ArbinCommandGetStartDataFeed                      |
 | GetResumeDataFeedback                | ArbinCommandGetResumeDataFeed                     |
+| GetMappingAuxFeedback                | ArbinCommandGetMappingAuxFeed                     |
 | GetSerialNumberFeedback              | ArbinCommandGetSerialNumberFeed                   |
 | GetMITSVersionFeedback               | ArbinCommandGetServerSoftwareVersionNumberFeed    |
 

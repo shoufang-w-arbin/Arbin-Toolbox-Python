@@ -14,6 +14,7 @@ from ctitoolbox.src.data_type.cti_data_type import (
     TestObjectSetting,
     StartChannelInfo,
     StartChannelAdvancedArgs,
+    GetMappingAuxArgs,
 )
 
 UNITTEST_VIEW_DICT = os.getenv("UNITTEST_VIEW_DICT", False)
@@ -261,3 +262,11 @@ class TestArbinCTIClasses(unittest.TestCase):
         self.assertEqual(cs_instance.Channels[0].TestObject.MinVoltageCharge, 8.0)
         self.assertEqual(cs_instance.Channels[0].TestObject.MaxVoltageCharge, 9.0)
         self.assertEqual(cs_instance.Channels[0].TestObject.IsAutoCalcNCapacity, True)
+ 
+    def test_get_mapping_aux_args_to_cs(self):
+        """Test conversion of GetMappingAuxArgs to C# object"""
+        get_mapping_aux_args = GetMappingAuxArgs(task_id=456)
+
+        cs_instance = get_mapping_aux_args.to_cs()
+
+        self.assertEqual(cs_instance.TaskID, 456)
