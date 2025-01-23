@@ -62,7 +62,7 @@ See [EXAMPLE.md](EXAMPLE.md#arbincti-object-creation) for detailed usage.
 | AssignFileFeedback.EFileKind           | *PostAssignFile*                       | ArbinCommandAssignFileFeed.EFileKind                      |
 | GetChannelDataFeedback.EGetChannelType | *PostGetChannelsData*                  | ArbinCommandGetChannelFeed.GET_CHANNEL_TYPE               |
 
-### Additional Objects/Enums
+#### Additional Objects/Enums
 Additional Objects/Enums required for generating the above wrapper classes and sending ArbinCTI commands are also provided in this toolbox:
 
 | Wrapper Class                          | Required By                            | Original Object                                      |
@@ -75,8 +75,6 @@ Additional Objects/Enums required for generating the above wrapper classes and s
 | AuxChannelRequirementBase              | ScheduleModifyInfo                     | Common.ModifySchedule.AuxChannelRequirementBase      |
 | AuxChannelRequirement                  | ScheduleModifyInfo                     | Common.ModifySchedule.AuxChannelRequirement          |
 | SafetyScope                            | AuxChannelRequirement, AuxSafetyRequirement | Common.ModifySchedule.SafetyScope               |
-
-
 
 > Ignoring namespace `ArbinCTI.Core` in the third columns for simplicity.
 
