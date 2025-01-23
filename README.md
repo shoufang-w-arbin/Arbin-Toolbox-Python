@@ -51,10 +51,11 @@ See [EXAMPLE.md](EXAMPLE.md#arbincti-object-creation) for detailed usage.
 | StartResumeEx                          | *PostStartChannelEx*                   | StartResumeEx                                             |
 | MetaVariableInfo                       | *PostGetMetaVariables*                 | ArbinCommandGetMetaVariablesFeed.MetaVariableInfo         |
 | MetaVariableInfoEx                     | *PostUpdateMetaVariableAdvancedEx*     | MetaVariableInfoEx                                        |
+| CMetavariableDataCodeApply             | *PostApplyForUDPCommunication*         | ArbinCommandCMetavariableDataCodeApply                    |
 | TimeSensitiveSetMVArgs                 | *PostTimeSensitiveSetMV*               | ArbinCommandTimeSensitiveSetMVArgs                        |
 | StartChannelAdvancedArgs               | *PostStartChannelAdvanced*             | Common.Start.StartChannelAdvancedArgs                     |
-|GetMappingAuxArgs| *PostGetMappingAux* |Common.GetMappingAux.GetMappingAuxArgs|
-| CMetavariableDataCodeApply             | *PostApplyForUDPCommunication*         | ArbinCommandCMetavariableDataCodeApply                    |
+| GetMappingAuxArgs                      | *PostGetMappingAux*                    | Common.GetMappingAux.GetMappingAuxArgs                    |
+| ModifyScheduleArgs                     | *PostModifySchedule*                   | Common.ModifySchedule.ModifyScheduleArgs                  |
 | ***Enum Class***                       |                                        |                                                           | 
 | NewOrDeleteFeedback.ENewOrDeleteType   | *PostNewOrDelete*                      | ArbinCommandNewOrDeleteFeed.NEW_OR_DELETE_TYPE            |
 | UploadFileFeedback.UploadFileResult    | *PostUpLoadFile*                       | ArbinCommandUpLoadFileFeed.CUpLoadFileResult              |
@@ -68,8 +69,14 @@ Additional Objects/Enums required for generating the above wrapper classes and s
 |----------------------------------------|----------------------------------------|------------------------------------------------------|
 | TE_DATA_TYPE                           | MetaVariableInfo, MetaVariableInfoEx, CMetavariableDataCodeApply | TE_DATA_TYPE               |
 | TimeSensitiveSetMV                     | TimeSensitiveSetMVArgs                 | TimeSensitiveSetMV                                   |
-| TestObjectSetting                      | StartChannelInfo          | Common.Start.TestObjectSetting                       |
-| StartChannelInfo                       | StartChannelAdvancedArgs  | Common.Start.StartChannelInfo                        |
+| StartChannelInfo                       | StartChannelAdvancedArgs               | Common.Start.StartChannelInfo                        |
+| TestObjectSetting                      | StartChannelInfo                       | Common.Start.TestObjectSetting                       |
+| ScheduleModifyInfo                     | ModifyScheduleArgs                     | Common.ModifySchedule.ModifyScheduleArgs             |
+| AuxChannelRequirementBase              | ScheduleModifyInfo                     | Common.ModifySchedule.AuxChannelRequirementBase      |
+| AuxChannelRequirement                  | ScheduleModifyInfo                     | Common.ModifySchedule.AuxChannelRequirement          |
+| SafetyScope                            | AuxChannelRequirement, AuxSafetyRequirement | Common.ModifySchedule.SafetyScope               |
+
+
 
 > Ignoring namespace `ArbinCTI.Core` in the third columns for simplicity.
 

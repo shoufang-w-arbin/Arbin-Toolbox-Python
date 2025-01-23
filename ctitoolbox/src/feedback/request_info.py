@@ -12,6 +12,7 @@ Request Info
 - GetChannelDataFeedback
 - GetResumeDataFeedback
 - GetStartDataFeedback
+- GetMappingAuxFeedback
 """""""""""""""""""""""""""
 
 class GetChannelDataFeedback(DictReprBase):

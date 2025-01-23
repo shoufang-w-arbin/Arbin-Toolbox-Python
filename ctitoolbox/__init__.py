@@ -15,9 +15,8 @@ from ctitoolbox.src.data_type.cti_data_type import (
     TimeSensitiveSetMV,
     TimeSensitiveSetMVArgs,
     CMetavariableDataCodeApply,
-    TestObjectSetting,
-    StartChannelInfo,
-    StartChannelAdvancedArgs,
+    TestObjectSetting, StartChannelInfo, StartChannelAdvancedArgs,
+    SafetyScope, AuxChannelRequirementBase, AuxChannelRequirement, AuxSafetyRequirement, ScheduleModifyInfo, ModifyScheduleArgs
 )
 from ctitoolbox.src.feedback.channel_control import (
     StartChannelFeedback,
@@ -25,11 +24,13 @@ from ctitoolbox.src.feedback.channel_control import (
     ResumeChannelFeedback,
     JumpChannelFeedback,
     ContinueChannelFeedback,
+    StartChannelAdvancedFeedback,
 )
 from ctitoolbox.src.feedback.request_info import (
     GetChannelDataFeedback,
     GetResumeDataFeedback,
-    GetStartDataFeedback
+    GetStartDataFeedback,
+    GetMappingAuxFeedback,
 )
 from ctitoolbox.src.feedback.file_management import (
     UploadFileFeedback,

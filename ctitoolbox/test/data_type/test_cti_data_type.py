@@ -15,6 +15,12 @@ from ctitoolbox.src.data_type.cti_data_type import (
     StartChannelInfo,
     StartChannelAdvancedArgs,
     GetMappingAuxArgs,
+    SafetyScope, 
+    AuxChannelRequirementBase,
+    AuxChannelRequirement,
+    AuxSafetyRequirement,
+    ScheduleModifyInfo,
+    ModifyScheduleArgs
 )
 
 UNITTEST_VIEW_DICT = os.getenv("UNITTEST_VIEW_DICT", False)
@@ -270,3 +276,120 @@ class TestArbinCTIClasses(unittest.TestCase):
         cs_instance = get_mapping_aux_args.to_cs()
 
         self.assertEqual(cs_instance.TaskID, 456)
+
+    def test_safety_scope_to_cs(self):
+        """Test conversion of SafetyScope to C# object"""
+        safety_scope = SafetyScope(low=1.0, high=2.0)
+
+        cs_instance = safety_scope.to_cs()
+
+        self.assertEqual(cs_instance.Low, 1.0)
+        self.assertEqual(cs_instance.High, 2.0)
+
+    def test_aux_channel_requirement_base_to_cs(self):
+        """Test conversion of AuxChannelRequirementBase to C# object"""
+        aux_channel_req_base = AuxChannelRequirementBase(enable=True, aux_count=5)
+
+        cs_instance = aux_channel_req_base.to_cs()
+
+        self.assertEqual(cs_instance.Enable, True)
+        self.assertEqual(cs_instance.AuxCount, 5)
+
+    def test_aux_channel_requirement_to_cs(self):
+        """Test conversion of AuxChannelRequirement to C# object"""
+        safety_scope = SafetyScope(low=1.0, high=2.0)
+        aux_channel_req = AuxChannelRequirement(enable=True, aux_count=5, safety_scope=safety_scope)
+
+        cs_instance = aux_channel_req.to_cs()
+
+        self.assertEqual(cs_instance.Enable, True)
+        self.assertEqual(cs_instance.AuxCount, 5)
+        self.assertEqual(cs_instance.SafetyScope.Low, 1.0)
+        self.assertEqual(cs_instance.SafetyScope.High, 2.0)
+
+    def test_aux_safety_requirement_to_cs(self):
+        """Test conversion of AuxSafetyRequirement to C# object"""
+        temp_scope = SafetyScope(low=1.0, high=2.0)
+        current_scope = SafetyScope(low=3.0, high=4.0)
+        voltage_scope = SafetyScope(low=5.0, high=6.0)
+        aux_safety_req = AuxSafetyRequirement(enable=True, aux_count=5, temperature_safety_scope=temp_scope, current_safety_scope=current_scope, voltage_safety_scope=voltage_scope)
+
+        cs_instance = aux_safety_req.to_cs()
+
+        self.assertEqual(cs_instance.Enable, True)
+        self.assertEqual(cs_instance.AuxCount, 5)
+        self.assertEqual(cs_instance.TemperatureSafetyScope.Low, 1.0)
+        self.assertEqual(cs_instance.TemperatureSafetyScope.High, 2.0)
+        self.assertEqual(cs_instance.CurrentSafetyScope.Low, 3.0)
+        self.assertEqual(cs_instance.CurrentSafetyScope.High, 4.0)
+        self.assertEqual(cs_instance.VoltageSafetyScope.Low, 5.0)
+        self.assertEqual(cs_instance.VoltageSafetyScope.High, 6.0)
+
+    def test_schedule_modify_info_to_cs(self):
+        """Test conversion of ScheduleModifyInfo to C# object"""
+        aux_do_req = AuxChannelRequirementBase(enable=True, aux_count=5)
+        aux_ao_req = AuxChannelRequirementBase(enable=False, aux_count=3)
+        aux_voltage_req = AuxChannelRequirement(enable=True, aux_count=2, safety_scope=SafetyScope(low=1.0, high=2.0))
+        aux_safety_req = AuxSafetyRequirement(enable=True, aux_count=1, temperature_safety_scope=SafetyScope(low=3.0, high=4.0))
+
+        schedule_modify_info = ScheduleModifyInfo(
+            schedule_name="TestSchedule",
+            aux_do_requirement=aux_do_req,
+            aux_ao_requirement=aux_ao_req,
+            aux_voltage_requirement=aux_voltage_req,
+            aux_safety_requirement=aux_safety_req
+        )
+
+        cs_instance = schedule_modify_info.to_cs()
+
+        self.assertEqual(cs_instance.ScheduleName, "TestSchedule")
+        self.assertEqual(cs_instance.AuxDORequirement.Enable, True)
+        self.assertEqual(cs_instance.AuxDORequirement.AuxCount, 5)
+        self.assertEqual(cs_instance.AuxAORequirement.Enable, False)
+        self.assertEqual(cs_instance.AuxAORequirement.AuxCount, 3)
+        self.assertEqual(cs_instance.AuxVoltageRequirement.Enable, True)
+        self.assertEqual(cs_instance.AuxVoltageRequirement.AuxCount, 2)
+        self.assertEqual(cs_instance.AuxVoltageRequirement.SafetyScope.Low, 1.0)
+        self.assertEqual(cs_instance.AuxVoltageRequirement.SafetyScope.High, 2.0)
+        self.assertEqual(cs_instance.AuxSafelyRequirement.Enable, True)
+        self.assertEqual(cs_instance.AuxSafelyRequirement.AuxCount, 1)
+        self.assertEqual(cs_instance.AuxSafelyRequirement.TemperatureSafetyScope.Low, 3.0)
+        self.assertEqual(cs_instance.AuxSafelyRequirement.TemperatureSafetyScope.High, 4.0)
+
+    def test_modify_schedule_args_to_cs(self):
+        """Test conversion of ModifyScheduleArgs to C# object"""
+        aux_do_req = AuxChannelRequirementBase(enable=True, aux_count=5)
+        aux_ao_req = AuxChannelRequirementBase(enable=False, aux_count=3)
+        aux_voltage_req = AuxChannelRequirement(enable=True, aux_count=2, safety_scope=SafetyScope(low=1.0, high=2.0))
+        aux_safety_req = AuxSafetyRequirement(enable=True, aux_count=1, temperature_safety_scope=SafetyScope(low=3.0, high=4.0))
+
+        schedule_modify_info = ScheduleModifyInfo(
+            schedule_name="TestSchedule",
+            aux_do_requirement=aux_do_req,
+            aux_ao_requirement=aux_ao_req,
+            aux_voltage_requirement=aux_voltage_req,
+            aux_safety_requirement=aux_safety_req
+        )
+
+        modify_schedule_args = ModifyScheduleArgs(
+            task_id=789,
+            schedule_modify_info=[schedule_modify_info]
+        )
+
+        cs_instance = modify_schedule_args.to_cs()
+
+        self.assertEqual(cs_instance.TaskID, 789)
+        self.assertEqual(len(cs_instance.ScheduleModifyInfo), 1)
+        self.assertEqual(cs_instance.ScheduleModifyInfo[0].ScheduleName, "TestSchedule")
+        self.assertEqual(cs_instance.ScheduleModifyInfo[0].AuxDORequirement.Enable, True)
+        self.assertEqual(cs_instance.ScheduleModifyInfo[0].AuxDORequirement.AuxCount, 5)
+        self.assertEqual(cs_instance.ScheduleModifyInfo[0].AuxAORequirement.Enable, False)
+        self.assertEqual(cs_instance.ScheduleModifyInfo[0].AuxAORequirement.AuxCount, 3)
+        self.assertEqual(cs_instance.ScheduleModifyInfo[0].AuxVoltageRequirement.Enable, True)
+        self.assertEqual(cs_instance.ScheduleModifyInfo[0].AuxVoltageRequirement.AuxCount, 2)
+        self.assertEqual(cs_instance.ScheduleModifyInfo[0].AuxVoltageRequirement.SafetyScope.Low, 1.0)
+        self.assertEqual(cs_instance.ScheduleModifyInfo[0].AuxVoltageRequirement.SafetyScope.High, 2.0)
+        self.assertEqual(cs_instance.ScheduleModifyInfo[0].AuxSafelyRequirement.Enable, True)
+        self.assertEqual(cs_instance.ScheduleModifyInfo[0].AuxSafelyRequirement.AuxCount, 1)
+        self.assertEqual(cs_instance.ScheduleModifyInfo[0].AuxSafelyRequirement.TemperatureSafetyScope.Low, 3.0)
+        self.assertEqual(cs_instance.ScheduleModifyInfo[0].AuxSafelyRequirement.TemperatureSafetyScope.High, 4.0)
