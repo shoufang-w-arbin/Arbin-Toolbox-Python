@@ -47,7 +47,8 @@ from ctitoolbox.src.feedback.schedule_operation import (
     AssignFileFeedback,
     SetMetaVariableFeedback,
     SetMetaVariableTimeSensitiveFeedback,
-    GetMetaVariableFeedback
+    GetMetaVariableFeedback,
+    ModifyScheduleFeedback,
 )
 from ctitoolbox.src.feedback.system import (
     GetSerailNumberFeedback,
