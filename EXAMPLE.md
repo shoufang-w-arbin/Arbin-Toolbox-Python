@@ -1,13 +1,13 @@
-# Usage Examples
+# Usage and Examples
 ## About
-Here are some example how to use "pythonnet" and "ctitoolbox" in order to interact smoothly with ArbinCTI.
+Here are some examples and notes on how to use `pythonnet` and `arbintoolbox` to interact smoothly with **ArbinCTI** and **ArbinClient**.
 
 - [Data Type Casting in Pythonnet](#data-type-casting-in-pythonnet)
   - [Handling TypeError](#handling-typeerror)
+- [Arbin Object Creation](#arbin-object-creation)
 - [C# `List` Conversion](#c-list-conversion)
 - [C# `SortedDictionary` Conversion](#c-sorteddictionary-conversion)
-- [ArbinCTI Object Creation](#arbincti-object-creation)
-- [ArbinCTI Feedback Accessing](#arbincti-feedback-accessing)
+- [Arbin Feedback Accessing](#arbin-feedback-accessing)
 
 ## Data Type Casting in Pythonnet
 Pythonnet doesn't handle casting between Python and C# data types perfectly. Explicit casting is recommended for certain data types. Below is a known data type casting compatibility in Pythonnet.
@@ -20,7 +20,6 @@ Pythonnet doesn't handle casting between Python and C# data types perfectly. Exp
 | `float`     | `Single`          | `float`  | Yes                    |
 | `float`     | `Double`          | `double` | Yes                    |
 | `str`       | `String`          | `string` | Yes                    |
-|-|-|-|-|
 | `bytearray` | `Array` of `Byte` | `byte[]` | **No**                 |
 | `int`       | `Int16`           | `short`  | **No**                 |
 | `int`       | `UInt16`          | `ushort` | **No**                 |
@@ -59,10 +58,35 @@ control.PostGetChannelsDataMminimalistMode(
 ```
 By applying these explicit casts, you can ensure proper data type compatibility between Python and C# when using ArbinCTI.
 
+## Arbin Object Creation
+Creating **ArbinCTI general objects** ([ArbinCTI](arbintoolbox/src/arbincti/ArbinCTI.md#general-objects), [ArbinClient](arbintoolbox/src/arbinclient/ArbinClient.md#general-objects)) is straightforward:
+1. Create the corresponding Python wrapper object. 
+2. Convert the object to a C# instance by calling `to_cs`:
+
+```python
+from arbintoolbox import MetaVariableInfo, TE_DATA_TYPE
+info = MetaVariableInfo(
+    channel_index = 0,
+    mv_meta_code  = 0,
+    mv_data_type  = TE_DATA_TYPE.MP_DATA_TYPE_MetaValue
+)
+info_cs = info.to_cs()  # Now it is a C# 'MetaVariableInfo' instance
+```
+
+Same method applies to C# Enum types required when sending ArbinCTI commands.
+```python
+from arbintoolbox import NewOrDeleteFeedback
+control.PostNewOrDelete(
+    client, 
+    "file_path", 
+    NewOrDeleteFeedback.ENewOrDeleteType.CTI_NEW.to_cs()
+)
+```
+
 ## C# `List` Conversion
 This section explains how to create C# `List` instances from Python data using the `CSConv` class.
 
-### Basic Data Types
+### List Conversion of Basic Data Types
 To create a C# List instance of basic data types:
 ```python
 # Create a C# 'List<ushort>' instance containing items [1, 2, 3]
@@ -72,13 +96,13 @@ ushort_list = CSConv.to_list([1, 2, 3], CSConv.EDataType.USHORT)
 string_list = CSConv.to_list(["a", "b", "c"], CSConv.EDataType.STRING)
 ```
 
-### ArbinCTI General Objects
-For creating a C# List of supported [ArbinCTI general objects](README.md#general-objects), use the following approach:
+### List Conversion of Arbin General Objects
+All supported Arbin general objects have a `to_cs` method, which allows `CSConv.to_list` to convert them without requiring a data type flag (`EDataType`), using the following approach:
 ```python
 """
-Example: Calling 'bool PostStartChannelEx (IArbinSocket socket, List<StartResumeEx> resumeEx, string Creators, string Comments)'
+Example - Calling 'PostStartChannelEx(IArbinSocket socket, List<StartResumeEx> resumeEx, string Creators, string Comments)'
 """
-from ctitoolbox import CSConv, StartResumeEx
+from arbintoolbox import CSConv, StartResumeEx
 
 # Create StartResumeEx objects
 a = StartResumeEx(
@@ -88,13 +112,12 @@ b = StartResumeEx(
     # Initialize as needed
 )
 
-# Convert to C# List
-resumeEx_list = CSConv.to_list([a, b]) # Now it is a C# List<StartResumeEx> instance
+# Convert to C# List<StartResumeEx> instance
+resumeEx_list = CSConv.to_list([a, b])
 
 # Send command
 control.PostStartChannelEx(client, resumeEx_list, "-", "-")
 ```
-All supported ArbinCTI general objects have a `to_cs` method, which allows `CSConv.to_list` to convert them without requiring a data type flag (`EDataType`). This simplifies the conversion process for these objects when creating C# Lists.
 
 ## C# `SortedDictionary` Conversion
 This section explains how to create C# `SortedDictionary` instances from Python data using the `CSConv` class, specifically for the `PostUpdateParameters` method in ArbinCTI.
@@ -102,8 +125,8 @@ This section explains how to create C# `SortedDictionary` instances from Python 
 ### Example
 
 ```python
-from ctitoolbox import CSConv
-from ctitoolbox.UpdateParameterFeedback import EParameterDataType
+from arbintoolbox import CSConv
+from arbintoolbox.UpdateParameterFeedback import EParameterDataType
 
 # Create a list of key-value pairs. Ensure that the list consists of tuples, each of size 2.
 obj_list = [
@@ -121,44 +144,16 @@ control.PostUpdateParameters(client, _, _, sorted_dict)
 
 This method ensures that the key-value pairs are properly converted to the specified C# data types, allowing seamless integration with ArbinCTI methods that require `SortedDictionary` instances.
 
-
-## ArbinCTI Object Creation
-Creating **ArbinCTI general objects** is straightforward. First, create a Python wrapper object defined in `ctitoolbox`. Then, convert the object to the required C# instance by calling `to_cs`:
-```python
-from ctitoolbox import MetaVariableInfo, TE_DATA_TYPE
-
-info = MetaVariableInfo(
-    channel_index = 0,
-    mv_meta_code  = 0,
-    mv_data_type  = TE_DATA_TYPE.MP_DATA_TYPE_MetaValue
-)
-
-info_cs = info.to_cs()  # Now it is a C# 'MetaVariableInfo' instance
-```
-
-In addition to general objects, certain **C# Enum types** required when sending ArbinCTI commands are also supported and can be accessed using `to_cs`. For example:
-```python
-from ctitoolbox import NewOrDeleteFeedback
-
-control.PostNewOrDelete(
-    client, 
-    "file_path", 
-    NewOrDeleteFeedback.ENewOrDeleteType.CTI_NEW.to_cs()
-)
-```
-
-## ArbinCTI Feedback Accessing
-When feedback is received, it is a C# instance. You can convert it to a Python object using the feedback wrapper class in `ctitoolbox`. 
-
-As mentioned in the [README.md](README.md#feedback-objects), the wrapper class converts C# ArbinCTI feedback objects to Python objects, enabling user-friendly access. Additionally, all wrapper classes come with two methods:
+## Arbin Feedback Accessing
+When feedback is received, it is a C# instance. You can convert it to a Python object using the feedback wrapper class in `arbintoolbox`, enabling user-friendly access. Additionally, all wrapper classes come with two methods:
 - `to_dict` converts the object to a serializable format, easily transformable to JSON, with enum objects represented by their names.
 - `__repr__` is defined for quick data inspection.
 
 ```python
-from ctitoolbox import BrowseDirectoryFeedback
+from arbintoolbox import BrowseDirectoryFeedback
 
 def OnBrowseDirectoryBack(feedback):
-# Convert the feedback to a Python object
+    # Convert ArbinCommandBrowseDirectoryFeed to a pythonic BrowseDirectoryFeedback
     feedback = BrowseDirectoryFeedback(feedback)
 
     # Access attributes
