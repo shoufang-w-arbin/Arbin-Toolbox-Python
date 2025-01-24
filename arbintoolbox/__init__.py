@@ -15,6 +15,7 @@ from arbintoolbox.src.arbincti.data_type.cti_data_type import (
     TimeSensitiveSetMV,
     TimeSensitiveSetMVArgs,
     CMetavariableDataCodeApply,
+    GetMappingAuxArgs,
     TestObjectSetting, StartChannelInfo, StartChannelAdvancedArgs,
     SafetyScope, AuxChannelRequirementBase, AuxChannelRequirement, AuxSafetyRequirement, ScheduleModifyInfo, ModifyScheduleArgs
 )
@@ -26,7 +27,7 @@ from arbintoolbox.src.arbincti.feedback.channel_control import (
     ContinueChannelFeedback,
     StartChannelAdvancedFeedback,
 )
-from ctitoolbox.src.feedback.request_info import (
+from arbintoolbox.src.arbincti.feedback.request_info import (
     GetChannelDataFeedback,
     GetResumeDataFeedback,
     GetStartDataFeedback,
@@ -46,7 +47,8 @@ from arbintoolbox.src.arbincti.feedback.schedule_operation import (
     AssignFileFeedback,
     SetMetaVariableFeedback,
     SetMetaVariableTimeSensitiveFeedback,
-    GetMetaVariableFeedback
+    GetMetaVariableFeedback,
+    ModifyScheduleFeedback,
 )
 from arbintoolbox.src.arbincti.feedback.system import (
     GetSerailNumberFeedback,
