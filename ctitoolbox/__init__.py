@@ -15,6 +15,7 @@ from ctitoolbox.src.data_type.cti_data_type import (
     TimeSensitiveSetMV,
     TimeSensitiveSetMVArgs,
     CMetavariableDataCodeApply,
+    GetMappingAuxArgs,
     TestObjectSetting, StartChannelInfo, StartChannelAdvancedArgs,
     SafetyScope, AuxChannelRequirementBase, AuxChannelRequirement, AuxSafetyRequirement, ScheduleModifyInfo, ModifyScheduleArgs
 )
