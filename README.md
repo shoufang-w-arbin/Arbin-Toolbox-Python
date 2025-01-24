@@ -16,7 +16,7 @@ For example, to call `PostTimeSensitiveSetMV(IArbinSocket socket, TimeSensitiveS
 
 ![](resource/compare.png)
 
-This example illustrates how our toolbox streamlines the process, resulting in cleaner, more Pythonic code. By abstracting away the complexities of C# object interactions, developers can focus on their core application logic rather than wrestling with language-specific intricacies.
+By abstracting away C# object interactions, developers can focus on their core application logic rather than wrestling with language-specific intricacies.
 
 ### Additional Benefits
 - **Py-C# Data structure conversions** are backed by `CSConv` in this toolbox.
@@ -38,8 +38,8 @@ pip install dist/arbintoolbox-{version}-py3-none-any.whl
 ```
 
 ## Supported Arbin Objects
-- For **ArbinCTI** object, see [arbintoolbox/src/arbincti/ArbinCTI.md](arbintoolbox/src/arbincti/README.md).
-- For **ArbinClient** object, see [arbintoolbox/src/arbinclient/ArbinClient.md](arbintoolbox/src/arbinclient/README.md).
+- For **ArbinCTI** object, see [ArbinCTI.md](arbintoolbox/src/arbincti/ArbinCTI.md).
+- For **ArbinClient** object, see [ArbinClient.md](arbintoolbox/src/arbinclient/ArbinClient.md).
 
 ## Usage Examples
 See [EXAMPLE.md](EXAMPLE.md).
