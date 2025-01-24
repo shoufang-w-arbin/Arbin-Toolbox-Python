@@ -19,8 +19,8 @@ For example, to call `PostTimeSensitiveSetMV(IArbinSocket socket, TimeSensitiveS
 By abstracting away C# object interactions, developers can focus on their core application logic rather than wrestling with language-specific intricacies.
 
 ### Additional Benefits
-- **Py-C# Data structure conversions** are backed by `CSConv` in this toolbox.
-- **Beautified feedback objects** with quick inspection methods.
+- **Easy Py-C# Data structure conversions** are backed by `CSConv` in this toolbox.
+- **Beautified feedback objects** with quick inspection methods. 
 - **Support for keyword arguments**, compared to using `pythonnet` directly.
 - **Object attributes are discoverable by Pylance**, reducing human error when programming. \
     ![](resource/pylance.png)
@@ -41,7 +41,7 @@ pip install dist/arbintoolbox-{version}-py3-none-any.whl
 - For **ArbinCTI** object, see [ArbinCTI.md](arbintoolbox/src/arbincti/ArbinCTI.md).
 - For **ArbinClient** object, see [ArbinClient.md](arbintoolbox/src/arbinclient/ArbinClient.md).
 
-## Usage Examples
+## Usage
 See [EXAMPLE.md](EXAMPLE.md).
 
 ## Development
