@@ -1,4 +1,4 @@
-# ArbinCTI Toolbox
+# Arbin Toolbox
 ## Table of Contents
 - [About](#about)
 - [Installation](#installation)
