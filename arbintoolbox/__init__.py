@@ -7,7 +7,7 @@ clr.AddReference("System")
 clr.AddReference(os.path.join(current_dir, "bin", "ArbinCTI"))
 
 from arbintoolbox.src.cs_conv import CSConv
-from arbintoolbox.src.arbincti.data_type.cti_data_type import (
+from arbintoolbox.src.arbincti.argument.argument import (
     TE_DATA_TYPE, 
     StartResumeEx,
     MetaVariableInfo,

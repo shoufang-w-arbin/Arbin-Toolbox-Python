@@ -4,7 +4,7 @@ from arbintoolbox.src.base import (
     DictReprBase,
     SafeIntEnumBase
 )
-from arbintoolbox.src.arbincti.data_type.cti_data_type import (
+from arbintoolbox.src.arbincti.argument.argument import (
     TimeSensitiveSetMV,
     TE_DATA_TYPE
 )

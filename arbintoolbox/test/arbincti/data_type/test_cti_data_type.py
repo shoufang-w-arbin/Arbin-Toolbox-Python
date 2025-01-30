@@ -3,7 +3,7 @@ import os
 
 import ArbinCTI.Core as ArbinCTI # type: ignore
 
-from arbintoolbox.src.arbincti.data_type.cti_data_type import (
+from arbintoolbox.src.arbincti.argument.argument import (
     TE_DATA_TYPE, 
     StartResumeEx,
     MetaVariableInfo,
