@@ -23,6 +23,8 @@ Schedule Operation
 - GetMachineTypeFeedback
 - GetTrayStatusFeedback
 - EngageTrayFeedback
+- SetIntervalTimeLogDataFeedback
+- ConvertToAnonymousOrNamedTOFeedback
 """""""""""""""""""""""""""
 class AssignScheduleFeedback(DictReprBase):
     class EAssignToken(SafeIntEnumBase):
@@ -465,8 +467,53 @@ class EngageTrayFeedback(DictReprBase):
         CTI_ENGAGE_TRAY_ERROR_SPTTMAPPING_INDEX = 0x14
         CTI_ENGAGE_TRAY_ERROR_CHANNEL_NULL = 0x15
         CTI_ENGAGE_TRAY_ERROR_CHANNEL_RUNNING = 0x16
+    
+    class CSPTTEngageTray(DictReprBase):
+        def __init__(self, engage_tray: ArbinCTI.Common.CSPTTEngageTray):
+            self.global_index = int(engage_tray.GlobalIndex)
+            self.engage       = bool(engage_tray.Engage)
+            self.error        = int(engage_tray.Error)
 
     def __init__(self, feedback: ArbinCTI.ArbinCommandEngageTrayFeed):
         if not isinstance(feedback, ArbinCTI.ArbinCommandEngageTrayFeed):
             raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandEngageTrayFeed', got '{type(feedback)}'")
-        self.engage_tray_info = [CSPTTTrayStatus(status) for status in feedback.EngageTrayInfos]
+        self.engage_tray_info = [EngageTrayFeedback.CSPTTEngageTray(status) for status in feedback.EngageTrayInfos]
+
+class SetIntervalTimeLogDataFeedback(DictReprBase):
+    class ESetIntervalTimeLogDataResult(SafeIntEnumBase):
+        SET_INTERVALTIME_LOGDATA_DAQ_DISCONNECTED = -2
+        SET_INTERVALTIME_LOGDATA_DCOM_FAILED = -1
+        SET_INTERVALTIME_LOGDATA_SUCCESS = 0
+        SET_INTERVALTIME_LOGDATA_PARTIAL_SUCCESS = 1
+        SET_INTERVALTIME_LOGDATA_FAILED = 2
+        SET_INTERVALTIME_LOGDATA_EXCEED_LIMIT = 3
+    
+    def __init__(self, feedback: ArbinCTI.ArbinCommandSetIntervalTimeLogDataFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandSetIntervalTimeLogDataFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandSetIntervalTimeLogDataFeed', got '{type(feedback)}'")
+        self.result  = SetIntervalTimeLogDataFeedback.ESetIntervalTimeLogDataResult(int(feedback.Result))
+        self.message = str(feedback.Message) 
+
+class ConvertToAnonymousOrNamedTOFeedback(DictReprBase):
+    class EConvertTestObjectResult(SafeIntEnumBase):
+        CTI_CONVERT_SUCCESS = 0
+        CTI_CONVERT_FAILED = 1
+        CTI_CONVERT_CHANNEL_IS_RUNNING = 2
+        CTI_CONVERT_NO_TEST_OBJECT_FILE = 4
+
+    def __init__(self, feedback: ArbinCTI.ArbinCommandConvertToAnonymousOrNamedTOFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandConvertToAnonymousOrNamedTOFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandConvertToAnonymousOrNamedTOFeed', got '{type(feedback)}'")
+        self.reason = str(feedback.Reason)
+        self.result = ConvertToAnonymousOrNamedTOFeedback.EConvertTestObjectResult(int(feedback.Result))
+        self.result_chan_list_pairs = self._unpack_channel_list(feedback.ResultChanListPairs)
+
+    def _unpack_channel_list(self, pairs):
+        _python_dict = dict()
+        for pair in pairs:
+            token = ConvertToAnonymousOrNamedTOFeedback.EConvertTestObjectResult(int(pair.Key))
+            channels = list(pair.Value)
+            _python_dict[token] = channels
+        return _python_dict
+
+    

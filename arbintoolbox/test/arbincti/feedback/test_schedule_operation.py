@@ -25,6 +25,8 @@ from arbintoolbox.src.arbincti.feedback.schedule_operation import (
     GetMachineTypeFeedback,
     GetTrayStatusFeedback,
     EngageTrayFeedback,
+    SetIntervalTimeLogDataFeedback,
+    ConvertToAnonymousOrNamedTOFeedback,
 )
 
 UNITTEST_VIEW_DICT = os.getenv("UNITTEST_VIEW_DICT", False)
@@ -303,3 +305,100 @@ class TestFeedbackClasses(unittest.TestCase):
         self.assertEqual(channel_barcode_info_instance.barcode, "123456")
         self.assertEqual(channel_barcode_info_instance.info, "Info")
         self.assertEqual(channel_barcode_info_instance.error, GetBarcodeInfoFeedback.EGetBarcodeResult.CTI_GET_BARCODE_SUCCESS)
+
+    def test_ConvertToAnonymousOrNamedTOFeedback_instantiation(self):
+        cs_instance = ArbinCTI.ArbinCommandConvertToAnonymousOrNamedTOFeed()
+        cs_instance.Result = ArbinCTI.ArbinCommandConvertToAnonymousOrNamedTOFeed.CONVERTTESTOBJECT_RESULT.CTI_CONVERT_SUCCESS
+        cs_instance.Reason = "Conversion successful"
+        cs_instance.ResultChanListPairs = SortedDictionary[ArbinCTI.ArbinCommandConvertToAnonymousOrNamedTOFeed.CONVERTTESTOBJECT_RESULT, List[Int32]]()
+
+        list_instance1, list_instance2 = List[Int32](), List[Int32]()
+        for i in range(1, 4):
+            list_instance1.Add(i)
+            list_instance2.Add(i + 3)
+
+        cs_instance.ResultChanListPairs.Add(ArbinCTI.ArbinCommandConvertToAnonymousOrNamedTOFeed.CONVERTTESTOBJECT_RESULT.CTI_CONVERT_SUCCESS, list_instance1)
+        cs_instance.ResultChanListPairs.Add(ArbinCTI.ArbinCommandConvertToAnonymousOrNamedTOFeed.CONVERTTESTOBJECT_RESULT.CTI_CONVERT_FAILED, list_instance2)
+
+        feedback_instance = ConvertToAnonymousOrNamedTOFeedback(cs_instance)
+
+        self.assertEqual(feedback_instance.result, ConvertToAnonymousOrNamedTOFeedback.EConvertTestObjectResult.CTI_CONVERT_SUCCESS)
+        self.assertEqual(feedback_instance.reason, "Conversion successful")
+        self.assertEqual(feedback_instance.result_chan_list_pairs[ConvertToAnonymousOrNamedTOFeedback.EConvertTestObjectResult.CTI_CONVERT_SUCCESS], list(list_instance1))
+        self.assertEqual(feedback_instance.result_chan_list_pairs[ConvertToAnonymousOrNamedTOFeedback.EConvertTestObjectResult.CTI_CONVERT_FAILED], list(list_instance2))
+
+        if UNITTEST_VIEW_DICT:
+            print("ConvertToAnonymousOrNamedTOFeedback:", feedback_instance.to_dict())
+
+    def test_SetIntervalTimeLogDataFeedback_instantiation(self):
+        cs_instance = ArbinCTI.ArbinCommandSetIntervalTimeLogDataFeed()
+        cs_instance.Result = ArbinCTI.ArbinCommandSetIntervalTimeLogDataFeed.SET_INTERVAL_TIME_LOG_DATA_RESULT.SET_INTERVALTIME_LOGDATA_SUCCESS
+        cs_instance.Message = "Interval time log data set successfully"
+
+        feedback_instance = SetIntervalTimeLogDataFeedback(cs_instance)
+
+        self.assertEqual(feedback_instance.result, SetIntervalTimeLogDataFeedback.ESetIntervalTimeLogDataResult.SET_INTERVALTIME_LOGDATA_SUCCESS)
+        self.assertEqual(feedback_instance.message, "Interval time log data set successfully")
+
+        if UNITTEST_VIEW_DICT:
+            print("SetIntervalTimeLogDataFeedback:", feedback_instance.to_dict())
+            
+    def test_GetTrayStatusFeedback_instantiation(self):
+        tray_status_instance = ArbinCTI.Common.CSPTTTrayStatus()
+        tray_status_instance.GlobalIndex = 1
+        tray_status_instance.IsEngagementDown = True
+        tray_status_instance.IsEngagementUp = False
+        tray_status_instance.IsTrayInserted = True
+        tray_status_instance.Error = 0
+        tray_status_instance.MetaValues = List[ArbinCTI.Common.CSPTTTrayMetaValue]()
+
+        tray_status_list_instance = List[ArbinCTI.Common.CSPTTTrayStatus]()
+        tray_status_list_instance.Add(tray_status_instance)
+
+        cs_instance = ArbinCTI.ArbinCommandGetTrayStatusFeed()
+        cs_instance.TrayStatusInfos = tray_status_list_instance
+
+        feedback_instance = GetTrayStatusFeedback(cs_instance)
+
+        self.assertEqual(feedback_instance.tray_status_info[0].global_index, 1)
+        self.assertTrue(feedback_instance.tray_status_info[0].is_engagement_down)
+        self.assertFalse(feedback_instance.tray_status_info[0].is_engagement_up)
+        self.assertTrue(feedback_instance.tray_status_info[0].is_tray_inserted)
+        self.assertEqual(feedback_instance.tray_status_info[0].error, 0)
+
+        if UNITTEST_VIEW_DICT:
+            print("GetTrayStatusFeedback:", feedback_instance.to_dict())
+            
+    def test_GetMachineTypeFeedback_instantiation(self):
+        cs_instance = ArbinCTI.ArbinCommandGetMachineTypeFeed()
+        cs_instance.m_Error = ArbinCTI.ArbinCommandGetMachineTypeFeed.GET_MACHINE_RESULT.CTI_GET_MACHINE_SUCCESS
+        cs_instance.MachineType = ArbinCTI.ArbinCommandGetMachineTypeFeed.EMachineType.IV
+
+        feedback_instance = GetMachineTypeFeedback(cs_instance)
+
+        self.assertEqual(feedback_instance.error, GetMachineTypeFeedback.EGetMachineResult.CTI_GET_MACHINE_SUCCESS)
+        self.assertEqual(feedback_instance.machine_type, GetMachineTypeFeedback.EMachineType.IV)
+
+        if UNITTEST_VIEW_DICT:
+            print("GetMachineTypeFeedback:", feedback_instance.to_dict())
+
+    def test_EngageTrayFeedback_instantiation(self):
+        engage_tray_instance = ArbinCTI.Common.CSPTTEngageTray()
+        engage_tray_instance.GlobalIndex = 1
+        engage_tray_instance.Engage = True
+        engage_tray_instance.Error = 0
+
+        engage_tray_list_instance = List[ArbinCTI.Common.CSPTTEngageTray]()
+        engage_tray_list_instance.Add(engage_tray_instance)
+
+        cs_instance = ArbinCTI.ArbinCommandEngageTrayFeed()
+        cs_instance.EngageTrayInfos = engage_tray_list_instance
+
+        feedback_instance = EngageTrayFeedback(cs_instance)
+
+        self.assertEqual(feedback_instance.engage_tray_info[0].global_index, 1)
+        self.assertTrue(feedback_instance.engage_tray_info[0].engage)
+        self.assertEqual(feedback_instance.engage_tray_info[0].error, 0)
+
+        if UNITTEST_VIEW_DICT:
+            print("EngageTrayFeedback:", feedback_instance.to_dict())
