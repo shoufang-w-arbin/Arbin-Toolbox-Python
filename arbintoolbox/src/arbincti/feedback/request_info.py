@@ -13,6 +13,8 @@ Request Info
 - GetResumeDataFeedback
 - GetStartDataFeedback
 - GetMappingAuxFeedback
+- GetSerailNumberFeedback
+- GetSoftwareVersionFeedback
 """""""""""""""""""""""""""
 
 class GetChannelDataFeedback(DictReprBase):
@@ -405,3 +407,20 @@ class GetMappingAuxFeedback(DictReprBase):
             raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetMappingAuxFeed', got '{type(feedback)}'")
         self.task_id      = int(feedback.TaskID)
         self.mapping_info = [GetMappingAuxFeedback.MappingInfo(info) for info in feedback.MappingInfos]
+
+class GetSerialNumberFeedback(DictReprBase):
+    class EAssignToken(SafeIntEnumBase):
+        CTI_GET_SERIAL_SUCCESS = 0,
+        CTI_ASSIGN_ERROR = 0x10,
+
+    def __init__(self, feedback: ArbinCTI.ArbinCommandGetSerialNumberFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandGetSerialNumberFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetSerialNumberFeed', got '{type(feedback)}'")
+        self.serial_number  = float(feedback.SerialNum)
+        self.result         = GetSerialNumberFeedback.EAssignToken(int(feedback.Result))
+
+class GetSoftwareVersionFeedback(DictReprBase):
+    def __init__(self, feedback: ArbinCTI.ArbinCommandGetServerSoftwareVersionNumberFeed): 
+        if not isinstance(feedback, ArbinCTI.ArbinCommandGetServerSoftwareVersionNumberFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetServerSoftwareVersionNumberFeed', got '{type(feedback)}'")
+        self.version = str(feedback.ServerVersionNumber)

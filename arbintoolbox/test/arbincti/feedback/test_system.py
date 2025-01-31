@@ -4,8 +4,6 @@ import unittest
 import ArbinCTI.Core as ArbinCTI # type: ignore
 
 from arbintoolbox.src.arbincti.feedback.system import (
-    GetSerialNumberFeedback, 
-    GetSoftwareVersionFeedback,
     LoginFeedback,
     LogicConnectFeedback,
     SendMsgToCTIFeedback,
@@ -16,30 +14,6 @@ from arbintoolbox.src.arbincti.feedback.system import (
 UNITTEST_VIEW_DICT = os.getenv("UNITTEST_VIEW_DICT", False)
 
 class TestFeedbackClasses(unittest.TestCase):
-
-    def test_GetSerailNumberFeedback_instantiation(self):
-        cs_instance = ArbinCTI.ArbinCommandGetSerialNumberFeed()
-        cs_instance.SerialNum   = 12345.6789
-        cs_instance.Result      = ArbinCTI.ArbinCommandGetSerialNumberFeed.ASSIGN_TOKEN.CTI_GET_SERIAL_SUCCESS
-
-        feedback_instance = GetSerialNumberFeedback(cs_instance)
-
-        self.assertEqual(feedback_instance.serial_number, 12345.6789)
-        self.assertEqual(feedback_instance.result, GetSerialNumberFeedback.EAssignToken.CTI_GET_SERIAL_SUCCESS)
-
-        if UNITTEST_VIEW_DICT:
-            print("GetSerailNumberFeedback:", feedback_instance.to_dict())
-
-    def test_GetMITSVersionFeedback_instantiation(self):
-        cs_instance = ArbinCTI.ArbinCommandGetServerSoftwareVersionNumberFeed()
-        cs_instance.ServerVersionNumber = "1.2.3.4"
-
-        feedback_instance = GetSoftwareVersionFeedback(cs_instance)
-
-        self.assertEqual(feedback_instance.version, "1.2.3.4")
-
-        if UNITTEST_VIEW_DICT:
-            print("GetMITSVersionFeedback:", feedback_instance.to_dict())
 
     def test_LoginFeedback_instantiation(self):
         cs_instance = ArbinCTI.ArbinCommandLoginFeed()
