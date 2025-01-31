@@ -18,6 +18,11 @@ Schedule Operation
 - GetMetaVariableFeedback
 - UpdateParameterFeedback
 - ModifyScheduleFeedback
+- AssignBarcodeInfoFeedback
+- GetBarcodeInfoFeedback
+- GetMachineTypeFeedback
+- GetTrayStatusFeedback
+- EngageTrayFeedback
 """""""""""""""""""""""""""
 class AssignScheduleFeedback(DictReprBase):
     class EAssignToken(SafeIntEnumBase):
@@ -290,3 +295,178 @@ class ModifyScheduleFeedback(DictReprBase):
             raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandModifyScheduleFeed', got '{type(feedback)}'")
         self.task_id               = int(feedback.TaskID)
         self.schedule_modify_info  = [ModifyScheduleFeedback.ModifyScheduleResult(info) for info in feedback.ScheduleModifyInfos]
+
+class AssignBarcodeInfoFeedback(DictReprBase):
+    class EAssignBarcodeResult(SafeIntEnumBase):
+        CTI_ASSIGN_BARCODE_SUCCESS = 0
+        CTI_ASSIGN_BARCODE_ERROR = 0x10
+        CTI_ASSIGN_BARCODE_CHANNEL_RUNNING = 0x11
+        CTI_ASSIGN_BARCODE_CHANNEL_INDEX = 0x12
+        CTI_ASSIGN_BARCODE_CHANNEL_TYPE_NOT_SUPPORT = 0x13
+        CTI_ASSIGN_BARCODE_CELL_INDEX = 0x14
+        CTI_ASSIGN_BARCODE_EQ_INDEX = 0x15
+        CTI_ASSIGN_BARCODE_TRAY_INDEX = 0x16
+        CTI_ASSIGN_BARCODE_SPTTMAPPING = 0x17
+    
+    class EChannelType(SafeIntEnumBase):
+        IV = 1,
+        EQ = 2,
+        CELL = 3,
+        TRAY = 4
+
+        def to_cs(self) -> ArbinCTI.ArbinCommandAssignBarcodeInfoFeed.EChannelType:
+            """Convert to C# ArbinCommandAssignBarcodeInfoFeed.EChannelType"""
+            return ArbinCTI.ArbinCommandAssignBarcodeInfoFeed.EChannelType(self.value)
+
+    class ChannelBarcodeInfo(DictReprBase):
+        """Initialize with '(channel_type: AssignBarcodeInfoFeedback.EChannelType, global_index: int, barcode: str, info: str)' or an 'ArbinCTI.ArbinCommandAssignBarcodeInfoFeed.ChannelBarcodeInfo' instance."""
+        def __init__(self, *args):
+            if len(args) == 1 and isinstance(args[0], ArbinCTI.ArbinCommandAssignBarcodeInfoFeed.ChannelBarcodeInfo):
+                info = args[0]
+                self.channel_type   = AssignBarcodeInfoFeedback.EChannelType(int(info.ChannelType))
+                self.global_index   = int(info.GlobalIndex)
+                self.barcode        = str(info.Barcode)
+                self.info           = str(info.Info)
+                self.error          = AssignBarcodeInfoFeedback.EAssignBarcodeResult(int(info.Error))
+            elif len(args) == 4:
+                channel_type, global_index, barcode, info = args
+                if not isinstance(channel_type, AssignBarcodeInfoFeedback.EChannelType):
+                    raise TypeError(f"'channel_type' must be an instance of 'AssignBarcodeInfoFeedback.EChannelType', got '{type(channel_type)}'")
+                if not isinstance(global_index, int):
+                    raise TypeError(f"'global_index' must be an instance of 'int', got '{type(global_index)}'")
+                if not isinstance(barcode, str):
+                    raise TypeError(f"'barcode' must be an instance of 'str', got '{type(barcode)}'")
+                if not isinstance(info, str):
+                    raise TypeError(f"'info' must be an instance of 'str', got '{type(info)}'")
+                self.channel_type   = channel_type
+                self.global_index   = global_index
+                self.barcode        = barcode
+                self.info           = info
+            else:
+                raise TypeError(f"Expected 1 or 4 arguments, got {len(args)}")
+
+        def to_cs(self) -> ArbinCTI.ArbinCommandAssignBarcodeInfoFeed.ChannelBarcodeInfo:
+            """Convert to C# ArbinCommandAssignBarcodeInfoFeed.ChannelBarcodeInfo"""
+            cs_instance = ArbinCTI.ArbinCommandAssignBarcodeInfoFeed.ChannelBarcodeInfo()
+            cs_instance.ChannelType = self.channel_type.to_cs()
+            cs_instance.GlobalIndex = self.global_index
+            cs_instance.Barcode     = self.barcode
+            cs_instance.Info        = self.info
+            cs_instance.Error       = ArbinCTI.ArbinCommandAssignBarcodeInfoFeed.ASSIGN_BARCODE_RESULT.CTI_ASSIGN_BARCODE_SUCCESS
+            return cs_instance
+
+    def __init__(self, feedback: ArbinCTI.ArbinCommandAssignBarcodeInfoFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandAssignBarcodeInfoFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandAssignBarcodeInfoFeed', got '{type(feedback)}'")
+        self.barcode_info = [AssignBarcodeInfoFeedback.ChannelBarcodeInfo(info) for info in feedback.BarcodeInfos]
+        self.channel_type = AssignBarcodeInfoFeedback.EChannelType(int(feedback.ChannelType))
+
+class GetBarcodeInfoFeedback(DictReprBase):
+    class EGetBarcodeResult(SafeIntEnumBase):
+        CTI_GET_BARCODE_SUCCESS = 0
+        CTI_GET_BARCODE_ERROR = 0x10
+        CTI_GET_BARCOD_CHANNEL_INDEX = 0x11
+        CTI_GET_BARCODE_CHANNEL_TYPE_NOT_SUPPORT = 0x12
+        CTI_GET_BARCODE_CELL_INDEX = 0x13
+        CTI_GET_BARCODE_EQ_INDEX = 0x14
+        CTI_GET_BARCODE_TRAY_INDEX = 0x15
+        CTI_GET_BARCODE_SPTTMAPPING = 0x16
+
+    class EChannelType(SafeIntEnumBase):
+        IV = 1,
+        EQ = 2,
+        CELL = 3,
+        TRAY = 4
+        
+        def to_cs(self) -> ArbinCTI.ArbinCommandGetBarcodeInfoFeed.EChannelType:
+            """Convert to C# ArbinCommandGetBarcodeInfoFeed.EChannelType"""
+            return ArbinCTI.ArbinCommandGetBarcodeInfoFeed.EChannelType(self.value)
+
+    class GetChannelBarcodeInfo(DictReprBase):
+        """Initialize the class with an integer or an ArbinCTI.ArbinCommandGetBarcodeInfoFeed.GetChannelBarcodeInfo instance."""
+        def __init__(self, arg):
+            if isinstance(arg, int):
+                self.global_index = arg
+            elif isinstance(arg, ArbinCTI.ArbinCommandGetBarcodeInfoFeed.GetChannelBarcodeInfo):
+                self.global_index = int(arg.GlobalIndex)
+            else:
+                raise TypeError(f"'info' must be an instance of 'int' or 'ArbinCTI.ArbinCommandGetBarcodeInfoFeed.GetChannelBarcodeInfo', got '{type(info)}'")                
+
+        def to_cs(self) -> ArbinCTI.ArbinCommandGetBarcodeInfoFeed.GetChannelBarcodeInfo:
+            """Convert to C# ArbinCommandGetBarcodeInfoFeed.GetChannelBarcodeInfo"""
+            return ArbinCTI.ArbinCommandGetBarcodeInfoFeed.GetChannelBarcodeInfo(self.global_index)
+    
+    class ChannelBarcodeInfo(DictReprBase):
+        def __init__(self, info: ArbinCTI.ArbinCommandGetBarcodeInfoFeed.ChannelBarcodeInfo):
+            self.channel_type   = GetBarcodeInfoFeedback.EChannelType(int(info.ChannelType))
+            self.global_index   = int(info.GlobalIndex)
+            self.barcode        = str(info.Barcode)
+            self.info           = str(info.Info)
+            self.error          = GetBarcodeInfoFeedback.EGetBarcodeResult(int(info.Error))
+    
+    def __init__(self, feedback: ArbinCTI.ArbinCommandGetBarcodeInfoFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandGetBarcodeInfoFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetBarcodeInfoFeed', got '{type(feedback)}'")
+        self.barcode_info = [GetBarcodeInfoFeedback.ChannelBarcodeInfo(info) for info in feedback.BarcodeInfos]
+        self.channel_type = GetBarcodeInfoFeedback.EChannelType(int(feedback.ChannelType))
+
+class GetMachineTypeFeedback(DictReprBase):
+    class EGetMachineResult(SafeIntEnumBase):
+        CTI_GET_MACHINE_SUCCESS = 0
+        CTI_GET_MACHINE_ERROR = 0x10
+
+    class EMachineType(SafeIntEnumBase):
+        IV = 1
+        SPTT = 2
+        ALL = IV | SPTT
+
+    def __init__(self, feedback: ArbinCTI.ArbinCommandGetMachineTypeFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandGetMachineTypeFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetMachineTypeFeed', got '{type(feedback)}'")
+        self.error          = GetMachineTypeFeedback.EGetMachineResult(int(feedback.m_Error))
+        self.machine_type   = GetMachineTypeFeedback.EMachineType(int(feedback.MachineType))
+
+class CSPTTTrayStatus(DictReprBase):
+    class CSPTTTrayMetaValue(DictReprBase):
+        def __init__(self, meta_value: ArbinCTI.Common.CSPTTTrayMetaValue):
+            self.value      = float(meta_value.Value)
+            self.alias_name = str(meta_value.AliasName)
+            self.error      = int(meta_value.Error)
+
+    def __init__(self, status: ArbinCTI.Common.CSPTTTrayStatus):
+        self.global_index       = int(status.GlobalIndex)
+        self.is_engagement_down = bool(status.IsEngagementDown)
+        self.is_engagement_up   = bool(status.IsEngagementUp)
+        self.is_tray_inserted   = bool(status.IsTrayInserted)
+        self.error              = int(status.Error)
+        self.meta_values        = [CSPTTTrayStatus.CSPTTTrayMetaValue(meta_value) for meta_value in status.MetaValues]
+
+class GetTrayStatusFeedback(DictReprBase):
+    class ETrayStatusResult(SafeIntEnumBase):
+        CTI_GET_TRAY_STATUS_SUCCESS = 0
+        CTI_GET_TRAY_STATUS_ERROR = 0x10
+        CTI_GET_TRAY_INDEX_ERROR = 0x11
+        CTI_GET_TRAY_STATUS_ERROR_NETWORK = 0x12
+        CTI_GET_TRAY_STATUS_ERROR_UNIT = 0x13
+        CTI_GET_TRAY_STATUS_ERROR_SPTTMAPPING_INDEX = 0x14
+
+    def __init__(self, feedback: ArbinCTI.ArbinCommandGetTrayStatusFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandGetTrayStatusFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetTrayStatusFeed', got '{type(feedback)}'")
+        self.tray_status_info = [CSPTTTrayStatus(status) for status in feedback.TrayStatusInfos]
+
+class EngageTrayFeedback(DictReprBase):
+    class EEngageTrayResult(SafeIntEnumBase):
+        CTI_ENGAGE_TRAY_SUCCESS = 0
+        CTI_ENGAGE_TRAY_ERROR = 0x10
+        CTI_ENGAGE_TRAY_ERROR_INDEX = 0x11
+        CTI_ENGAGE_TRAY_ERROR_NETWORK = 0x12
+        CTI_ENGAGE_TRAY_ERROR_UNIT = 0x13
+        CTI_ENGAGE_TRAY_ERROR_SPTTMAPPING_INDEX = 0x14
+        CTI_ENGAGE_TRAY_ERROR_CHANNEL_NULL = 0x15
+        CTI_ENGAGE_TRAY_ERROR_CHANNEL_RUNNING = 0x16
+
+    def __init__(self, feedback: ArbinCTI.ArbinCommandEngageTrayFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandEngageTrayFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandEngageTrayFeed', got '{type(feedback)}'")
+        self.engage_tray_info = [CSPTTTrayStatus(status) for status in feedback.EngageTrayInfos]

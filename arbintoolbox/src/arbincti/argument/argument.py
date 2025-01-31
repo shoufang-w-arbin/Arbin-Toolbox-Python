@@ -21,7 +21,6 @@ Classes:
 - TimeSensitiveSetMV:           TimeSensitiveSetMV, TimeSensitiveSetMVArgs
 - StartChannelAdvanced:         TestObjectSetting, StartChannelInfo, StartChannelAdvancedArgs
 - ModifySchedule:               SafetyScope, AuxChannelRequirementBase, AuxChannelRequirement, AuxSafetyRequirement, ScheduleModifyInfo, ModifyScheduleArgs
-
 """
 class TE_DATA_TYPE(SafeIntEnumBase):
     MP_DATA_TYPE_MetaValue = 1

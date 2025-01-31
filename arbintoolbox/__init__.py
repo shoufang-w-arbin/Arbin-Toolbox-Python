@@ -49,9 +49,17 @@ from arbintoolbox.src.arbincti.feedback.schedule_operation import (
     SetMetaVariableTimeSensitiveFeedback,
     GetMetaVariableFeedback,
     ModifyScheduleFeedback,
+    AssignBarcodeInfoFeedback,
+    GetBarcodeInfoFeedback,
+    GetMachineTypeFeedback,
+    GetTrayStatusFeedback,
+    EngageTrayFeedback
 )
 from arbintoolbox.src.arbincti.feedback.system import (
-    GetSerailNumberFeedback,
-    GetMITSVersionFeedback,
-    LoginFeedback
+    GetSerialNumberFeedback,
+    GetSoftwareVersionFeedback,
+    LoginFeedback,
+    SendMsgToCTIFeedback,
+    UnknownCommandFeedback,
+    StartAutomaticCalibrationFeedback
 )

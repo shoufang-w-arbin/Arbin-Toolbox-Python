@@ -2,22 +2,26 @@
 ## General Objects
 See [EXAMPLE.md](../../../EXAMPLE.md#arbin-object-creation) for detailed usage.
 
-| Wrapper Class                          | Required By                            | Original Object                                           |
-|----------------------------------------|----------------------------------------|-----------------------------------------------------------|
-| ***Arguments***                        |                                        |                                                           | 
-| StartResumeEx                          | *PostStartChannelEx*                   | StartResumeEx                                             |
-| MetaVariableInfo                       | *PostGetMetaVariables*                 | ArbinCommandGetMetaVariablesFeed.MetaVariableInfo         |
-| MetaVariableInfoEx                     | *PostUpdateMetaVariableAdvancedEx*     | MetaVariableInfoEx                                        |
-| CMetavariableDataCodeApply             | *PostApplyForUDPCommunication*         | ArbinCommandCMetavariableDataCodeApply                    |
-| TimeSensitiveSetMVArgs                 | *PostTimeSensitiveSetMV*               | ArbinCommandTimeSensitiveSetMVArgs                        |
-| StartChannelAdvancedArgs               | *PostStartChannelAdvanced*             | Common.Start.StartChannelAdvancedArgs                     |
-| GetMappingAuxArgs                      | *PostGetMappingAux*                    | Common.GetMappingAux.GetMappingAuxArgs                    |
-| ModifyScheduleArgs                     | *PostModifySchedule*                   | Common.ModifySchedule.ModifyScheduleArgs                  |
-| ***Enum Class***                       |                                        |                                                           | 
-| NewOrDeleteFeedback.ENewOrDeleteType   | *PostNewOrDelete*                      | ArbinCommandNewOrDeleteFeed.NEW_OR_DELETE_TYPE            |
-| UploadFileFeedback.UploadFileResult    | *PostUpLoadFile*                       | ArbinCommandUpLoadFileFeed.CUpLoadFileResult              |
-| AssignFileFeedback.EFileKind           | *PostAssignFile*                       | ArbinCommandAssignFileFeed.EFileKind                      |
-| GetChannelDataFeedback.EGetChannelType | *PostGetChannelsData*                  | ArbinCommandGetChannelFeed.GET_CHANNEL_TYPE               |
+| Wrapper Class                                | Required By                        | Original Object                                           |
+|----------------------------------------------|------------------------------------|-----------------------------------------------------------|
+| ***Arguments***                              |                                    |                                                           |
+| StartResumeEx                                | *PostStartChannelEx*               | StartResumeEx                                             |
+| MetaVariableInfo                             | *PostGetMetaVariables*             | ArbinCommandGetMetaVariablesFeed.MetaVariableInfo         |
+| MetaVariableInfoEx                           | *PostUpdateMetaVariableAdvancedEx* | MetaVariableInfoEx                                        |
+| AssignBarcodeInfoFeedback.ChannelBarcodeInfo | *PostAssignBarcodeInfo*            | ArbinCommandAssignBarcodeInfoFeed.ChannelBarcodeInfo      |
+| GetBarcodeInfoFeedback.GetChannelBarcodeInfo | *PostGetBarcodeInfo*               | ArbinCommandGetBarcodeInfoFeed.GetChannelBarcodeInfo      |
+| CMetavariableDataCodeApply                   | *PostApplyForUDPCommunication*     | ArbinCommandCMetavariableDataCodeApply                    |
+| TimeSensitiveSetMVArgs                       | *PostTimeSensitiveSetMV*           | ArbinCommandTimeSensitiveSetMVArgs                        |
+| StartChannelAdvancedArgs                     | *PostStartChannelAdvanced*         | Common.Start.StartChannelAdvancedArgs                     |
+| GetMappingAuxArgs                            | *PostGetMappingAux*                | Common.GetMappingAux.GetMappingAuxArgs                    |
+| ModifyScheduleArgs                           | *PostModifySchedule*               | Common.ModifySchedule.ModifyScheduleArgs                  |
+| ***Enum Class***                             |                                    |                                                           |
+| NewOrDeleteFeedback.ENewOrDeleteType         | *PostNewOrDelete*                  | ArbinCommandNewOrDeleteFeed.NEW_OR_DELETE_TYPE            |
+| UploadFileFeedback.UploadFileResult          | *PostUpLoadFile*                   | ArbinCommandUpLoadFileFeed.CUpLoadFileResult              |
+| AssignFileFeedback.EFileKind                 | *PostAssignFile*                   | ArbinCommandAssignFileFeed.EFileKind                      |
+| GetChannelDataFeedback.EGetChannelType       | *PostGetChannelsData*              | ArbinCommandGetChannelFeed.GET_CHANNEL_TYPE               |
+| AssignBarcodeInfoFeedback.EChannelType       | *PostAssignBarcodeInfo*            | ArbinCommandAssignBarcodeInfoFeed.EChannelType            |
+| GetBarcodeInfoFeedback.EChannelType          | *PostGetBarcodeInfo*               | ArbinCommandGetBarcodeInfoFeed.EChannelType               |
 
 ### Supplementary Objects
 Additional objects and enums act as arguments to generate the above wrapper classes:
@@ -55,6 +59,11 @@ See [EXAMPLE.md](../../../EXAMPLE.md#arbin-feedback-accessing) for detailed usag
 | GetMetaVariableFeedback              | ArbinCommandGetMetaVariablesFeed                  |
 | UpdateParameterFeedback              | ArbinCommandUpdateParamenterFeed                  |
 | ModifyScheduleFeedback               | ArbinCommandModifyScheduleFeed                    |
+| AssignBarcodeFeedback                | ArbinCommandAssignBarcodeInfoFeed                 |
+| GetBarcodeInfoFeedback               | ArbinCommandGetBarcodeInfoFeed                    |
+| GetMachineTypeFeedback               | ArbinCommandGetMachineTypeFeed                    |
+| GetTrayStatusFeedback                | ArbinCommandGetTrayStatusFeed                     |
+| EngageTrayFeedback                   | ArbinCommandEngageTrayFeed                        |
 | ***Channel Control***                |                                                   |
 | StartChannelFeedback                 | ArbinCommandStartChannelFeed                      |
 | StopChannelFeedback                  | ArbinCommandStopChannelFeed                       |
@@ -66,7 +75,7 @@ See [EXAMPLE.md](../../../EXAMPLE.md#arbin-feedback-accessing) for detailed usag
 | UploadFileFeedback                   | ArbinCommandUpLoadFileFeed                        |
 | DownloadFileFeedback                 | ArbinCommandDownloadFileFeed                      |
 | BrowseDirectoryFeedback              | ArbinCommandBrowseDirectoryFeed                   |
-| CheckFileExistFeedback               | ArbinCommandCheckFileExFeed                       |
+| CheckFileExistFeedback               | ArbinCommandCheckFileExistFeed                    |
 | NewFolderFeedback                    | ArbinCommandNewFolderFeed                         |
 | DeleteFileFeedback                   | ArbinCommandDeleteFileFeed                        |
 | NewOrDeleteFeedback                  | ArbinCommandNewOrDeleteFeed                       |
@@ -76,6 +85,10 @@ See [EXAMPLE.md](../../../EXAMPLE.md#arbin-feedback-accessing) for detailed usag
 | GetResumeDataFeedback                | ArbinCommandGetResumeDataFeed                     |
 | GetMappingAuxFeedback                | ArbinCommandGetMappingAuxFeed                     |
 | GetSerialNumberFeedback              | ArbinCommandGetSerialNumberFeed                   |
-| GetMITSVersionFeedback               | ArbinCommandGetServerSoftwareVersionNumberFeed    |
+| GetSoftwareVersionFeedback           | ArbinCommandGetServerSoftwareVersionNumberFeed    |
+| ***Miscellaneous***                  |                                                   |
+| SendMsgToCTIFeedback                 | ArbinCommandSendMsgToCTIFeed                      |
+| UnknownCommandFeedback               | ArbinCommandUnknownCommandFeed                    |
+| StartAutomaticCalibrationFeedback    | ArbinCommandStartAutomaticCalibrationFeed         |
 
 > Ignoring namespace `ArbinCTI.Core` in the second column for simplicity.

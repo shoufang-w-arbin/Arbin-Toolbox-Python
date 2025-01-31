@@ -20,6 +20,11 @@ from arbintoolbox.src.arbincti.feedback.schedule_operation import (
     GetMetaVariableFeedback,
     UpdateParameterFeedback,
     ModifyScheduleFeedback,
+    AssignBarcodeInfoFeedback,
+    GetBarcodeInfoFeedback,
+    GetMachineTypeFeedback,
+    GetTrayStatusFeedback,
+    EngageTrayFeedback,
 )
 
 UNITTEST_VIEW_DICT = os.getenv("UNITTEST_VIEW_DICT", False)
@@ -191,3 +196,110 @@ class TestFeedbackClasses(unittest.TestCase):
 
         if UNITTEST_VIEW_DICT:
             print("ModifyScheduleFeedback:", feedback_instance.to_dict())
+
+    def test_AssignBarcodeInfoFeedback_instantiation(self):
+        cs_instance = ArbinCTI.ArbinCommandAssignBarcodeInfoFeed()
+        cs_instance.ChannelType = ArbinCTI.ArbinCommandAssignBarcodeInfoFeed.EChannelType.IV
+
+        barcode_info_instance = ArbinCTI.ArbinCommandAssignBarcodeInfoFeed.ChannelBarcodeInfo()
+        barcode_info_instance.ChannelType = ArbinCTI.ArbinCommandAssignBarcodeInfoFeed.EChannelType.IV
+        barcode_info_instance.GlobalIndex = 1
+        barcode_info_instance.Barcode = "123456"
+        barcode_info_instance.Info = "Info"
+        barcode_info_instance.Error = ArbinCTI.ArbinCommandAssignBarcodeInfoFeed.ASSIGN_BARCODE_RESULT.CTI_ASSIGN_BARCODE_SUCCESS
+
+        barcode_info_list_instance = List[ArbinCTI.ArbinCommandAssignBarcodeInfoFeed.ChannelBarcodeInfo]()
+        barcode_info_list_instance.Add(barcode_info_instance)
+
+        cs_instance.BarcodeInfos = barcode_info_list_instance
+
+        feedback_instance = AssignBarcodeInfoFeedback(cs_instance)
+
+        self.assertEqual(feedback_instance.channel_type, AssignBarcodeInfoFeedback.EChannelType.IV)
+        self.assertEqual(feedback_instance.barcode_info[0].channel_type, AssignBarcodeInfoFeedback.EChannelType.IV)
+        self.assertEqual(feedback_instance.barcode_info[0].global_index, 1)
+        self.assertEqual(feedback_instance.barcode_info[0].barcode, "123456")
+        self.assertEqual(feedback_instance.barcode_info[0].info, "Info")
+        self.assertEqual(feedback_instance.barcode_info[0].error, AssignBarcodeInfoFeedback.EAssignBarcodeResult.CTI_ASSIGN_BARCODE_SUCCESS)
+
+        if UNITTEST_VIEW_DICT:
+            print("AssignBarcodeInfoFeedback:", feedback_instance.to_dict())
+
+    def test_AssignBarcodeInfoFeedback_ChannelBarcodeInfo_instantiation(self):
+        channel_type = AssignBarcodeInfoFeedback.EChannelType.IV
+        global_index = 1
+        barcode = "123456"
+        info = "Info"
+
+        channel_barcode_info_instance = AssignBarcodeInfoFeedback.ChannelBarcodeInfo(channel_type, global_index, barcode, info)
+
+        self.assertEqual(channel_barcode_info_instance.channel_type, channel_type)
+        self.assertEqual(channel_barcode_info_instance.global_index, global_index)
+        self.assertEqual(channel_barcode_info_instance.barcode, barcode)
+        self.assertEqual(channel_barcode_info_instance.info, info)
+
+        cs_instance = channel_barcode_info_instance.to_cs()
+        self.assertEqual(cs_instance.ChannelType, ArbinCTI.ArbinCommandAssignBarcodeInfoFeed.EChannelType.IV)
+        self.assertEqual(cs_instance.GlobalIndex, global_index)
+        self.assertEqual(cs_instance.Barcode, barcode)
+        self.assertEqual(cs_instance.Info, info)
+
+    def test_AssignBarcodeInfoFeedback_ChannelBarcodeInfo_instantiation_from_cs(self):
+        cs_instance = ArbinCTI.ArbinCommandAssignBarcodeInfoFeed.ChannelBarcodeInfo()
+        cs_instance.ChannelType = ArbinCTI.ArbinCommandAssignBarcodeInfoFeed.EChannelType.IV
+        cs_instance.GlobalIndex = 1
+        cs_instance.Barcode = "123456"
+        cs_instance.Info = "Info"
+        cs_instance.Error = ArbinCTI.ArbinCommandAssignBarcodeInfoFeed.ASSIGN_BARCODE_RESULT.CTI_ASSIGN_BARCODE_SUCCESS
+
+        channel_barcode_info_instance = AssignBarcodeInfoFeedback.ChannelBarcodeInfo(cs_instance)
+
+        self.assertEqual(channel_barcode_info_instance.channel_type, AssignBarcodeInfoFeedback.EChannelType.IV)
+        self.assertEqual(channel_barcode_info_instance.global_index, 1)
+        self.assertEqual(channel_barcode_info_instance.barcode, "123456")
+        self.assertEqual(channel_barcode_info_instance.info, "Info")
+        self.assertEqual(channel_barcode_info_instance.error, AssignBarcodeInfoFeedback.EAssignBarcodeResult.CTI_ASSIGN_BARCODE_SUCCESS)
+
+    def test_GetBarcodeInfoFeedback_instantiation(self):
+        cs_instance = ArbinCTI.ArbinCommandGetBarcodeInfoFeed()
+        cs_instance.ChannelType = ArbinCTI.ArbinCommandGetBarcodeInfoFeed.EChannelType.IV
+
+        barcode_info_instance = ArbinCTI.ArbinCommandGetBarcodeInfoFeed.ChannelBarcodeInfo()
+        barcode_info_instance.ChannelType = ArbinCTI.ArbinCommandGetBarcodeInfoFeed.EChannelType.IV
+        barcode_info_instance.GlobalIndex = 1
+        barcode_info_instance.Barcode = "123456"
+        barcode_info_instance.Info = "Info"
+        barcode_info_instance.Error = ArbinCTI.ArbinCommandGetBarcodeInfoFeed.GET_BARCODE_RESULT.CTI_GET_BARCODE_SUCCESS
+
+        barcode_info_list_instance = List[ArbinCTI.ArbinCommandGetBarcodeInfoFeed.ChannelBarcodeInfo]()
+        barcode_info_list_instance.Add(barcode_info_instance)
+
+        cs_instance.BarcodeInfos = barcode_info_list_instance
+
+        feedback_instance = GetBarcodeInfoFeedback(cs_instance)
+
+        self.assertEqual(feedback_instance.channel_type, GetBarcodeInfoFeedback.EChannelType.IV)
+        self.assertEqual(feedback_instance.barcode_info[0].channel_type, GetBarcodeInfoFeedback.EChannelType.IV)
+        self.assertEqual(feedback_instance.barcode_info[0].global_index, 1)
+        self.assertEqual(feedback_instance.barcode_info[0].barcode, "123456")
+        self.assertEqual(feedback_instance.barcode_info[0].info, "Info")
+        self.assertEqual(feedback_instance.barcode_info[0].error, GetBarcodeInfoFeedback.EGetBarcodeResult.CTI_GET_BARCODE_SUCCESS)
+
+        if UNITTEST_VIEW_DICT:
+            print("GetBarcodeInfoFeedback:", feedback_instance.to_dict())
+
+    def test_GetBarcodeInfoFeedback_ChannelBarcodeInfo_instantiation_from_cs(self):
+        cs_instance = ArbinCTI.ArbinCommandGetBarcodeInfoFeed.ChannelBarcodeInfo()
+        cs_instance.ChannelType = ArbinCTI.ArbinCommandGetBarcodeInfoFeed.EChannelType.IV
+        cs_instance.GlobalIndex = 1
+        cs_instance.Barcode = "123456"
+        cs_instance.Info = "Info"
+        cs_instance.Error = ArbinCTI.ArbinCommandGetBarcodeInfoFeed.GET_BARCODE_RESULT.CTI_GET_BARCODE_SUCCESS
+
+        channel_barcode_info_instance = GetBarcodeInfoFeedback.ChannelBarcodeInfo(cs_instance)
+
+        self.assertEqual(channel_barcode_info_instance.channel_type, GetBarcodeInfoFeedback.EChannelType.IV)
+        self.assertEqual(channel_barcode_info_instance.global_index, 1)
+        self.assertEqual(channel_barcode_info_instance.barcode, "123456")
+        self.assertEqual(channel_barcode_info_instance.info, "Info")
+        self.assertEqual(channel_barcode_info_instance.error, GetBarcodeInfoFeedback.EGetBarcodeResult.CTI_GET_BARCODE_SUCCESS)
