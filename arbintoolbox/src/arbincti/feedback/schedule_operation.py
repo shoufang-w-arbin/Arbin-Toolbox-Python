@@ -90,16 +90,11 @@ class AssignFileFeedback(DictReprBase):
         if not isinstance(feedback, ArbinCTI.ArbinCommandAssignFileFeed):
             raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandAssignFileFeed', got '{type(feedback)}'")
         self.result              = AssignFileFeedback.EAssignToken(int(feedback.Result))
-        self.channel_list_result = self._unpack_channel_result(feedback.ChanListResultPairs)
         self.reason              = str(feedback.Reason)
-
-    def _unpack_channel_result(self, cs_dict):
-        _python_dict = dict()
-        for pair in cs_dict:
-            token              = AssignFileFeedback.EAssignToken(int(pair.Key))
-            channels           = list(pair.Value)
-            _python_dict[token] = channels
-        return _python_dict
+        self.channel_list_result = self._unpack_cs_sorted_dict(
+            feedback.ChanListResultPairs, 
+            (AssignFileFeedback.EAssignToken, list)
+        )
     
     def to_dict(self):
         _channel_list_result = dict()
@@ -262,15 +257,10 @@ class UpdateParameterFeedback(DictReprBase):
             raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandUpdateParameterFeed', got '{type(feedback)}'")
         self.reason          = str(feedback.Reason)
         self.result          = UpdateParameterFeedback.EUpdateToken(int(feedback.Result))
-        self.chan_list_pairs = self._unpack_channel_list(feedback.ResultChanListPairs)
-
-    def _unpack_channel_list(self, result):
-        _python_dict = dict()
-        for pair in result:
-            token = UpdateParameterFeedback.EUpdateToken(int(pair.Key))
-            channels = list(pair.Value)
-            _python_dict[token] = channels
-        return _python_dict
+        self.chan_list_pairs = self._unpack_cs_sorted_dict(
+            feedback.ResultChanListPairs,
+            (UpdateParameterFeedback.EUpdateToken, list)
+        )
     
 class ModifyScheduleFeedback(DictReprBase):
     class EModifyScheduleToken(SafeIntEnumBase):
@@ -506,14 +496,8 @@ class ConvertToAnonymousOrNamedTOFeedback(DictReprBase):
             raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandConvertToAnonymousOrNamedTOFeed', got '{type(feedback)}'")
         self.reason = str(feedback.Reason)
         self.result = ConvertToAnonymousOrNamedTOFeedback.EConvertTestObjectResult(int(feedback.Result))
-        self.result_chan_list_pairs = self._unpack_channel_list(feedback.ResultChanListPairs)
-
-    def _unpack_channel_list(self, pairs):
-        _python_dict = dict()
-        for pair in pairs:
-            token = ConvertToAnonymousOrNamedTOFeedback.EConvertTestObjectResult(int(pair.Key))
-            channels = list(pair.Value)
-            _python_dict[token] = channels
-        return _python_dict
-
+        self.result_chan_list_pairs = self._unpack_cs_sorted_dict(
+            feedback.ResultChanListPairs, 
+            (ConvertToAnonymousOrNamedTOFeedback.EConvertTestObjectResult, list)
+        )
     
