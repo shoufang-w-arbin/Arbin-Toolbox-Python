@@ -186,28 +186,48 @@ class MetaVariableInfo:
         instance.m_MV_DataType = ArbinCTI.TE_DATA_TYPE(self.mv_data_type.value)
         return instance
 
-@dataclass
-class MetaVariableInfoEx:
+class MetaVariableInfoEx(DictReprBase):
     """
-    Python wrapper of 'ArbinCTI.Core.ArbinCommandUpdateMetaVariableFeed.UpdateMV_MetaVariableInfoEX'
+    Python wrapper of 'ArbinCTI.Core.MetaVariableInfoEx'.
+    Initialize with a C# MetaVariableInfoEx object or keyword arguments (channel_index, mv_meta_code, mv_data_type, data_type).
     """
-    data_type : TE_DATA_TYPE = TE_DATA_TYPE.MP_DATA_TYPE_MetaValue
-    error     : bytes        = 0
+    def __init__(self, *args, **kwargs):
+        if len(args) == 1 and isinstance(args[0], ArbinCTI.MetaVariableInfoEx):
+            self.channel_index = int(args[0].m_ChannelIndexInGlobal)
+            self.mv_meta_code  = int(args[0].m_MV_MetaCode)
+            self.mv_data_type  = float(args[0].m_fMV_Value)
+            self.data_type     = TE_DATA_TYPE(int(args[0].DataType))
+            self.error         = args[0].Error
+
+        else:
+            self.channel_index = kwargs.get("channel_index", 0)
+            self.mv_meta_code  = kwargs.get("mv_meta_code", 52)
+            self.mv_data_type  = kwargs.get("mv_data_type", 0.0)
+            self.data_type     = kwargs.get("data_type", TE_DATA_TYPE.MP_DATA_TYPE_MetaValue)
+            self.error         = b"\x00"
+
+            if not isinstance(self.channel_index, int):
+                raise TypeError("channel_index must be an int")
+            if not isinstance(self.mv_meta_code, int):
+                raise TypeError("mv_meta_code must be an int")
+            if not isinstance(self.mv_data_type, float):
+                raise TypeError("mv_data_type must be a float")
+            if not isinstance(self.data_type, TE_DATA_TYPE):
+                raise TypeError("data_type must be an instance of TE_DATA_TYPE")
 
     def to_cs(self) -> ArbinCTI.MetaVariableInfoEx:                 
-        instance          = ArbinCTI.MetaVariableInfoEx()                 
-        instance.DataType = ArbinCTI.TE_DATA_TYPE(self.data_type.value)
-        instance.Error    = CSConv.to_byte(self.error)
+        instance = ArbinCTI.MetaVariableInfoEx()
+        instance.m_ChannelIndexInGlobal = CSConv.to_ushort(self.channel_index)
+        instance.m_MV_MetaCode          = CSConv.to_ushort(self.mv_meta_code)
+        instance.m_fMV_Value            = CSConv.to_float(self.mv_data_type)
+        instance.DataType               = ArbinCTI.TE_DATA_TYPE(self.data_type.value)
+        instance.Error                  = CSConv.to_byte(self.error)
         return instance
 
 class TimeSensitiveSetMV(DictReprBase):
     """
-    Python wrapper of 'ArbinCTI.Core.TimeSensitiveSetMV'
-
-    Args:
-        *args: Length variable argument list that accepts either:
-            - Two arguments (mvud: Enum_MvUd, value: float) to initialize a new instance
-            - A single argument of type ArbinCTI.Core.TimeSensitiveSetMV to convert to Python wrapper object
+    Python wrapper of 'ArbinCTI.Core.TimeSensitiveSetMV'. 
+    Initialize with C# TimeSensitiveSetMV object or keyword arguments (mvud, value).
     """
     class EMVUD(SafeIntEnumBase):
         MVUD1 = 52
@@ -226,18 +246,18 @@ class TimeSensitiveSetMV(DictReprBase):
         MVUD14 = 114
         MVUD15 = 115
 
-    def __init__(self, *args):
-        if len(args) == 1:                                                    
-            assert(isinstance(args[0], ArbinCTI.TimeSensitiveSetMV))            
+    def __init__(self, *args, **kwargs):
+        if len(args) == 1 and isinstance(args[0], ArbinCTI.TimeSensitiveSetMV):                                                         
             self.mvud  = TimeSensitiveSetMV.EMVUD(int(args[0].MVUD))
             self.value = float(args[0].Value)
-        elif len(args) == 2:
-            assert (isinstance(args[0], TimeSensitiveSetMV.EMVUD))
-            assert (isinstance(args[1], (int, float)))
-            self.mvud  = args[0]
-            self.value = args[1]
         else:
-            raise ValueError("Invalid arguments for TimeSensitiveSetMV")
+            self.mvud  = kwargs.get("mvud", TimeSensitiveSetMV.EMVUD.MVUD1)
+            self.value = kwargs.get("value", 0.0)
+            if not isinstance(self.mvud, TimeSensitiveSetMV.EMVUD):
+                raise TypeError("mvud must be an instance of TimeSensitiveSetMV.EMVUD")
+            if not isinstance(self.value, (float, int)):
+                raise TypeError("value must be a float or int")
+
 
     def to_cs(self) -> ArbinCTI.TimeSensitiveSetMV:                          
         instance        = ArbinCTI.TimeSensitiveSetMV()                    
