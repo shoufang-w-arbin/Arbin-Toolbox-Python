@@ -46,49 +46,54 @@ The wrapper classes
 
 See [EXAMPLE.md](../../../EXAMPLE.md#arbin-feedback-accessing) for detailed usage.
 
-| Wrapper Class                        | Original Object                                   |
-|--------------------------------------|---------------------------------------------------|
-| ***Connection***                     |                                                   |
-| LoginFeedback                        | ArbinCommandLoginFeed                             |
-| LogicConnectFeedback                 | ArbinCommandLogicConnectFeed                      |
-| ***Test Schedule***                  |                                                   |
-| AssignScheduleFeedback               | ArbinCommandAssignScheduleFeed                    |
-| AssignFileFeedback                   | ArbinCommandAssignFileFeed                        |
-| SetMetaVariableFeedback              | ArbinCommandSetMetaVariableFeed                   |
-| SetMetaVariableTimeSensitiveFeedback | ArbinCommandTimeSensitiveSetMVFeed                |
-| GetMetaVariableFeedback              | ArbinCommandGetMetaVariablesFeed                  |
-| UpdateParameterFeedback              | ArbinCommandUpdateParamenterFeed                  |
-| ModifyScheduleFeedback               | ArbinCommandModifyScheduleFeed                    |
-| AssignBarcodeFeedback                | ArbinCommandAssignBarcodeInfoFeed                 |
-| GetBarcodeInfoFeedback               | ArbinCommandGetBarcodeInfoFeed                    |
-| GetMachineTypeFeedback               | ArbinCommandGetMachineTypeFeed                    |
-| GetTrayStatusFeedback                | ArbinCommandGetTrayStatusFeed                     |
-| EngageTrayFeedback                   | ArbinCommandEngageTrayFeed                        |
-| ***Channel Control***                |                                                   |
-| StartChannelFeedback                 | ArbinCommandStartChannelFeed                      |
-| StopChannelFeedback                  | ArbinCommandStopChannelFeed                       |
-| ResumeChannelFeedback                | ArbinCommandResumeChannelFeed                     |
-| JumpChannelFeedback                  | ArbinCommandJumpChannelFeed                       |
-| ContinueChannelFeedback              | ArbinCommandContinueChannelFeed                   |
-| StartChannelAdvancedFeedback         | ArbinCommandStartChannelAdvancedFeed              |
-| ***File Operation***                 |                                                   |
-| UploadFileFeedback                   | ArbinCommandUpLoadFileFeed                        |
-| DownloadFileFeedback                 | ArbinCommandDownloadFileFeed                      |
-| BrowseDirectoryFeedback              | ArbinCommandBrowseDirectoryFeed                   |
-| CheckFileExistFeedback               | ArbinCommandCheckFileExistFeed                    |
-| NewFolderFeedback                    | ArbinCommandNewFolderFeed                         |
-| DeleteFileFeedback                   | ArbinCommandDeleteFileFeed                        |
-| NewOrDeleteFeedback                  | ArbinCommandNewOrDeleteFeed                       |
-| ***Request Information***            |                                                   |
-| GetChannelDataFeedback               | ArbinCommandGetChannelDataFeed                    |
-| GetStartDataFeedback                 | ArbinCommandGetStartDataFeed                      |
-| GetResumeDataFeedback                | ArbinCommandGetResumeDataFeed                     |
-| GetMappingAuxFeedback                | ArbinCommandGetMappingAuxFeed                     |
-| GetSerialNumberFeedback              | ArbinCommandGetSerialNumberFeed                   |
-| GetSoftwareVersionFeedback           | ArbinCommandGetServerSoftwareVersionNumberFeed    |
-| ***Miscellaneous***                  |                                                   |
-| SendMsgToCTIFeedback                 | ArbinCommandSendMsgToCTIFeed                      |
-| UnknownCommandFeedback               | ArbinCommandUnknownCommandFeed                    |
-| StartAutomaticCalibrationFeedback    | ArbinCommandStartAutomaticCalibrationFeed         |
+| Wrapper Class                         | Original Object                                   |
+|---------------------------------------|---------------------------------------------------|
+| ***Connection***                      |                                                   |
+| LoginFeedback                         | ArbinCommandLoginFeed                             |
+| LogicConnectFeedback                  | ArbinCommandLogicConnectFeed                      |
+| ***Test Schedule***                   |                                                   |
+| AssignScheduleFeedback                | ArbinCommandAssignScheduleFeed                    |
+| AssignFileFeedback                    | ArbinCommandAssignFileFeed                        |
+| SetMetaVariableFeedback               | ArbinCommandSetMetaVariableFeed                   |
+| SetMetaVariableTimeSensitiveFeedback  | ArbinCommandTimeSensitiveSetMVFeed                |
+| GetMetaVariableFeedback               | ArbinCommandGetMetaVariablesFeed                  |
+| UpdateMetaVariableAdvancedFeedback    | ArbinCommandUpdateMetaVariableAdvancedFeed        |
+| UpdateParameterFeedback               | ArbinCommandUpdateParamenterFeed                  |
+| ModifyScheduleFeedback                | ArbinCommandModifyScheduleFeed                    |
+| AssignBarcodeFeedback                 | ArbinCommandAssignBarcodeInfoFeed                 |
+| GetBarcodeInfoFeedback                | ArbinCommandGetBarcodeInfoFeed                    |
+| GetMachineTypeFeedback                | ArbinCommandGetMachineTypeFeed                    |
+| GetTrayStatusFeedback                 | ArbinCommandGetTrayStatusFeed                     |
+| EngageTrayFeedback                    | ArbinCommandEngageTrayFeed                        |
+| SetIntervalTimeLogDataFeedback        | ArbinCommandSetIntervalTimeLogDataFeed            |
+| ConvertToAnonymousOrNamedTOFeedback   | ArbinCommandConvertToAnonymousOrNamedTOFeed       |
+| ***Channel Control***                 |                                                   |
+| StartChannelFeedback                  | ArbinCommandStartChannelFeed                      |
+| StartChannelAdvancedFeedback          | ArbinCommandStartChannelAdvancedFeed              |
+| StopChannelFeedback                   | ArbinCommandStopChannelFeed                       |
+| ResumeChannelFeedback                 | ArbinCommandResumeChannelFeed                     |
+| JumpChannelFeedback                   | ArbinCommandJumpChannelFeed                       |
+| ContinueChannelFeedback               | ArbinCommandContinueChannelFeed                   |
+| ***File Operation***                  |                                                   |
+| UploadFileFeedback                    | ArbinCommandUpLoadFileFeed                        |
+| DownloadFileFeedback                  | ArbinCommandDownloadFileFeed                      |
+| BrowseDirectoryFeedback               | ArbinCommandBrowseDirectoryFeed                   |
+| CheckFileExistFeedback                | ArbinCommandCheckFileExFeed                       |
+| NewFolderFeedback                     | ArbinCommandNewFolderFeed                         |
+| DeleteFileFeedback                    | ArbinCommandDeleteFileFeed                        |
+| NewOrDeleteFeedback                   | ArbinCommandNewOrDeleteFeed                       |
+| ***Request Information***             |                                                   |
+| GetChannelDataFeedback                | ArbinCommandGetChannelDataFeed                    |
+| GetStartDataFeedback                  | ArbinCommandGetStartDataFeed                      |
+| GetResumeDataFeedback                 | ArbinCommandGetResumeDataFeed                     |
+| GetMappingAuxFeedback                 | ArbinCommandGetMappingAuxFeed                     |
+| GetSerialNumberFeedback               | ArbinCommandGetSerialNumberFeed                   |
+| GetChannelsDataMinimalistModeFeedback | ArbinCommandGetChannelDataMinimalistModeFeed      |
+| GetChannelsDataSimpleModeFeedback     | ArbinCommandGetChannelDataSimpleModeFeed          |
+| GetStringLimitLengthFeedback          | ArbinCommandGetStringLimitLengthFeed              |
+| ***Miscellaneous***                   |                                                   |
+| SendMsgToCTIFeedback                  | ArbinCommandSendMsgToCTIFeed                      |
+| UnknownCommandFeedback                | ArbinCommandUnknownCommandFeed                    |
+| StartAutomaticCalibrationFeedback     | ArbinCommandStartAutomaticCalibrationFeed         |
 
 > Ignoring namespace `ArbinCTI.Core` in the second column for simplicity.

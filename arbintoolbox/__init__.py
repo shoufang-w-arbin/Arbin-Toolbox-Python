@@ -32,6 +32,11 @@ from arbintoolbox.src.arbincti.feedback.request_info import (
     GetResumeDataFeedback,
     GetStartDataFeedback,
     GetMappingAuxFeedback,
+    GetSerialNumberFeedback,
+    GetSoftwareVersionFeedback,
+    GetChannelDataSimpleModeFeedback,
+    GetChannelsDataMinimalistModeFeedback,
+    GetStringLimitLengthFeedback,
 )
 from arbintoolbox.src.arbincti.feedback.file_management import (
     UploadFileFeedback,
@@ -47,17 +52,19 @@ from arbintoolbox.src.arbincti.feedback.schedule_operation import (
     AssignFileFeedback,
     SetMetaVariableFeedback,
     SetMetaVariableTimeSensitiveFeedback,
+    UpdateMetaVariableAdvancedExFeedback,
     GetMetaVariableFeedback,
     ModifyScheduleFeedback,
     AssignBarcodeInfoFeedback,
     GetBarcodeInfoFeedback,
     GetMachineTypeFeedback,
     GetTrayStatusFeedback,
-    EngageTrayFeedback
+    EngageTrayFeedback,
+    UpdateParameterFeedback,
+    SetIntervalTimeLogDataFeedback,
+    ConvertToAnonymousOrNamedTOFeedback,
 )
 from arbintoolbox.src.arbincti.feedback.system import (
-    GetSerialNumberFeedback,
-    GetSoftwareVersionFeedback,
     LoginFeedback,
     SendMsgToCTIFeedback,
     UnknownCommandFeedback,

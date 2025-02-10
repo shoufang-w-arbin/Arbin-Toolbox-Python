@@ -18,6 +18,7 @@ from arbintoolbox.src.arbincti.feedback.schedule_operation import (
     SetMetaVariableFeedback,
     SetMetaVariableTimeSensitiveFeedback,
     GetMetaVariableFeedback,
+    UpdateMetaVariableAdvancedExFeedback,
     UpdateParameterFeedback,
     ModifyScheduleFeedback,
     AssignBarcodeInfoFeedback,

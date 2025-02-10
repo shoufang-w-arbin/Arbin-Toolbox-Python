@@ -6,7 +6,8 @@ from arbintoolbox.src.base import (
 )
 from arbintoolbox.src.arbincti.argument.argument import (
     TimeSensitiveSetMV,
-    TE_DATA_TYPE
+    TE_DATA_TYPE,
+    MetaVariableInfoEx,
 )
 
 """""""""""""""""""""""""""
@@ -16,6 +17,7 @@ Schedule Operation
 - SetMetaVariableFeedback
 - SetMetaVariableTimeSensitiveFeedback
 - GetMetaVariableFeedback
+- UpdateMetaVariableAdvancedFeedback
 - UpdateParameterFeedback
 - ModifyScheduleFeedback
 - AssignBarcodeInfoFeedback
@@ -226,6 +228,41 @@ class GetMetaVariableFeedback(DictReprBase):
         if not isinstance(feedback, ArbinCTI.ArbinCommandGetMetaVariablesFeed):
             raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetMetaVariablesFeed', got '{type(feedback)}'")
         self.meta_variable_info = [GetMetaVariableFeedback.MetaVariableInfo(info) for info in feedback.MetaVariableInfos]
+
+class UpdateMetaVariableAdvancedFeedback(DictReprBase):
+    class ESetMVResult(SafeIntEnumBase):
+        CTI_SET_MV_SUCCESS = 0
+        CTI_SET_MV_FAILED = 16
+        CTI_SET_MV_METACODE_NOTEXIST = 17
+        CTI_SET_MV_CHANNEL_NOT_STARTED = 18
+        CTI_SET_MV_METACODE_NOTEXIST_Pro7 = 19
+        CTI_SET_MV_METACODE_UPDATE_TOO_FREQUENTLY_200MS = 20
+        CTI_SET_MV_METACODE_DATATYPE_NOTSUPPORT = 21
+        CTI_SET_MV_METACODE_NO_TEMPERATURE_CHAMBER = 22
+        CTI_SET_MV_METACODE_NOT_CONTROLLED_AUXILIARY = 23
+        CTI_SET_MV_METACODE_MCU_ACK_FAILED = 24
+
+    def __init__(self, feedback: ArbinCTI.ArbinCommandUpdateMetaVariableAdvancedFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandUpdateMetaVariableAdvancedFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandUpdateMetaVariableAdvancedFeed', got '{type(feedback)}'")
+        self.result = UpdateMetaVariableAdvancedFeedback.ESetMVResult(int(feedback.Result))
+
+class UpdateMetaVariableAdvancedExFeedback(DictReprBase):
+    class ESetMVResult(SafeIntEnumBase):
+        CTI_SET_MV_SUCCESS = 0
+        CTI_SET_MV_FAILED = 16
+        CTI_SET_MV_METACODE_NOTEXIST = 17
+        CTI_SET_MV_CHANNEL_NOT_STARTED = 18
+        CTI_SET_MV_METACODE_NOTEXIST_Pro7 = 19
+        CTI_SET_MV_METACODE_UPDATE_TOO_FREQUENTLY_200MS = 20
+        CTI_SET_MV_METACODE_DATATYPE_NOTSUPPORT = 21
+        CTI_SET_MV_METACODE_NO_TEMPERATURE_CHAMBER = 22
+        CTI_SET_MV_METACODE_NOT_CONTROLLED_AUXILIARY = 23
+
+    def __init__(self, feedback: ArbinCTI.ArbinCommandUpdateMetaVariableAdvancedExFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandUpdateMetaVariableAdvancedExFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandUpdateMetaVariableAdvancedExFeed', got '{type(feedback)}'")
+        self.meta_variable_info = [MetaVariableInfoEx(mv) for mv in feedback.MetaVariableInfos]
 
 class UpdateParameterFeedback(DictReprBase):
     class EUpdateToken(SafeIntEnumBase):

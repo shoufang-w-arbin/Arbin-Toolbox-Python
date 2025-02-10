@@ -15,6 +15,9 @@ Request Info
 - GetMappingAuxFeedback
 - GetSerailNumberFeedback
 - GetSoftwareVersionFeedback
+- GetChannelsDataMinimalistModeFeedback
+- GetChannelsDataSimpleModeFeedback
+- GetStringLimitLengthFeedback
 """""""""""""""""""""""""""
 
 class GetChannelDataFeedback(DictReprBase):
@@ -424,3 +427,81 @@ class GetSoftwareVersionFeedback(DictReprBase):
         if not isinstance(feedback, ArbinCTI.ArbinCommandGetServerSoftwareVersionNumberFeed):
             raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetServerSoftwareVersionNumberFeed', got '{type(feedback)}'")
         self.version = str(feedback.ServerVersionNumber)
+
+class GetChannelDataSimpleModeFeedback(DictReprBase):
+    class EGetChannelType(SafeIntEnumBase):
+        ALLCHANNEL = 1
+        RUNNING = 2
+        UNSAFE = 3
+
+    class ChannelInfo(DictReprBase):
+        class AuxType(SafeIntEnumBase):
+            AuxV = 0
+            T = 1
+            P = 2
+            pH = 3
+            FR = 4
+            Conc = 5
+            DI = 6
+            DO = 7
+            EC = 8
+            Safety = 9
+            Humidity = 10
+            AO = 11
+            MAX_NUM = 12
+    
+        def __init__(self, info: ArbinCTI.ArbinCommandGetChannelDataSimpleModeFeed.ChannelInfo):
+            self.channel_index  = int(info.Channel)
+            self.status         = GetChannelDataFeedback.EChannelStatus(int(info.Status))
+            self.comm_failure   = bool(info.CommFailure)
+            self.master_channel = int(info.MasterChannel)
+            self.test_time      = float(info.TestTime)
+            self.step_time      = float(info.StepTime)
+            self.voltage        = float(info.Voltage)
+            self.current        = float(info.Current)
+            self.auxs  = [
+                [GetChannelDataFeedback.AuxData(aux) for aux in aux_type] if aux_type else []
+                for aux_type in info.Auxs
+            ]
+
+        def to_dict(self):
+            data = copy.deepcopy(self.__dict__)
+            data['channel_index']   = self.channel_index
+            data['status']          = self.status.name
+            data['comm_failure']    = self.comm_failure
+            data['master_channel']  = self.master_channel
+            data['test_time']       = self.test_time
+            data['step_time']       = self.step_time
+            data['voltage']         = self.voltage
+            data['current']         = self.current
+            data['auxs']            = [[aux.to_dict() for aux in aux_list] for aux_list in self.auxs]
+            return data
+        
+    def __init__(self, feedback: ArbinCTI.ArbinCommandGetChannelDataSimpleModeFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandGetChannelDataSimpleModeFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetChannelDataSimpleModeFeed', got '{type(feedback)}'")
+        self.channel_data = [GetChannelDataSimpleModeFeedback.ChannelInfo(info) for info in feedback.m_Channels]
+
+class GetChannelsDataMinimalistModeFeedback(DictReprBase):
+    class ChannelInfo(DictReprBase):
+        def __init__(self, info: ArbinCTI.ArbinCommandGetChannelDataMinimalistModeFeed.ChannelInfo):
+            self.channel_index  = int(info.Channel)
+            self.voltage        = float(info.Voltage)
+            self.current        = float(info.Current)
+
+    def __init__(self, feedback: ArbinCTI.ArbinCommandGetChannelDataMinimalistModeFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandGetChannelDataMinimalistModeFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetChannelsDataMinimalistModeFeed', got '{type(feedback)}'")
+        self.channel_data = [GetChannelsDataMinimalistModeFeedback.ChannelInfo(info) for info in feedback.m_Channels]
+    
+class GetStringLimitLengthFeedback(DictReprBase):
+    class ECTIStringLimitLengthType(SafeIntEnumBase):
+        TestName = 1
+
+    def __init__(self, feedback: ArbinCTI.ArbinCommandGetStringLimitLengthFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandGetStringLimitLengthFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetStringLimitLengthFeed', got '{type(feedback)}'")
+        self.string_limit_data = self._unpack_cs_sorted_dict(
+            feedback.StringLimitDatas,
+            (GetStringLimitLengthFeedback.ECTIStringLimitLengthType, int)
+        )
