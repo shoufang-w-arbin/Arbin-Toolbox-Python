@@ -8,7 +8,7 @@ from System.Collections.Generic import ( # type: ignore
 )
 import ArbinCTI.Core as ArbinCTI # type: ignore
 
-from arbintoolbox.src.arbincti.data_type.cti_data_type import (
+from arbintoolbox.src.arbincti.argument.argument import (
     TE_DATA_TYPE,
     TimeSensitiveSetMV
 )
@@ -18,8 +18,16 @@ from arbintoolbox.src.arbincti.feedback.schedule_operation import (
     SetMetaVariableFeedback,
     SetMetaVariableTimeSensitiveFeedback,
     GetMetaVariableFeedback,
+    UpdateMetaVariableAdvancedExFeedback,
     UpdateParameterFeedback,
     ModifyScheduleFeedback,
+    AssignBarcodeInfoFeedback,
+    GetBarcodeInfoFeedback,
+    GetMachineTypeFeedback,
+    GetTrayStatusFeedback,
+    EngageTrayFeedback,
+    SetIntervalTimeLogDataFeedback,
+    ConvertToAnonymousOrNamedTOFeedback,
 )
 
 UNITTEST_VIEW_DICT = os.getenv("UNITTEST_VIEW_DICT", False)
@@ -191,3 +199,207 @@ class TestFeedbackClasses(unittest.TestCase):
 
         if UNITTEST_VIEW_DICT:
             print("ModifyScheduleFeedback:", feedback_instance.to_dict())
+
+    def test_AssignBarcodeInfoFeedback_instantiation(self):
+        cs_instance = ArbinCTI.ArbinCommandAssignBarcodeInfoFeed()
+        cs_instance.ChannelType = ArbinCTI.ArbinCommandAssignBarcodeInfoFeed.EChannelType.IV
+
+        barcode_info_instance = ArbinCTI.ArbinCommandAssignBarcodeInfoFeed.ChannelBarcodeInfo()
+        barcode_info_instance.ChannelType = ArbinCTI.ArbinCommandAssignBarcodeInfoFeed.EChannelType.IV
+        barcode_info_instance.GlobalIndex = 1
+        barcode_info_instance.Barcode = "123456"
+        barcode_info_instance.Info = "Info"
+        barcode_info_instance.Error = ArbinCTI.ArbinCommandAssignBarcodeInfoFeed.ASSIGN_BARCODE_RESULT.CTI_ASSIGN_BARCODE_SUCCESS
+
+        barcode_info_list_instance = List[ArbinCTI.ArbinCommandAssignBarcodeInfoFeed.ChannelBarcodeInfo]()
+        barcode_info_list_instance.Add(barcode_info_instance)
+
+        cs_instance.BarcodeInfos = barcode_info_list_instance
+
+        feedback_instance = AssignBarcodeInfoFeedback(cs_instance)
+
+        self.assertEqual(feedback_instance.channel_type, AssignBarcodeInfoFeedback.EChannelType.IV)
+        self.assertEqual(feedback_instance.barcode_info[0].channel_type, AssignBarcodeInfoFeedback.EChannelType.IV)
+        self.assertEqual(feedback_instance.barcode_info[0].global_index, 1)
+        self.assertEqual(feedback_instance.barcode_info[0].barcode, "123456")
+        self.assertEqual(feedback_instance.barcode_info[0].info, "Info")
+        self.assertEqual(feedback_instance.barcode_info[0].error, AssignBarcodeInfoFeedback.EAssignBarcodeResult.CTI_ASSIGN_BARCODE_SUCCESS)
+
+        if UNITTEST_VIEW_DICT:
+            print("AssignBarcodeInfoFeedback:", feedback_instance.to_dict())
+
+    def test_AssignBarcodeInfoFeedback_ChannelBarcodeInfo_instantiation(self):
+        channel_type = AssignBarcodeInfoFeedback.EChannelType.IV
+        global_index = 1
+        barcode = "123456"
+        info = "Info"
+
+        channel_barcode_info_instance = AssignBarcodeInfoFeedback.ChannelBarcodeInfo(channel_type, global_index, barcode, info)
+
+        self.assertEqual(channel_barcode_info_instance.channel_type, channel_type)
+        self.assertEqual(channel_barcode_info_instance.global_index, global_index)
+        self.assertEqual(channel_barcode_info_instance.barcode, barcode)
+        self.assertEqual(channel_barcode_info_instance.info, info)
+
+        cs_instance = channel_barcode_info_instance.to_cs()
+        self.assertEqual(cs_instance.ChannelType, ArbinCTI.ArbinCommandAssignBarcodeInfoFeed.EChannelType.IV)
+        self.assertEqual(cs_instance.GlobalIndex, global_index)
+        self.assertEqual(cs_instance.Barcode, barcode)
+        self.assertEqual(cs_instance.Info, info)
+
+    def test_AssignBarcodeInfoFeedback_ChannelBarcodeInfo_instantiation_from_cs(self):
+        cs_instance = ArbinCTI.ArbinCommandAssignBarcodeInfoFeed.ChannelBarcodeInfo()
+        cs_instance.ChannelType = ArbinCTI.ArbinCommandAssignBarcodeInfoFeed.EChannelType.IV
+        cs_instance.GlobalIndex = 1
+        cs_instance.Barcode = "123456"
+        cs_instance.Info = "Info"
+        cs_instance.Error = ArbinCTI.ArbinCommandAssignBarcodeInfoFeed.ASSIGN_BARCODE_RESULT.CTI_ASSIGN_BARCODE_SUCCESS
+
+        channel_barcode_info_instance = AssignBarcodeInfoFeedback.ChannelBarcodeInfo(cs_instance)
+
+        self.assertEqual(channel_barcode_info_instance.channel_type, AssignBarcodeInfoFeedback.EChannelType.IV)
+        self.assertEqual(channel_barcode_info_instance.global_index, 1)
+        self.assertEqual(channel_barcode_info_instance.barcode, "123456")
+        self.assertEqual(channel_barcode_info_instance.info, "Info")
+        self.assertEqual(channel_barcode_info_instance.error, AssignBarcodeInfoFeedback.EAssignBarcodeResult.CTI_ASSIGN_BARCODE_SUCCESS)
+
+    def test_GetBarcodeInfoFeedback_instantiation(self):
+        cs_instance = ArbinCTI.ArbinCommandGetBarcodeInfoFeed()
+        cs_instance.ChannelType = ArbinCTI.ArbinCommandGetBarcodeInfoFeed.EChannelType.IV
+
+        barcode_info_instance = ArbinCTI.ArbinCommandGetBarcodeInfoFeed.ChannelBarcodeInfo()
+        barcode_info_instance.ChannelType = ArbinCTI.ArbinCommandGetBarcodeInfoFeed.EChannelType.IV
+        barcode_info_instance.GlobalIndex = 1
+        barcode_info_instance.Barcode = "123456"
+        barcode_info_instance.Info = "Info"
+        barcode_info_instance.Error = ArbinCTI.ArbinCommandGetBarcodeInfoFeed.GET_BARCODE_RESULT.CTI_GET_BARCODE_SUCCESS
+
+        barcode_info_list_instance = List[ArbinCTI.ArbinCommandGetBarcodeInfoFeed.ChannelBarcodeInfo]()
+        barcode_info_list_instance.Add(barcode_info_instance)
+
+        cs_instance.BarcodeInfos = barcode_info_list_instance
+
+        feedback_instance = GetBarcodeInfoFeedback(cs_instance)
+
+        self.assertEqual(feedback_instance.channel_type, GetBarcodeInfoFeedback.EChannelType.IV)
+        self.assertEqual(feedback_instance.barcode_info[0].channel_type, GetBarcodeInfoFeedback.EChannelType.IV)
+        self.assertEqual(feedback_instance.barcode_info[0].global_index, 1)
+        self.assertEqual(feedback_instance.barcode_info[0].barcode, "123456")
+        self.assertEqual(feedback_instance.barcode_info[0].info, "Info")
+        self.assertEqual(feedback_instance.barcode_info[0].error, GetBarcodeInfoFeedback.EGetBarcodeResult.CTI_GET_BARCODE_SUCCESS)
+
+        if UNITTEST_VIEW_DICT:
+            print("GetBarcodeInfoFeedback:", feedback_instance.to_dict())
+
+    def test_GetBarcodeInfoFeedback_ChannelBarcodeInfo_instantiation_from_cs(self):
+        cs_instance = ArbinCTI.ArbinCommandGetBarcodeInfoFeed.ChannelBarcodeInfo()
+        cs_instance.ChannelType = ArbinCTI.ArbinCommandGetBarcodeInfoFeed.EChannelType.IV
+        cs_instance.GlobalIndex = 1
+        cs_instance.Barcode = "123456"
+        cs_instance.Info = "Info"
+        cs_instance.Error = ArbinCTI.ArbinCommandGetBarcodeInfoFeed.GET_BARCODE_RESULT.CTI_GET_BARCODE_SUCCESS
+
+        channel_barcode_info_instance = GetBarcodeInfoFeedback.ChannelBarcodeInfo(cs_instance)
+
+        self.assertEqual(channel_barcode_info_instance.channel_type, GetBarcodeInfoFeedback.EChannelType.IV)
+        self.assertEqual(channel_barcode_info_instance.global_index, 1)
+        self.assertEqual(channel_barcode_info_instance.barcode, "123456")
+        self.assertEqual(channel_barcode_info_instance.info, "Info")
+        self.assertEqual(channel_barcode_info_instance.error, GetBarcodeInfoFeedback.EGetBarcodeResult.CTI_GET_BARCODE_SUCCESS)
+
+    def test_ConvertToAnonymousOrNamedTOFeedback_instantiation(self):
+        cs_instance = ArbinCTI.ArbinCommandConvertToAnonymousOrNamedTOFeed()
+        cs_instance.Result = ArbinCTI.ArbinCommandConvertToAnonymousOrNamedTOFeed.CONVERTTESTOBJECT_RESULT.CTI_CONVERT_SUCCESS
+        cs_instance.Reason = "Conversion successful"
+        cs_instance.ResultChanListPairs = SortedDictionary[ArbinCTI.ArbinCommandConvertToAnonymousOrNamedTOFeed.CONVERTTESTOBJECT_RESULT, List[Int32]]()
+
+        list_instance1, list_instance2 = List[Int32](), List[Int32]()
+        for i in range(1, 4):
+            list_instance1.Add(i)
+            list_instance2.Add(i + 3)
+
+        cs_instance.ResultChanListPairs.Add(ArbinCTI.ArbinCommandConvertToAnonymousOrNamedTOFeed.CONVERTTESTOBJECT_RESULT.CTI_CONVERT_SUCCESS, list_instance1)
+        cs_instance.ResultChanListPairs.Add(ArbinCTI.ArbinCommandConvertToAnonymousOrNamedTOFeed.CONVERTTESTOBJECT_RESULT.CTI_CONVERT_FAILED, list_instance2)
+
+        feedback_instance = ConvertToAnonymousOrNamedTOFeedback(cs_instance)
+
+        self.assertEqual(feedback_instance.result, ConvertToAnonymousOrNamedTOFeedback.EConvertTestObjectResult.CTI_CONVERT_SUCCESS)
+        self.assertEqual(feedback_instance.reason, "Conversion successful")
+        self.assertEqual(feedback_instance.result_chan_list_pairs[ConvertToAnonymousOrNamedTOFeedback.EConvertTestObjectResult.CTI_CONVERT_SUCCESS], list(list_instance1))
+        self.assertEqual(feedback_instance.result_chan_list_pairs[ConvertToAnonymousOrNamedTOFeedback.EConvertTestObjectResult.CTI_CONVERT_FAILED], list(list_instance2))
+
+        if UNITTEST_VIEW_DICT:
+            print("ConvertToAnonymousOrNamedTOFeedback:", feedback_instance.to_dict())
+
+    def test_SetIntervalTimeLogDataFeedback_instantiation(self):
+        cs_instance = ArbinCTI.ArbinCommandSetIntervalTimeLogDataFeed()
+        cs_instance.Result = ArbinCTI.ArbinCommandSetIntervalTimeLogDataFeed.SET_INTERVAL_TIME_LOG_DATA_RESULT.SET_INTERVALTIME_LOGDATA_SUCCESS
+        cs_instance.Message = "Interval time log data set successfully"
+
+        feedback_instance = SetIntervalTimeLogDataFeedback(cs_instance)
+
+        self.assertEqual(feedback_instance.result, SetIntervalTimeLogDataFeedback.ESetIntervalTimeLogDataResult.SET_INTERVALTIME_LOGDATA_SUCCESS)
+        self.assertEqual(feedback_instance.message, "Interval time log data set successfully")
+
+        if UNITTEST_VIEW_DICT:
+            print("SetIntervalTimeLogDataFeedback:", feedback_instance.to_dict())
+            
+    def test_GetTrayStatusFeedback_instantiation(self):
+        tray_status_instance = ArbinCTI.Common.CSPTTTrayStatus()
+        tray_status_instance.GlobalIndex = 1
+        tray_status_instance.IsEngagementDown = True
+        tray_status_instance.IsEngagementUp = False
+        tray_status_instance.IsTrayInserted = True
+        tray_status_instance.Error = 0
+        tray_status_instance.MetaValues = List[ArbinCTI.Common.CSPTTTrayMetaValue]()
+
+        tray_status_list_instance = List[ArbinCTI.Common.CSPTTTrayStatus]()
+        tray_status_list_instance.Add(tray_status_instance)
+
+        cs_instance = ArbinCTI.ArbinCommandGetTrayStatusFeed()
+        cs_instance.TrayStatusInfos = tray_status_list_instance
+
+        feedback_instance = GetTrayStatusFeedback(cs_instance)
+
+        self.assertEqual(feedback_instance.tray_status_info[0].global_index, 1)
+        self.assertTrue(feedback_instance.tray_status_info[0].is_engagement_down)
+        self.assertFalse(feedback_instance.tray_status_info[0].is_engagement_up)
+        self.assertTrue(feedback_instance.tray_status_info[0].is_tray_inserted)
+        self.assertEqual(feedback_instance.tray_status_info[0].error, 0)
+
+        if UNITTEST_VIEW_DICT:
+            print("GetTrayStatusFeedback:", feedback_instance.to_dict())
+            
+    def test_GetMachineTypeFeedback_instantiation(self):
+        cs_instance = ArbinCTI.ArbinCommandGetMachineTypeFeed()
+        cs_instance.m_Error = ArbinCTI.ArbinCommandGetMachineTypeFeed.GET_MACHINE_RESULT.CTI_GET_MACHINE_SUCCESS
+        cs_instance.MachineType = ArbinCTI.ArbinCommandGetMachineTypeFeed.EMachineType.IV
+
+        feedback_instance = GetMachineTypeFeedback(cs_instance)
+
+        self.assertEqual(feedback_instance.error, GetMachineTypeFeedback.EGetMachineResult.CTI_GET_MACHINE_SUCCESS)
+        self.assertEqual(feedback_instance.machine_type, GetMachineTypeFeedback.EMachineType.IV)
+
+        if UNITTEST_VIEW_DICT:
+            print("GetMachineTypeFeedback:", feedback_instance.to_dict())
+
+    def test_EngageTrayFeedback_instantiation(self):
+        engage_tray_instance = ArbinCTI.Common.CSPTTEngageTray()
+        engage_tray_instance.GlobalIndex = 1
+        engage_tray_instance.Engage = True
+        engage_tray_instance.Error = 0
+
+        engage_tray_list_instance = List[ArbinCTI.Common.CSPTTEngageTray]()
+        engage_tray_list_instance.Add(engage_tray_instance)
+
+        cs_instance = ArbinCTI.ArbinCommandEngageTrayFeed()
+        cs_instance.EngageTrayInfos = engage_tray_list_instance
+
+        feedback_instance = EngageTrayFeedback(cs_instance)
+
+        self.assertEqual(feedback_instance.engage_tray_info[0].global_index, 1)
+        self.assertTrue(feedback_instance.engage_tray_info[0].engage)
+        self.assertEqual(feedback_instance.engage_tray_info[0].error, 0)
+
+        if UNITTEST_VIEW_DICT:
+            print("EngageTrayFeedback:", feedback_instance.to_dict())

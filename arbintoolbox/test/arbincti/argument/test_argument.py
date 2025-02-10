@@ -3,7 +3,7 @@ import os
 
 import ArbinCTI.Core as ArbinCTI # type: ignore
 
-from arbintoolbox.src.arbincti.data_type.cti_data_type import (
+from arbintoolbox.src.arbincti.argument.argument import (
     TE_DATA_TYPE, 
     StartResumeEx,
     MetaVariableInfo,
@@ -99,7 +99,7 @@ class TestArbinCTIClasses(unittest.TestCase):
 
     def test_time_sensitive_set_mv_to_cs(self):
         """Test conversion of TimeSensitiveSetMV to C# object"""
-        time_sensitive_set_mv = TimeSensitiveSetMV(TimeSensitiveSetMV.EMVUD.MVUD1, 10.5)
+        time_sensitive_set_mv = TimeSensitiveSetMV(mvud=TimeSensitiveSetMV.EMVUD.MVUD1, value=10.5)
 
         cs_instance = time_sensitive_set_mv.to_cs()
 
@@ -142,17 +142,48 @@ class TestArbinCTIClasses(unittest.TestCase):
         self.assertEqual(cs_instance.Channels[0].TimeSensitiveSetMVCount, 1)
         self.assertEqual(cs_instance.Channels[0].IsDoLog, False)
 
-    def test_meta_variable_info_ex_to_cs(self):
-        """Test conversion of MetaVariableInfoEx to C# object"""
+    def test_meta_variable_info_ex_initialization(self):
+        """Test initialization of MetaVariableInfoEx with keyword arguments"""
         meta_var_info_ex = MetaVariableInfoEx(
+            channel_index=1,
+            mv_meta_code=100,
+            mv_data_type=10.5,
             data_type=TE_DATA_TYPE.MP_DATA_TYPE_AuxdTdt,
-            error=b'\x01'
         )
+
+        self.assertEqual(meta_var_info_ex.channel_index, 1)
+        self.assertEqual(meta_var_info_ex.mv_meta_code, 100)
+        self.assertEqual(meta_var_info_ex.mv_data_type, 10.5)
+        self.assertEqual(meta_var_info_ex.data_type, TE_DATA_TYPE.MP_DATA_TYPE_AuxdTdt)
+        self.assertEqual(meta_var_info_ex.error, b'\x00')
 
         cs_instance = meta_var_info_ex.to_cs()
 
+        self.assertEqual(cs_instance.m_ChannelIndexInGlobal, 1)
+        self.assertEqual(cs_instance.m_MV_MetaCode, 100)
+        self.assertEqual(cs_instance.m_fMV_Value, 10.5)
         self.assertEqual(cs_instance.DataType, ArbinCTI.TE_DATA_TYPE.MP_DATA_TYPE_AuxdTdt)
-        self.assertEqual(cs_instance.Error, 1)
+        self.assertEqual(cs_instance.Error, 0)
+
+    def test_meta_variable_info_ex_initialization_from_cs(self):
+        """Test initialization of MetaVariableInfoEx with C# object"""
+        cs_instance = ArbinCTI.MetaVariableInfoEx()
+        cs_instance.m_ChannelIndexInGlobal = 1
+        cs_instance.m_MV_MetaCode = 100
+        cs_instance.m_fMV_Value = 10.5
+        cs_instance.DataType = ArbinCTI.TE_DATA_TYPE.MP_DATA_TYPE_AuxdTdt
+        cs_instance.Error = b'\x01'
+
+        meta_var_info_ex = MetaVariableInfoEx(cs_instance)
+
+        self.assertEqual(meta_var_info_ex.channel_index, 1)
+        self.assertEqual(meta_var_info_ex.mv_meta_code, 100)
+        self.assertEqual(meta_var_info_ex.mv_data_type, 10.5)
+        self.assertEqual(meta_var_info_ex.data_type, TE_DATA_TYPE.MP_DATA_TYPE_AuxdTdt)
+        self.assertEqual(meta_var_info_ex.error, 1)
+
+        if UNITTEST_VIEW_DICT:
+            print("MetaVariableInfoEx:", meta_var_info_ex.to_dict())
 
     def test_test_object_setting_to_cs(self):
         """Test conversion of TestObjectSetting to C# object"""

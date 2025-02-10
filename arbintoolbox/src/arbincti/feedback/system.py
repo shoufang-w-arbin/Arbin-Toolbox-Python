@@ -7,28 +7,13 @@ from arbintoolbox.src.base import (
 
 """""""""""""""""""""""""""
 System & Connection
-- GetSerailNumberFeedback
-- GetMITSVersionFeedback
 - LoginFeedback
 - LogicConnectFeedback
+- SendMsgToCTIFeedBack
+- UnknownCommandFeedback
+- StartAutomaticCalibrationFeedback
 """""""""""""""""""""""""""
-class GetSerailNumberFeedback(DictReprBase):
-    class EAssignToken(SafeIntEnumBase):
-        CTI_GET_SERIAL_SUCCESS = 0,
-        CTI_ASSIGN_ERROR = 0x10,
-
-    def __init__(self, feedback: ArbinCTI.ArbinCommandGetSerialNumberFeed):
-        if not isinstance(feedback, ArbinCTI.ArbinCommandGetSerialNumberFeed):
-            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetSerialNumberFeed', got '{type(feedback)}'")
-        self.serial_number  = float(feedback.SerialNum)
-        self.result         = GetSerailNumberFeedback.EAssignToken(int(feedback.Result))
-
-class GetMITSVersionFeedback(DictReprBase):
-    def __init__(self, feedback: ArbinCTI.ArbinCommandGetServerSoftwareVersionNumberFeed): 
-        if not isinstance(feedback, ArbinCTI.ArbinCommandGetServerSoftwareVersionNumberFeed):
-            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetServerSoftwareVersionNumberFeed', got '{type(feedback)}'")
-        self.version = str(feedback.ServerVersionNumber)
-    
+  
 class LoginFeedback(DictReprBase):
     class ECTIVersion(SafeIntEnumBase):
         None_ = 0
@@ -83,3 +68,30 @@ class LogicConnectFeedback(DictReprBase):
             raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandLogicConnectFeed', got '{type(feedback)}'")
         self.dwSetKickOut    = int(feedback.dwSetKickOut)
         self.dwConnectResult = int(feedback.dwConnectResult)
+
+class SendMsgToCTIFeedback(DictReprBase):
+    class EResult(SafeIntEnumBase):
+        CTI_SEND_MSG_SUCCESS = 1
+        CTI_SEND_MSG_FAILED = 2
+
+    def __init__(self, feedback: ArbinCTI.ArbinCommandSendMsgToCTIFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandSendMsgToCTIFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandSendMsgToCTIFeed', got '{type(feedback)}'")
+        self.result = SendMsgToCTIFeedback.EResult(int(feedback.Result))
+
+class UnknownCommandFeedback(DictReprBase):
+    def __init__(self, feedback: ArbinCTI.ArbinCommandUnknownCommandFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandUnknownCommandFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandUnknownFeed', got '{type(feedback)}'")
+        self.unknown_commnad        = int(feedback.UnknownCMD)
+        self.unknown_commnad_extend = int(feedback.UnknownCMDExtend)
+    
+class StartAutomaticCalibrationFeedback(DictReprBase):
+    class EResult(SafeIntEnumBase):
+        CTI_AUTOCALI_START_SUCCESS = 1
+        CTI_AUTOCALI_START_FAILED = 2
+
+    def __init__(self, feedback: ArbinCTI.ArbinCommandStartAutomaticCalibrationFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandStartAutomaticCalibrationFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandStartAutomaticCalibrationFeed', got '{type(feedback)}'")
+        self.result = StartAutomaticCalibrationFeedback.EResult(int(feedback.Result))

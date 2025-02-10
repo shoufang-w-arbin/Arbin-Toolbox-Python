@@ -4,39 +4,16 @@ import unittest
 import ArbinCTI.Core as ArbinCTI # type: ignore
 
 from arbintoolbox.src.arbincti.feedback.system import (
-    GetSerailNumberFeedback, 
-    GetMITSVersionFeedback,
     LoginFeedback,
-    LogicConnectFeedback
+    LogicConnectFeedback,
+    SendMsgToCTIFeedback,
+    UnknownCommandFeedback,
+    StartAutomaticCalibrationFeedback,
 )
 
 UNITTEST_VIEW_DICT = os.getenv("UNITTEST_VIEW_DICT", False)
 
 class TestFeedbackClasses(unittest.TestCase):
-
-    def test_GetSerailNumberFeedback_instantiation(self):
-        cs_instance = ArbinCTI.ArbinCommandGetSerialNumberFeed()
-        cs_instance.SerialNum   = 12345.6789
-        cs_instance.Result      = ArbinCTI.ArbinCommandGetSerialNumberFeed.ASSIGN_TOKEN.CTI_GET_SERIAL_SUCCESS
-
-        feedback_instance = GetSerailNumberFeedback(cs_instance)
-
-        self.assertEqual(feedback_instance.serial_number, 12345.6789)
-        self.assertEqual(feedback_instance.result, GetSerailNumberFeedback.EAssignToken.CTI_GET_SERIAL_SUCCESS)
-
-        if UNITTEST_VIEW_DICT:
-            print("GetSerailNumberFeedback:", feedback_instance.to_dict())
-
-    def test_GetMITSVersionFeedback_instantiation(self):
-        cs_instance = ArbinCTI.ArbinCommandGetServerSoftwareVersionNumberFeed()
-        cs_instance.ServerVersionNumber = "1.2.3.4"
-
-        feedback_instance = GetMITSVersionFeedback(cs_instance)
-
-        self.assertEqual(feedback_instance.version, "1.2.3.4")
-
-        if UNITTEST_VIEW_DICT:
-            print("GetMITSVersionFeedback:", feedback_instance.to_dict())
 
     def test_LoginFeedback_instantiation(self):
         cs_instance = ArbinCTI.ArbinCommandLoginFeed()
@@ -88,3 +65,38 @@ class TestFeedbackClasses(unittest.TestCase):
 
         if UNITTEST_VIEW_DICT:
             print("LogicConnectFeedback:", feedback_instance.to_dict())
+
+    def test_StartAutomaticCalibrationFeedback_instantiation(self):
+        cs_instance = ArbinCTI.ArbinCommandStartAutomaticCalibrationFeed()
+        cs_instance.Result = ArbinCTI.ArbinCommandStartAutomaticCalibrationFeed.AUTOCALI_START_RESULT.CTI_AUTOCALI_START_SUCCESS
+
+        feedback_instance = StartAutomaticCalibrationFeedback(cs_instance)
+
+        self.assertEqual(feedback_instance.result, StartAutomaticCalibrationFeedback.EResult.CTI_AUTOCALI_START_SUCCESS)
+
+        if UNITTEST_VIEW_DICT:
+            print("StartAutomaticCalibrationFeedback:", feedback_instance.to_dict())
+
+    def test_SendMsgToCTIFeedBack_instantiation(self):
+        cs_instance = ArbinCTI.ArbinCommandSendMsgToCTIFeed()
+        cs_instance.Result = ArbinCTI.ArbinCommandSendMsgToCTIFeed.SEND_MSG_TO_CTI_RESULT.SEND_MSG_TO_CTI_SUCCESS
+
+        feedback_instance = SendMsgToCTIFeedback(cs_instance)
+
+        self.assertEqual(feedback_instance.result, SendMsgToCTIFeedback.EResult.CTI_SEND_MSG_SUCCESS)
+
+        if UNITTEST_VIEW_DICT:
+            print("SendMsgToCTIFeedBack:", feedback_instance.to_dict())
+
+    def test_UnknownCommandFeedback_instantiation(self):
+        cs_instance = ArbinCTI.ArbinCommandUnknownCommandFeed()
+        cs_instance.UnknownCMD = 999
+        cs_instance.UnknownCMDExtend = 888
+
+        feedback_instance = UnknownCommandFeedback(cs_instance)
+
+        self.assertEqual(feedback_instance.unknown_commnad, 999)
+        self.assertEqual(feedback_instance.unknown_commnad_extend, 888)
+
+        if UNITTEST_VIEW_DICT:
+            print("UnknownCommandFeedback:", feedback_instance.to_dict())

@@ -5,21 +5,53 @@ import ArbinCTI.Core as ArbinCTI # type: ignore
 from System import ( # type: ignore
     String,
     Array,
-    Int32
+    UInt32,
 )
-from System.Collections.Generic import List # type: ignore
+from System.Collections.Generic import ( # type: ignore
+    SortedDictionary,
+    List, 
+)
 
 from arbintoolbox.src.arbincti.feedback.request_info import (
     GetStartDataFeedback,
     GetChannelDataFeedback,
     GetResumeDataFeedback,
     GetMappingAuxFeedback,
-
+    GetSerialNumberFeedback, 
+    GetSoftwareVersionFeedback,
+    GetChannelDataSimpleModeFeedback,
+    GetChannelsDataMinimalistModeFeedback,
+    GetStringLimitLengthFeedback,
 )
 
 UNITTEST_VIEW_DICT = os.getenv("UNITTEST_VIEW_DICT", False)
 
 class TestFeedbackClasses(unittest.TestCase):
+
+    def test_GetSerailNumberFeedback_instantiation(self):
+        cs_instance = ArbinCTI.ArbinCommandGetSerialNumberFeed()
+        cs_instance.SerialNum   = 12345.6789
+        cs_instance.Result      = ArbinCTI.ArbinCommandGetSerialNumberFeed.ASSIGN_TOKEN.CTI_GET_SERIAL_SUCCESS
+
+        feedback_instance = GetSerialNumberFeedback(cs_instance)
+
+        self.assertEqual(feedback_instance.serial_number, 12345.6789)
+        self.assertEqual(feedback_instance.result, GetSerialNumberFeedback.EAssignToken.CTI_GET_SERIAL_SUCCESS)
+
+        if UNITTEST_VIEW_DICT:
+            print("GetSerailNumberFeedback:", feedback_instance.to_dict())
+
+    def test_GetMITSVersionFeedback_instantiation(self):
+        cs_instance = ArbinCTI.ArbinCommandGetServerSoftwareVersionNumberFeed()
+        cs_instance.ServerVersionNumber = "1.2.3.4"
+
+        feedback_instance = GetSoftwareVersionFeedback(cs_instance)
+
+        self.assertEqual(feedback_instance.version, "1.2.3.4")
+
+        if UNITTEST_VIEW_DICT:
+            print("GetMITSVersionFeedback:", feedback_instance.to_dict())
+            
     def test_GetStartDataFeedback_instantiation(self):
         str_list_instance = List[String]()
         str_list_instance.Add("Test1")
@@ -334,3 +366,86 @@ class TestFeedbackClasses(unittest.TestCase):
 
         if UNITTEST_VIEW_DICT:
             print("GetResumeDataFeedback:", feedback_instance.to_dict())
+
+    def test_GetChannelDataSimpleModeFeedback_instantiation(self):
+        aux_array_instance = Array.CreateInstance(
+            List[ArbinCTI.ArbinCommandGetChannelDataFeed.AuxData], 
+            12
+        )
+        for i in range(12):
+            aux_array_instance[i] = List[ArbinCTI.ArbinCommandGetChannelDataFeed.AuxData]()
+        aux_data_instance = ArbinCTI.ArbinCommandGetChannelDataFeed.AuxData()
+        aux_data_instance.Value = 1.23
+        aux_data_instance.dtValue = 45.6
+        aux_array_instance[0].Add(aux_data_instance)
+
+        channel_info_instance = ArbinCTI.ArbinCommandGetChannelDataSimpleModeFeed.ChannelInfo()
+        channel_info_instance.Channel = 1
+        channel_info_instance.Status = ArbinCTI.ArbinCommandGetChannelDataFeed.ChannelStatus.External_Charge
+        channel_info_instance.CommFailure = False
+        channel_info_instance.MasterChannel = 0
+        channel_info_instance.TestTime = 123.45
+        channel_info_instance.StepTime = 12.34
+        channel_info_instance.Voltage = 3.7
+        channel_info_instance.Current = 1.5
+        channel_info_instance.Auxs = aux_array_instance
+
+        cs_instance = ArbinCTI.ArbinCommandGetChannelDataSimpleModeFeed()
+        cs_instance.m_Channels = List[ArbinCTI.ArbinCommandGetChannelDataSimpleModeFeed.ChannelInfo]()
+        cs_instance.m_Channels.Add(channel_info_instance)
+
+        feedback_instance = GetChannelDataSimpleModeFeedback(cs_instance)
+
+        self.assertEqual(len(feedback_instance.channel_data), 1)
+        channel_data = feedback_instance.channel_data[0]
+        self.assertEqual(channel_data.channel_index, 1)
+        self.assertEqual(channel_data.status, GetChannelDataFeedback.EChannelStatus.External_Charge)
+        self.assertFalse(channel_data.comm_failure)
+        self.assertEqual(channel_data.master_channel, 0)
+        self.assertAlmostEqual(channel_data.test_time, 123.45, places=6)
+        self.assertAlmostEqual(channel_data.step_time, 12.34, places=6)
+        self.assertAlmostEqual(channel_data.voltage, 3.7, places=6)
+        self.assertAlmostEqual(channel_data.current, 1.5, places=6)
+        self.assertEqual(len(channel_data.auxs), 12)
+        self.assertEqual(len(channel_data.auxs[0]), 1)
+        self.assertAlmostEqual(channel_data.auxs[0][0].value, 1.23, places=5)
+        self.assertAlmostEqual(channel_data.auxs[0][0].value_dt, 45.6, places=5)
+
+        if UNITTEST_VIEW_DICT:
+            print("GetChannelDataSimpleModeFeedback:", feedback_instance.to_dict())
+
+    def test_GetStringLimitLengthFeedback_instantiation(self):
+        cs_instance = ArbinCTI.ArbinCommandGetStringLimitLengthFeed()
+        cs_instance.StringLimitDatas = SortedDictionary[ArbinCTI.ArbinCommandGetStringLimitLengthFeed.ECTIStringLimitLengthType, UInt32]()
+        cs_instance.StringLimitDatas.Add(ArbinCTI.ArbinCommandGetStringLimitLengthFeed.ECTIStringLimitLengthType.TestName, 50)
+
+        feedback_instance = GetStringLimitLengthFeedback(cs_instance)
+
+        self.assertEqual(len(feedback_instance.string_limit_data), 1)
+        string_limit_data = feedback_instance.string_limit_data
+        self.assertEqual(list(string_limit_data.keys())[0], GetStringLimitLengthFeedback.ECTIStringLimitLengthType.TestName)
+        self.assertEqual(list(string_limit_data.values())[0], 50)
+
+        if UNITTEST_VIEW_DICT:
+            print("GetStringLimitLengthFeedback:", feedback_instance.to_dict())
+
+    def test_GetChannelsDataMinimalistModeFeedback_instantiation(self):
+        channel_info_instance = ArbinCTI.ArbinCommandGetChannelDataMinimalistModeFeed.ChannelInfo()
+        channel_info_instance.Channel = 1
+        channel_info_instance.Voltage = 3.7
+        channel_info_instance.Current = 1.5
+
+        cs_instance = ArbinCTI.ArbinCommandGetChannelDataMinimalistModeFeed()
+        cs_instance.m_Channels = List[ArbinCTI.ArbinCommandGetChannelDataMinimalistModeFeed.ChannelInfo]()
+        cs_instance.m_Channels.Add(channel_info_instance)
+
+        feedback_instance = GetChannelsDataMinimalistModeFeedback(cs_instance)
+
+        self.assertEqual(len(feedback_instance.channel_data), 1)
+        channel_data = feedback_instance.channel_data[0]
+        self.assertEqual(channel_data.channel_index, 1)
+        self.assertAlmostEqual(channel_data.voltage, 3.7, places=6)
+        self.assertAlmostEqual(channel_data.current, 1.5, places=6)
+
+        if UNITTEST_VIEW_DICT:
+            print("GetChannelsDataMinimalistModeFeedback:", feedback_instance.to_dict())
