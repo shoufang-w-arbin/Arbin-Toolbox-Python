@@ -32,14 +32,19 @@ By abstracting away C# object interactions, developers can focus on their core a
     - Windows: .NET Framework >=4.7.2
     - Linux: Mono is used by default
 - ArbinCTI permission on MITS
-### Install from Wheel
-```bash
-pip install dist/arbintoolbox-{version}-py3-none-any.whl
-```
+### Installation
+- ArbinCTI Users
+    ```bash
+    pip install arbinctitools/dist/arbinctitools-{version}-py3-none-any.whl
+    ```
+- ArbinClient Users
+    ```bash
+    pip install arbinclienttools/dist/arbinclienttools-{version}-py3-none-any.whl
+    ```
 
 ## Supported Arbin Objects
-- For **ArbinCTI** object, see [ArbinCTI.md](arbintoolbox/src/arbincti/ArbinCTI.md).
-- For **ArbinClient** object, see [ArbinClient.md](arbintoolbox/src/arbinclient/ArbinClient.md).
+- For **ArbinCTI** object, see [ArbinCTI.md](arbinctitools/ArbinCTI.md).
+- For **ArbinClient** object, see [ArbinClient.md](arbinclienttools/ArbinClient.md).
 
 ## Usage
 See [EXAMPLE.md](EXAMPLE.md).
