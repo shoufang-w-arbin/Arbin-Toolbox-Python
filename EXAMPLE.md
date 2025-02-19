@@ -59,12 +59,12 @@ control.PostGetChannelsDataMminimalistMode(
 By applying these explicit casts, you can ensure proper data type compatibility between Python and C# when using ArbinCTI.
 
 ## Arbin Object Creation
-Creating **ArbinCTI general objects** ([ArbinCTI](arbintoolbox/src/arbincti/ArbinCTI.md#general-objects), [ArbinClient](arbintoolbox/src/arbinclient/ArbinClient.md#general-objects)) is straightforward:
+Creating **ArbinCTI general objects** ([ArbinCTI](arbinctitools/ArbinCTI.md#general-objects), [ArbinClient](arbinclienttools/ArbinClient.md#general-objects)) is straightforward:
 1. Create the corresponding Python wrapper object. 
 2. Convert the object to a C# instance by calling `to_cs`:
 
 ```python
-from arbintoolbox import MetaVariableInfo, TE_DATA_TYPE
+from arbinctitools import MetaVariableInfo, TE_DATA_TYPE
 info = MetaVariableInfo(
     channel_index = 0,
     mv_meta_code  = 0,
@@ -75,7 +75,7 @@ info_cs = info.to_cs()  # Now it is a C# 'MetaVariableInfo' instance
 
 Same method applies to C# Enum types required when sending ArbinCTI commands.
 ```python
-from arbintoolbox import NewOrDeleteFeedback
+from arbinctitools import NewOrDeleteFeedback
 control.PostNewOrDelete(
     client, 
     "file_path", 
@@ -102,7 +102,7 @@ All supported Arbin general objects have a `to_cs` method, which allows `CSConv.
 """
 Example - Calling 'PostStartChannelEx(IArbinSocket socket, List<StartResumeEx> resumeEx, string Creators, string Comments)'
 """
-from arbintoolbox import CSConv, StartResumeEx
+from arbinctitools import CSConv, StartResumeEx
 
 # Create StartResumeEx objects
 a = StartResumeEx(
@@ -125,8 +125,8 @@ This section explains how to create C# `SortedDictionary` instances from Python 
 ### Example
 
 ```python
-from arbintoolbox import CSConv
-from arbintoolbox.UpdateParameterFeedback import EParameterDataType
+from arbinctitools import CSConv
+from arbinctitools.UpdateParameterFeedback import EParameterDataType
 
 # Create a list of key-value pairs. Ensure that the list consists of tuples, each of size 2.
 obj_list = [
@@ -150,7 +150,7 @@ When feedback is received, it is a C# instance. You can convert it to a Python o
 - `__repr__` is defined for quick data inspection.
 
 ```python
-from arbintoolbox import BrowseDirectoryFeedback
+from arbinctitools import BrowseDirectoryFeedback
 
 def OnBrowseDirectoryBack(feedback):
     # Convert ArbinCommandBrowseDirectoryFeed to a pythonic BrowseDirectoryFeedback
