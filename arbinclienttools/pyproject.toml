@@ -36,8 +36,8 @@ dev = [
 include-package-data = true
 
 [tool.setuptools.packages.find]
-include = ["arbintoolbox.arbinclient", "arbintoolbox.common"]
-exclude = ["arbintoolbox.arbinclient.test*", "arbintoolbox.common.test*"]
+include = ["arbinclienttools*"]
+exclude = ["arbinclienttools.test*"]
 
 [tool.setuptools.package-data]
 arbinclienttools = ["bin/ArbinClient.dll"]
