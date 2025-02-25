@@ -142,7 +142,7 @@ class CSConv:
     def to_list(object_list: list, *args):
         """
         Convert a python list to a csharp List.\n
-        If an EDataType is provided, the list is converted to a csharp List of that type.
+        If an CSConv.EDataType is provided, the list is converted to a csharp List of that type.
         If not, the objects in the list are presumed to have a 'to_cs' method.
         """
         _object_list = copy.deepcopy(object_list)
