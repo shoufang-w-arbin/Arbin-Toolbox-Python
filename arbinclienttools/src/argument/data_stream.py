@@ -1,8 +1,4 @@
-from dataclasses import dataclass
-
-import Arbin.Library.DataModel as ArbinDataModel # type: ignore
-
-"""""""""""""""""""""""""""
+__doc__ = """
 ArbinMQ Arguments
 - SubscribeMonitorDataArgs
 - SubscribeChannelDataArgs
@@ -10,12 +6,16 @@ ArbinMQ Arguments
 - SubscribeEventDataArgs
 - SubscribeDiagnosticEventDataArgs
 - SubscribeSPTTEQCELLDataArgs
-"""""""""""""""""""""""""""
+"""
+
+from dataclasses import dataclass
+
+import Arbin.Library.DataModel as ArbinDataModel # type: ignore
 
 @dataclass
 class SubscribeMonitorDataArgs:
     """
-    Python wrapper of 'Arbin.Library.DataModel.RequestInformation.SubscribeMonitorDataArgs'
+    Wrapper class of 'Arbin.Library.DataModel.RequestInformation.SubscribeMonitorDataArgs'
     """
     def to_cs(self) -> ArbinDataModel.RequestInformation.SubscribeMonitorDataArgs:
         return ArbinDataModel.RequestInformation.SubscribeMonitorData()
@@ -23,7 +23,7 @@ class SubscribeMonitorDataArgs:
 @dataclass
 class SubscribeChannelDataArgs:
     """
-    Python wrapper of 'Arbin.Library.DataModel.RequestInformation.SubscribeChannelDataArgs'
+    Wrapper class of 'Arbin.Library.DataModel.RequestInformation.SubscribeChannelDataArgs'
     """
     def to_cs(self) -> ArbinDataModel.RequestInformation.SubscribeChannelDataArgs:
         return ArbinDataModel.RequestInformation.SubscribeChannelData()
@@ -31,7 +31,7 @@ class SubscribeChannelDataArgs:
 @dataclass
 class SubscribeTestInfoDataArgs:
     """
-    Python wrapper of 'Arbin.Library.DataModel.RequestInformation.SubscribeTestInfoDataArgs'
+    Wrapper class of 'Arbin.Library.DataModel.RequestInformation.SubscribeTestInfoDataArgs'
     """
     def to_cs(self) -> ArbinDataModel.RequestInformation.SubscribeTestInfoDataArgs:
         return ArbinDataModel.RequestInformation.SubscribeTestInfoData()
@@ -39,7 +39,7 @@ class SubscribeTestInfoDataArgs:
 @dataclass
 class SubscribeEventDataArgs:
     """
-    Python wrapper of 'Arbin.Library.DataModel.RequestInformation.SubscribeEventDataArgs'
+    Wrapper class of 'Arbin.Library.DataModel.RequestInformation.SubscribeEventDataArgs'
     """
     def to_cs(self) -> ArbinDataModel.RequestInformation.SubscribeEventDataArgs:
         return ArbinDataModel.RequestInformation.SubscribeEventData()
@@ -47,7 +47,7 @@ class SubscribeEventDataArgs:
 @dataclass
 class SubscribeDiagnosticEventDataArgs:
     """
-    Python wrapper of 'Arbin.Library.DataModel.RequestInformation.SubscribeDiagnosticEventDataArgs'
+    Wrapper class of 'Arbin.Library.DataModel.RequestInformation.SubscribeDiagnosticEventDataArgs'
     """
     def to_cs(self) -> ArbinDataModel.RequestInformation.SubscribeDiagnosticEventDataArgs:
         return ArbinDataModel.RequestInformation.SubscribeDiagnosticEventData()
@@ -55,7 +55,7 @@ class SubscribeDiagnosticEventDataArgs:
 @dataclass
 class SubscribeSPTTEQCELLDataArgs:
     """
-    Python wrapper of 'Arbin.Library.DataModel.RequestInformation.SubscribeSPTTEQCELLDataArgs'
+    Wrapper class of 'Arbin.Library.DataModel.RequestInformation.SubscribeSPTTEQCELLDataArgs'
     """
     def to_cs(self) -> ArbinDataModel.RequestInformation.SubscribeSPTTEQCELLDataArgs:
         return ArbinDataModel.RequestInformation.SubscribeSPTTEQCELLData()

@@ -31,6 +31,30 @@ clr.AddReference(os.path.join(current_dir, "bin", "ArbinClient"))
 # Expose classes to the package level
 from common.src.cs_conv import CSConv
 
+from arbinclienttools.src.common.enumeration import (
+    EAIFileType,
+    EBarcodeResult,
+    EBarcodeType,
+    EMetaVariableType,
+    EEngagementResult,
+    EFilterMonitorChannelType,
+    EUploadFileResult,
+)
+
+from arbinclienttools.src.argument.channel_control import (
+    ResumeChannelArgs,
+    StartChannelArgs,
+    ChannelResumeData,
+    StopChannelArgs,
+    JumpStepArgs,
+    ResumeChannelArgs, 
+    ContinueChannelArgs,
+)
+
+from arbinclienttools.src.argument.connection import (
+    CreateArbinClientArgs,
+)
+
 from arbinclienttools.src.argument.data_stream import (
     SubscribeMonitorDataArgs,
     SubscribeChannelDataArgs,
@@ -38,5 +62,51 @@ from arbinclienttools.src.argument.data_stream import (
     SubscribeEventDataArgs,
     SubscribeDiagnosticEventDataArgs,
     SubscribeSPTTEQCELLDataArgs,
+)
+
+from arbinclienttools.src.argument.file_operation import (
+    UploadFileArgs,
+    BrowseFileListArgs,
+)
+
+from arbinclienttools.src.argument.request_info import (
+    GetMonitorDataArgs,
+    GetResumeDataArgs,
+    GetStartDataArgs,
+)
+
+from arbinclienttools.src.argument.schedule_operation import (
+    AssignFileArgs,
+    AIMetaVariableInfo,
+    UpdateMetaVariableArgs,
+    GetMetaVariableArgs,
+    AssignBarcodeInfoArgs,
+    BarcodeInfo, 
+    GetBarcodeInfoArgs,
+    GetBarcodeInfo,
+    GetEngagementStatusArgs,
+    EngageTrayArgs,
+    SPTTEngageTray,
+)
+
+"""
+Wrapper classes for unpacking FDBK 
+"""
+from arbinclienttools.src.feedback.data_stream import (
+    CANMonitorInfo,
+    SMBMonitorInfo,
+    AuxData,
+    SPTTEQMonitorData,
+    SPTTCellMonitorData,
+    SubChannelInfo,
+    ShowUDSMessageValue,
+    SimulationInfo,
+    AuxMapping,
+    SubscribeMonitorDataFeedback,
+    SubscribeChannelDataFeedback,
+    SubscribeTestInfoDataFeedback,
+    SubscribeEventDataFeedback,
+    SubscribeDiagnosticEventDataFeedback,
+    SubscribeSPTTEQCELLDataFeedback
 )
 
