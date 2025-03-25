@@ -6,7 +6,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 clr.AddReference("System")
 clr.AddReference(os.path.join(current_dir, "bin", "ArbinCTI"))
 
-from common.src.cs_conv import CSConv
+from arbinctitools.src.common.cs_conv import CSConv
 
 from arbinctitools.src.argument.argument import (
     TE_DATA_TYPE, 

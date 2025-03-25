@@ -2,7 +2,7 @@ import copy
 
 import ArbinCTI.Core as ArbinCTI # type: ignore
 
-from common.src.base import (
+from arbinctitools.src.common.base import (
     DictReprBase,
     SafeIntEnumBase
 )
