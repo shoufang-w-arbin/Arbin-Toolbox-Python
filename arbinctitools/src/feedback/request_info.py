@@ -273,7 +273,7 @@ class GetChannelDataFeedback(DictReprBase):
         if not isinstance(feedback, ArbinCTI.ArbinCommandGetChannelDataFeed):
             raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetChannelDataFeed', got '{type(feedback)}'")
         
-        self.channel_data = [GetChannelDataFeedback.ChannelInfo(info) for info in feedback.m_Channels]
+        self.m_channels = [GetChannelDataFeedback.ChannelInfo(info) for info in feedback.m_Channels]
 
 class GetResumeDataFeedback(DictReprBase):
     class EResult(SafeIntEnumBase):
@@ -345,7 +345,7 @@ class GetResumeDataFeedback(DictReprBase):
     def __init__(self, feedback: ArbinCTI.ArbinCommandGetResumeDataFeed):
         if not isinstance(feedback, ArbinCTI.ArbinCommandGetResumeDataFeed):
             raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetResumeDataFeed', got '{type(feedback)}'")
-        self.channel_data = [GetResumeDataFeedback.ResumeDatalInfo(info) for info in feedback.m_Channels]
+        self.m_channels = [GetResumeDataFeedback.ResumeDatalInfo(info) for info in feedback.m_Channels]
 
 class GetStartDataFeedback(DictReprBase):
     """Get the channel assignments, including the channel number, channel code, schedule, MVs, and test names."""
@@ -380,7 +380,7 @@ class GetStartDataFeedback(DictReprBase):
     def __init__(self, feedback: ArbinCTI.ArbinCommandGetStartDataFeed):
         if not isinstance(feedback, ArbinCTI.ArbinCommandGetStartDataFeed):
             raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetStartDataFeed', got '{type(feedback)}'")
-        self.channel_data = [GetStartDataFeedback.StartDataInfo(info) for info in feedback.m_Channels]
+        self.m_channels = [GetStartDataFeedback.StartDataInfo(info) for info in feedback.m_Channels]
 
 class GetMappingAuxFeedback(DictReprBase):
     class EAuxChannelType(SafeIntEnumBase):
@@ -481,7 +481,7 @@ class GetChannelDataSimpleModeFeedback(DictReprBase):
     def __init__(self, feedback: ArbinCTI.ArbinCommandGetChannelDataSimpleModeFeed):
         if not isinstance(feedback, ArbinCTI.ArbinCommandGetChannelDataSimpleModeFeed):
             raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetChannelDataSimpleModeFeed', got '{type(feedback)}'")
-        self.channel_data = [GetChannelDataSimpleModeFeedback.ChannelInfo(info) for info in feedback.m_Channels]
+        self.m_channels = [GetChannelDataSimpleModeFeedback.ChannelInfo(info) for info in feedback.m_Channels]
 
 class GetChannelsDataMinimalistModeFeedback(DictReprBase):
     class ChannelInfo(DictReprBase):
@@ -493,7 +493,7 @@ class GetChannelsDataMinimalistModeFeedback(DictReprBase):
     def __init__(self, feedback: ArbinCTI.ArbinCommandGetChannelDataMinimalistModeFeed):
         if not isinstance(feedback, ArbinCTI.ArbinCommandGetChannelDataMinimalistModeFeed):
             raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetChannelsDataMinimalistModeFeed', got '{type(feedback)}'")
-        self.channel_data = [GetChannelsDataMinimalistModeFeedback.ChannelInfo(info) for info in feedback.m_Channels]
+        self.m_channels = [GetChannelsDataMinimalistModeFeedback.ChannelInfo(info) for info in feedback.m_Channels]
     
 class GetStringLimitLengthFeedback(DictReprBase):
     class ECTIStringLimitLengthType(SafeIntEnumBase):
