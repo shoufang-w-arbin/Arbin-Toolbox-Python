@@ -17,7 +17,7 @@ from dataclasses import (
 
 import Arbin.Library.DataModel as ArbinDataModel # type: ignore
 
-from common.src.cs_conv import CSConv
+from arbinclienttools.src.common.cs_conv import CSConv
 
 @dataclass
 class ChannelResumeData:

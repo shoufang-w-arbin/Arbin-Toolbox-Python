@@ -29,7 +29,7 @@ clr.AddReference(os.path.join(current_dir, "bin", "ArbinDataModel"))
 clr.AddReference(os.path.join(current_dir, "bin", "ArbinClient"))
 
 # Expose classes to the package level
-from common.src.cs_conv import CSConv
+from arbinclienttools.src.common.cs_conv import CSConv
 
 from arbinclienttools.src.enumeration import (
     EAIFileType,
@@ -65,45 +65,32 @@ from arbinclienttools.src.argument.request_info import (
     GetMonitorDataArgs,
     GetResumeDataArgs,
     GetStartDataArgs,
-    GetMetaVariableArgs,
-    GetBarcodeInfo,
+    GetMetaVariablesArgs,
+    GetMappingAuxArgs,
+    GetBarcodeInfoArgs,
     SubscribeMonitorDataArgs,
     SubscribeChannelDataArgs,
     SubscribeTestInfoDataArgs,
     SubscribeEventDataArgs,
     SubscribeDiagnosticEventDataArgs,
-    SubscribeSPTTEQCELLDataArgs,
+    SubscribeSPTTEQCellDataArgs,
 )
 
 from arbinclienttools.src.argument.ttest_management import (
+    UploadFileArgs,
+    BrowseFileListArgs,
+    ModifyScheduleArgs,
+    AssignFileArgs,
+    UpdateMetaVariablesArgs,
+    AssignBarcodeInfoArgs,
     SafetyScope,
     AuxChannelRequirement,
     AuxChannelRequirementBase,
     AuxSafetyRequirement,
     ScheduleModifyInfo,
-    UploadFileArgs,
-    BrowseFileListArgs,
-    ModifyScheduleArgs,
-    AssignFileArgs,
-    UpdateMetaVariableArgs,
-    AssignBarcodeInfoArgs,
-)
-
-from arbinclienttools.src.argument.request_info import (
-    GetMonitorDataArgs,
-    GetResumeDataArgs,
-    GetStartDataArgs,
 )
 
 from arbinclienttools.src.argument.formation_management import (
-    AssignFileArgs,
-    AIMetaVariableInfo,
-    UpdateMetaVariableArgs,
-    GetMetaVariableArgs,
-    AssignBarcodeInfoArgs,
-    BarcodeInfo, 
-    GetBarcodeInfoArgs,
-    GetBarcodeInfo,
     GetEngagementStatusArgs,
     EngageTrayArgs,
     SPTTEngageTray,
@@ -112,14 +99,10 @@ from arbinclienttools.src.argument.formation_management import (
 """
 Wrapper classes for unpacking FDBK 
 """
-from arbinclienttools.src.feedback.data_stream import (
+from arbinclienttools.src.feedback.request_info import (
     CANMonitorInfo,
     SMBMonitorInfo,
     AuxData,
-    SPTTEQMonitorData,
-    SPTTCellMonitorData,
-    SubChannelInfo,
-    ShowUDSMessageValue,
     SimulationInfo,
     AuxMapping,
     SubscribeMonitorDataFeedback,

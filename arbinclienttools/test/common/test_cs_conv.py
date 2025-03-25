@@ -14,7 +14,7 @@ from System import ( # type: ignore
 )
 from System.Collections.Generic import List, SortedDictionary # type: ignore
 
-from common.src.cs_conv import CSConv
+from arbinclienttools.src.common.cs_conv import CSConv
 
 class TestCSTypeConverter(unittest.TestCase):
 

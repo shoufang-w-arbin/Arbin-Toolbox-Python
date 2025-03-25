@@ -9,7 +9,7 @@ __doc__ = """
 
 import Arbin.Library.DataModel as ArbinDataModel # type: ignore
 
-from common.src.base import (
+from arbinclienttools.src.common.base import (
     DictReprBase,
 )
 

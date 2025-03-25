@@ -18,8 +18,8 @@ __doc__ = """
 
 import Arbin.Library.DataModel as ArbinDataModel # type: ignore
 
-from common.src.cs_conv import CSConv
-from common.src.base import (
+from arbinclienttools.src.common.cs_conv import CSConv
+from arbinclienttools.src.common.base import (
     DictReprBase,
     SafeIntEnumBase
 )

@@ -11,7 +11,7 @@ __doc__ = """
 
 import Arbin.Library.DataModel as ArbinDataModel # type: ignore
 
-from common.src.base import DictReprBase
+from arbinclienttools.src.common.base import DictReprBase
 from arbinclienttools.src.enumeration import (
     EUploadFileResult,
     EBrowseDirectoryResult,

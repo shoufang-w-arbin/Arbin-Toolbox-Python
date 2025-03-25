@@ -20,7 +20,7 @@ Enumerations for ArbinClient
 
 import Arbin.Library.DataModel as ArbinDataModel # type: ignore
 
-from common.src.base import SafeIntEnumBase
+from arbinclienttools.src.common.base import SafeIntEnumBase
 
 class EMetavariableResult(SafeIntEnumBase):
     Success                   = 1
@@ -529,7 +529,7 @@ class EUploadFileResult(SafeIntEnumBase):
     NoPermissionError = 19
 
 class ESPTTCellStatus(SafeIntEnumBase):
-    None = 0
+    None_ = 0
     UnUse = 1
     Idle = 2
     Charging = 3

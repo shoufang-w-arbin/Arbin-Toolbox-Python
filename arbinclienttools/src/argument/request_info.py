@@ -11,7 +11,7 @@ __doc__ = """
 - SubscribeTestInfoDataArgs
 - SubscribeEventDataArgs
 - SubscribeDiagnosticEventDataArgs
-- SubscribeSPTTEQCELLDataArgs
+- SubscribeSPTTEQCellDataArgs
 """
 from dataclasses import (
     dataclass, 
@@ -20,7 +20,7 @@ from dataclasses import (
 
 import Arbin.Library.DataModel as ArbinDataModel # type: ignore
 
-from common.src.cs_conv import CSConv
+from arbinclienttools.src.common.cs_conv import CSConv
 from arbinclienttools.src.enumeration import (
     EFilterMonitorChannelType,
 )
@@ -76,18 +76,18 @@ class GetStartDataArgs:
         return cs_instance
 
 @dataclass
-class GetMetaVariableArgs:
+class GetMetaVariablesArgs:
     """
-    Wrapper class of of 'Arbin.Library.DataModel.RequestInformation.GetMetaVariableArgs'
+    Wrapper class of of 'Arbin.Library.DataModel.RequestInformation.GetMetaVariablesArgs'
     """
     sn:                 int  = 0
     meta_variable_type: list = field(default_factory=list)
 
-    def to_cs(self) -> ArbinDataModel.RequestInformation.GetMetaVariableArgs:
+    def to_cs(self) -> ArbinDataModel.RequestInformation.GetMetaVariablesArgs:
         if not all([isinstance(info, AIMetaVariableInfo) for info in self.meta_variable_type]):
             raise TypeError("'meta_variable_type' must be a list of 'arbinclienttools.EMetaVariableType'")
         
-        cs_instance = ArbinDataModel.RequestInformation.GetMetaVariableArgs()
+        cs_instance = ArbinDataModel.RequestInformation.GetMetaVariablesArgs()
         cs_instance.SN = CSConv.to_int(self.sn)
         cs_instance.MetaVariableTypes = CSConv.to_list(self.meta_variable_type)
         return cs_instance
@@ -158,10 +158,10 @@ class SubscribeDiagnosticEventDataArgs:
         return ArbinDataModel.RequestInformation.SubscribeDiagnosticEventData()
 
 @dataclass
-class SubscribeSPTTEQCELLDataArgs:
+class SubscribeSPTTEQCellDataArgs:
     """
-    Wrapper class of 'Arbin.Library.DataModel.RequestInformation.SubscribeSPTTEQCELLDataArgs'
+    Wrapper class of 'Arbin.Library.DataModel.RequestInformation.SubscribeSPTTEQCellDataArgs'
     """
-    def to_cs(self) -> ArbinDataModel.RequestInformation.SubscribeSPTTEQCELLDataArgs:
-        return ArbinDataModel.RequestInformation.SubscribeSPTTEQCELLData()
+    def to_cs(self) -> ArbinDataModel.RequestInformation.SubscribeSPTTEQCellDataArgs:
+        return ArbinDataModel.RequestInformation.SubscribeSPTTEQCellDataArgs()
 

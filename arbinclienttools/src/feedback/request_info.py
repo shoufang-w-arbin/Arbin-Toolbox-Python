@@ -10,13 +10,13 @@ __doc__ = """
 - SubscribeTestInfoDataFeedback
 - SubscribeEventDataFeedback
 - SubscribeDiagnosticEventDataFeedback
-- SubscribeSPTTEQCELLDataFeedback
+- SubscribeSPTTEQCellDataFeedback
 
 [Subsidary Classes]
 - ChannelData
 - TestInfoData
 - TestInfoSPTTEngagement
-- TestInfoSPTTEQ
+- TestInfoSPTTEQ 
 - TestInfoSPTTCell
 - ChannelEvents
 - ChannelDiagnosticEventData
@@ -25,7 +25,7 @@ __doc__ = """
 
 import Arbin.Library.DataModel as ArbinDataModel # type: ignore
 
-from common.src.base import (
+from arbinclienttools.src.common.base import (
     DictReprBase,
 )
 from arbinclienttools.src.enumeration import (
@@ -76,9 +76,9 @@ class GetMappingAuxFeedback(DictReprBase):
     pass
 
 class SubscribeMonitorDataFeedback(DictReprBase):
-    def __init__(self, feedback: ArbinDataModel.SubscribeMonitorDataFDBK):
-        if not isinstance(feedback, ArbinDataModel.SubscribeMonitorDataFDBK):
-            raise TypeError(f"'feedback' must be an instance of 'Arin.Library.DataModel.SubscribeMonitorDataFDBK', got '{type(feedback)}'")
+    def __init__(self, feedback: ArbinDataModel.RequestInformation.SubscribeMonitorDataFDBK):
+        if not isinstance(feedback, ArbinDataModel.RequestInformation.SubscribeMonitorDataFDBK):
+            raise TypeError(f"'feedback' must be an instance of 'Arin.Library.DataModel.RequestInformation.SubscribeMonitorDataFDBK', got '{type(feedback)}'")
         self.id_                  = str(feedback.ID)
         self.task_id              = int(feedback.TaskID)
         self.channel_monitor_data = [ChannelMonitorData(x) for x in feedback.ChannelMonitorDatas]
@@ -120,12 +120,12 @@ class SubscribeChannelDataFeedback(DictReprBase):
             self.dnlc               = float(data.DNLC)
             self.dnc                = float(data.DNC)
 
-    def __init__(self, feedback: ArbinDataModel.SubscribeChannelDataFDBK):
-        if not isinstance(feedback, ArbinDataModel.SubscribeChannelDataFDBK):
-            raise TypeError(f"'feedback' must be an instance of 'Arin.Library.DataModel.SubscribeChannelDataFDBK', got '{type(feedback)}'")
-        self.id_ = str(feedback.ID)
-        self.task_id = int(feedback.TaskID)
-        self.channel_data = [self.ChannelData(x) for x in feedback.ChannelDatas]
+    def __init__(self, feedback: ArbinDataModel.RequestInformation.SubscribeChannelDataFDBK):
+        if not isinstance(feedback, ArbinDataModel.RequestInformation.SubscribeChannelDataFDBK):
+            raise TypeError(f"'feedback' must be an instance of 'Arin.Library.DataModel.RequestInformation.SubscribeChannelDataFDBK', got '{type(feedback)}'")
+        self.id_            = str(feedback.ID)
+        self.task_id        = int(feedback.TaskID)
+        self.channel_data   = [self.ChannelData(x) for x in feedback.ChannelDatas]
 
 class SubscribeTestInfoDataFeedback(DictReprBase):
     class TestInfoData(DictReprBase):
@@ -177,9 +177,9 @@ class SubscribeTestInfoDataFeedback(DictReprBase):
             self.eq_datas                = [self.TestInfoSPTTEQ(x) for x in data.EQDatas]
             self.cell_datas              = [self.TestInfoSPTTCell(x) for x in data.CellDatas]
 
-    def __init__(self, feedback: ArbinDataModel.SubscribeTestInfoDataFDBK):
-        if not isinstance(feedback, ArbinDataModel.SubscribeTestInfoDataFDBK):
-            raise TypeError(f"'feedback' must be an instance of 'Arin.Library.DataModel.SubscribeTestInfoDataFDBK', got '{type(feedback)}'")
+    def __init__(self, feedback: ArbinDataModel.RequestInformation.SubscribeTestInfoDataFDBK):
+        if not isinstance(feedback, ArbinDataModel.RequestInformation.SubscribeTestInfoDataFDBK):
+            raise TypeError(f"'feedback' must be an instance of 'Arin.Library.DataModel.RequestInformation.SubscribeTestInfoDataFDBK', got '{type(feedback)}'")
         self.id_                = str(feedback.ID)
         self.task_id            = int(feedback.TaskID)
         self.channel_test_info  = [self.TestInfoData(x) for x in feedback.ChannelTestInfos]
@@ -211,9 +211,9 @@ class SubscribeEventDataFeedback(DictReprBase):
             self.tc_timer2   = float(obj.TCTimer2)
             self.tc_timer3   = float(obj.TCTimer3)
             self.tc_timer4   = float(obj.TCTimer4)
-    def __init__(self, feedback: ArbinDataModel.SubscribeEventDataFDBK):
-        if not isinstance(feedback, ArbinDataModel.SubscribeEventDataFDBK):
-            raise TypeError(f"'feedback' must be an instance of 'Arin.Library.DataModel.SubscribeEventDataFDBK', got '{type(feedback)}'")
+    def __init__(self, feedback: ArbinDataModel.RequestInformation.SubscribeEventDataFDBK):
+        if not isinstance(feedback, ArbinDataModel.RequestInformation.SubscribeEventDataFDBK):
+            raise TypeError(f"'feedback' must be an instance of 'Arin.Library.DataModel.RequestInformation.SubscribeEventDataFDBK', got '{type(feedback)}'")
         self.id_            = str(feedback.ID)
         self.task_id        = int(feedback.TaskID)
         self.channel_event  = [self.ChannelEvents(x) for x in feedback.ChannelEvents]
@@ -225,9 +225,9 @@ class SubscribeDiagnosticEventDataFeedback(DictReprBase):
             self.channel_id           = int(obj.ChannelID)
             self.diagnostic_envet_msg = str(obj.DiagnosticEventMsg)
 
-    def __init__(self, feedback: ArbinDataModel.SubscribeDiagnosticEventDataFDBK):
-        if not isinstance(feedback, ArbinDataModel.SubscribeDiagnosticEventDataFDBK):
-            raise TypeError(f"'feedback' must be an instance of 'Arin.Library.DataModel.SubscribeDiagnosticEventDataFDBK', got '{type(feedback)}'")
+    def __init__(self, feedback: ArbinDataModel.RequestInformation.SubscribeDiagnosticEventDataFDBK):
+        if not isinstance(feedback, ArbinDataModel.RequestInformation.SubscribeDiagnosticEventDataFDBK):
+            raise TypeError(f"'feedback' must be an instance of 'Arin.Library.DataModel.RequestInformation.SubscribeDiagnosticEventDataFDBK', got '{type(feedback)}'")
         self.id_                      = str(feedback.ID)
         self.task_id                  = int(feedback.TaskID)
         self.channel_diagnostic_event = [self.ChannelDiagnosticEventData(x) for x in feedback.ChannelDiagnosticEvents]
@@ -262,9 +262,9 @@ class SubscribeSPTTEQCELLDataFeedback(DictReprBase):
             self.discharge_energy   = float(obj.DischargeEnergy)
             self.data_flags         = int(obj.DataFlags)
 
-    def __init__(self, feedback: ArbinDataModel.SubscribeSPTTEQCELLDataFeedback):
-        if not isinstance(feedback, ArbinDataModel.SubscribeSPTTEQCELLDataFeedback):
-            raise TypeError(f"'feedback' must be an instance of 'Arin.Library.DataModel.SubscribeSPTTEQCELLDataFeedback', got '{type(feedback)}'")
+    def __init__(self, feedback: ArbinDataModel.RequestInformation.SubscribeSPTTEQCellDataFDBK):
+        if not isinstance(feedback, ArbinDataModel.RequestInformation.SubscribeSPTTEQCellDataFDBK):
+            raise TypeError(f"'feedback' must be an instance of 'Arin.Library.DataModel.RequestInformation.SubscribeSPTTEQCellDataFDBK', got '{type(feedback)}'")
         self.id_        = str(feedback.ID)
         self.task_id    = int(feedback.TaskID)
         self.eq_data    = [self.SPTTLogData(x) for x in feedback.EQDatas]

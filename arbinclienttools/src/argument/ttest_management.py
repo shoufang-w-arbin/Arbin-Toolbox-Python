@@ -4,7 +4,7 @@ __doc__ = """
 - BrowseFileListArgs
 - ModifyScheduleArgs
 - AssignFileArgs
-- UpdateMetaVariableArgs
+- UpdateMetaVariablesArgs
 - AssignBarcodeInfoArgs
 - TimeSensitiveSetMVArgs
 
@@ -23,7 +23,7 @@ from dataclasses import (
 
 import Arbin.Library.DataModel as ArbinDataModel # type: ignore
 
-from common.src.cs_conv import CSConv
+from arbinclienttools.src.common.cs_conv import CSConv
 from arbinclienttools.src.enumeration import (
     EAIFileType,
     ETimeSensitiveMVUD,
@@ -198,18 +198,18 @@ class AssignFileArgs:
         return cs_instance
     
 @dataclass
-class UpdateMetaVariableArgs:
+class UpdateMetaVariablesArgs:
     """
-    Wrapper class of of 'Arbin.Library.DataModel.TestManagement.UpdateMetaVariableArgs'
+    Wrapper class of of 'Arbin.Library.DataModel.TestManagement.UpdateMetaVariablesArgs'
     """
     sn:                 int  = 0
     meta_variable_info: list = field(default_factory=list)
 
-    def to_cs(self) -> ArbinDataModel.TestManagement.UpdateMetaVariableArgs:
+    def to_cs(self) -> ArbinDataModel.TestManagement.UpdateMetaVariablesArgs:
         if not all([isinstance(info, AIMetaVariableInfo) for info in self.meta_variable_info]):
             raise TypeError("'meta_variable_info' must be a list of 'AIMetaVariableInfo'")
         
-        cs_instance = ArbinDataModel.TestManagement.UpdateMetaVariableArgs()
+        cs_instance = ArbinDataModel.TestManagement.UpdateMetaVariablesArgs()
         cs_instance.MetaVariableInfos = CSConv.to_list(self.meta_variable_info)
         cs_instance.SN = CSConv.to_int(self.sn)
         return cs_instance
