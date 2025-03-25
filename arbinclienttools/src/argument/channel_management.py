@@ -1,11 +1,13 @@
 __doc__ = """
-Channel Control
-- ChannelResumeData
+[Channel Management Arguments]
 - StartChannelArgs 
 - StopChannelArgs
 - JumpStepArgs 
 - ResumeChannelArgs 
-- ContinueChannelArgs 
+- ContinueChannelArgs
+
+[Subsidary Classes]
+- ChannelResumeData
 """
 
 from dataclasses import (
@@ -13,7 +15,6 @@ from dataclasses import (
     field,
 )
 
-import ArbinClient.Core as ArbinClient # type: ignore
 import Arbin.Library.DataModel as ArbinDataModel # type: ignore
 
 from common.src.cs_conv import CSConv
@@ -76,7 +77,7 @@ class ChannelResumeData:
     mvud16:                    float  = 0.0
 
     def to_cs(self) -> ArbinDataModel.Common.ChannelResumeData:
-        cs_instance = ArbinClient.ChannelResumeData()
+        cs_instance = ArbinDataModel.Common.ChannelResumeData()
         cs_instance.ChannelID              = CSConv.to_int(self.channel_id)
         cs_instance.TestID                 = CSConv.to_int(self.test_id)
         cs_instance.TestNames              = CSConv.to_list(self.test_names, CSConv.EDataType.STRING)

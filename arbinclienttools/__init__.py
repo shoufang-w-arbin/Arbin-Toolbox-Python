@@ -31,7 +31,7 @@ clr.AddReference(os.path.join(current_dir, "bin", "ArbinClient"))
 # Expose classes to the package level
 from common.src.cs_conv import CSConv
 
-from arbinclienttools.src.common.enumeration import (
+from arbinclienttools.src.enumeration import (
     EAIFileType,
     EBarcodeResult,
     EBarcodeType,
@@ -41,7 +41,7 @@ from arbinclienttools.src.common.enumeration import (
     EUploadFileResult,
 )
 
-from arbinclienttools.src.argument.channel_control import (
+from arbinclienttools.src.argument.channel_management import (
     ResumeChannelArgs,
     StartChannelArgs,
     ChannelResumeData,
@@ -55,7 +55,18 @@ from arbinclienttools.src.argument.connection import (
     CreateArbinClientArgs,
 )
 
-from arbinclienttools.src.argument.data_stream import (
+from arbinclienttools.src.argument.common import (
+    AIMetaVariableInfo,
+    BarcodeInfo,
+    GetBarcodeInfo,
+)
+
+from arbinclienttools.src.argument.request_info import (
+    GetMonitorDataArgs,
+    GetResumeDataArgs,
+    GetStartDataArgs,
+    GetMetaVariableArgs,
+    GetBarcodeInfo,
     SubscribeMonitorDataArgs,
     SubscribeChannelDataArgs,
     SubscribeTestInfoDataArgs,
@@ -64,9 +75,18 @@ from arbinclienttools.src.argument.data_stream import (
     SubscribeSPTTEQCELLDataArgs,
 )
 
-from arbinclienttools.src.argument.file_operation import (
+from arbinclienttools.src.argument.ttest_management import (
+    SafetyScope,
+    AuxChannelRequirement,
+    AuxChannelRequirementBase,
+    AuxSafetyRequirement,
+    ScheduleModifyInfo,
     UploadFileArgs,
     BrowseFileListArgs,
+    ModifyScheduleArgs,
+    AssignFileArgs,
+    UpdateMetaVariableArgs,
+    AssignBarcodeInfoArgs,
 )
 
 from arbinclienttools.src.argument.request_info import (
@@ -75,7 +95,7 @@ from arbinclienttools.src.argument.request_info import (
     GetStartDataArgs,
 )
 
-from arbinclienttools.src.argument.schedule_operation import (
+from arbinclienttools.src.argument.formation_management import (
     AssignFileArgs,
     AIMetaVariableInfo,
     UpdateMetaVariableArgs,

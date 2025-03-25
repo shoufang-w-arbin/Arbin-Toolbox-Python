@@ -10,8 +10,13 @@ Enumerations for ArbinClient
 - EEngagementResult
 - EFilterMonitorChannelType
 - EUploadFileResult
+- ELoginResult
+- EStartChannelResult
+- EBrowseDirectoryResult
+- EGetDataResult
+- EAssignFileResult
+- ETimeSensitiveMVUD
 """
-
 
 import Arbin.Library.DataModel as ArbinDataModel # type: ignore
 
@@ -531,3 +536,268 @@ class ESPTTCellStatus(SafeIntEnumBase):
     Discharging = 4
     CurrentUnsafe = 5
     VoltageUnsafe = 6
+
+class ELoginResult(SafeIntEnumBase):
+    Success = 1
+    UsernameOrPasswordIncorrect = 2
+    AlreadyLogin = 3
+    AlreadyCalibration = 4
+    ProgramException = 5
+    CalibrationNotPermission = 6
+    UsernameOrPasswordEmpty = 7
+    Timeout = 8
+
+class EStartChannelResult(SafeIntEnumBase):
+    Success = 1
+    ChannelIDError = 16
+    Error = 17
+    ChannelRunningError = 18
+    ChannelNotConnectError = 19
+    ScheduleInvalidError = 20
+    NoScheduleAssignedError = 21
+    ScheduleVersionError = 22
+    PowerProtectedError = 23
+    ResultsFileSizeLimitError = 24
+    StepIDError = 25
+    NoCANConfiguratonAssignedError = 26
+    AuxiliaryChannelMapError = 27
+    BuildAuxiliaryCountError = 28
+    PowerClampCheckError = 29
+    AIError = 30
+    SaforGroupchanError = 31
+    BT6000RunningGroupError = 32
+    ChannelDownloadingScheduleError = 33
+    DatabaseQueryTestNameError = 34
+    TestNameExitsError = 35
+    GoStepError = 36
+    InvalidParallelError = 37
+    SafetyError = 38
+    SecheduleNameDifferentError = 39
+    BatterySimulationNotParallelError = 40
+    CSVWaitTime = 41
+    ChannelSuspentError = 42
+    TestNameTooLongError = 43
+    HardwareError = 44
+    ScheduleMaxStepCountError = 45
+    NoParentChannelError = 46
+    NoTestNameError = 47
+    ScheduleParseError = 48
+    NoLoginError = 49
+    NoPermissionError = 50
+    NoSNCyclerError = 51
+
+class EStopChannelResult(SafeIntEnumBase):
+    Success = 1
+    ChannelIDError = 16
+    Error = 17
+    NotRunningError = 18
+    ChannelNotConnectError = 19
+    NoLoginError = 20
+    NoPermissionError = 21
+    NoSNCyclerError = 22
+
+class EJumpStepResult(SafeIntEnumBase):
+    Success = 1
+    ChannelIDError = 16
+    Error = 17
+    ChannelRunningError = 18
+    ChannelNotConnectError = 19
+    ScheduleInvalidError = 20
+    NoScheduleAssignedError = 21
+    ScheduleVersionError = 22
+    PowerProtectedError = 23
+    ResultsFileSizeLimitError = 24
+    StepIDError = 25
+    NoCANConfiguratonAssignedError = 26
+    AuxiliaryChannelMapError = 27
+    BuildAuxiliaryCountError = 28
+    PowerClampCheckError = 29
+    AIError = 30
+    SaforGroupChannelError = 31
+    BT6000RunningGroupError = 32
+    ChannelDownloadingScheduleError = 33
+    DatabaseQueryTestNameError = 34
+    TestNameExitsError = 35
+    GoStepError = 36
+    InvalidParallelError = 37
+    SafetyError = 38
+    ScheduleNameDifferentError = 39
+    BatterySimulationNotParallelError = 40
+    ChannelSuspentError = 41
+    ObjectNullError = 42
+    NoSubScheduleStepError = 43
+    SubScheduleStepIDError = 44
+    NoLoginError = 45
+    NoPermissionError = 46
+    NoSNCyclerError = 47
+
+class EResumeChannelResult(SafeIntEnumBase):
+    Success = 1
+    ChannelIDError = 16
+    Error = 17
+    ChannelRunningError = 18
+    ChannelNotConnectError = 19
+    ScheduleInvalidError = 20
+    NoScheduleAssignedError = 21
+    ScheduleVersionError = 22
+    PowerProtectedError = 23
+    ResultsFileSizeLimitError = 24
+    StepIDError = 25
+    NoCANConfiguratonAssignedError = 26
+    AuxiliaryChannelMapError = 27
+    BuildAuxiliaryCountError = 28
+    PowerClampCheckError = 29
+    AIError = 30
+    SaforGroupchanError = 31
+    BT6000RunningGroupError = 32
+    ChannelDownloadingScheduleError = 33
+    DatabaseQueryTestNameError = 34
+    NoTestNameError = 35
+    LoadResumeError = 36
+    TestNameTooLongError = 37
+    SafetyError = 38
+    BatterySimulationNotParallelError = 39
+    ChannelSuspentError = 40
+    SecheduleNameDifferentError = 41
+    HardwareError = 42
+    ScheduleMaxStepCountError = 43
+    NoParentChannelError = 44
+    ScheduleParseError = 45
+    NoLoginError = 46
+    NoPermissionError = 47
+    NoSNCyclerError = 48
+
+class EContinueChannelResult(SafeIntEnumBase):
+    Success = 1
+    ChannelIDError = 16
+    Error = 17
+    ChannelRunningError = 18
+    ChannelNotConnectError = 19
+    ChannelCalibratingError = 20
+    NotPauseNormalError = 21
+    ChannelUnsafeError = 22
+    NoParentChannelError = 23
+    NoLoginError = 24
+    NoPermissionError = 25
+    NoSNCyclerError = 26
+
+class EBrowseDirectoryResult(SafeIntEnumBase):
+    Success = 1
+    Error = 16
+    UnsupportedFileTypeError = 17
+
+class EGetDataResult(SafeIntEnumBase):
+    Success = 1
+    Error = 16
+    ChannelIDError = 17
+    NoResumeDataError = 18
+    NoLoginError = 19
+    NoPermissionError = 20
+    NoSNCyclerError = 21
+
+class EGetMonitorDataResult(SafeIntEnumBase):
+    Success = 1
+    ChannelIDError = 2
+    ChannelNullError = 3
+    NoSNCyclerError = 4
+
+class EAssignFileResult(SafeIntEnumBase):
+    Failed = 0
+    Success = 1
+    ChannelIDError = 16
+    Error = 17
+    FilenameEmptyError = 18
+    FileNotFindError = 19
+    ChannelRunningError = 20
+    ChannelDownloadingError = 21
+    MappingFileOpenedError = 22
+    FileCannotAssignError = 23
+    FileSaveFailed = 24
+    FileUnsupportedFileTypeError = 25
+    FileNotAssignScheduleError = 26
+    FileScheduleNotAuxRequirementError = 27
+    FileScheduleIsRunningError = 28
+    ScheduleMUIDNotSameError = 29
+    FileClear = 30
+    NoLoginError = 31
+    NoPermissionError = 32
+    NoSNCyclerError = 33
+    FileTypeMismatchError = 34
+
+class ECommonResult(SafeIntEnumBase):
+    Success = 1
+    SuccessNotRunning = 2
+    Error = 16
+    DataTypeNotSupport = 17
+    MetaCodeNotExist = 18
+    ChannelIDError = 19
+    AuxiliaryIDError = 20
+    AuxNotAssignError = 21
+    CANBMSIndexError = 22
+    CANBMSNotExisErrort = 23
+    CANBMSDisabledError = 24
+    NotConnectMCUError = 25
+    TimeoutError = 26
+    MCUAckFailed = 27
+    AllowControlError = 28
+    ChannelNotConnectError = 29
+    ControlModeTypeError = 30
+    NoSNCyclerError = 31
+    SetMVCountError = 32
+    NoLoginError = 33
+    NoPermissionError = 34
+
+class EChannelStatus(SafeIntEnumBase):
+    Idle = 0
+    Transition = 1
+    Charge = 2
+    DisCharge = 3
+    Rest = 4
+    Wait = 5
+    ExternalCharge = 6
+    Calibration = 7
+    Unsafe = 8
+    Pulse = 9
+    IR = 10
+    ACI = 11
+    MCellACI = 12
+    AddIn = 13
+    Error = 14
+    Finished = 15
+    VoltMeter = 16
+    WaitingACS = 17
+    Pause = 18
+    Empty = 19
+    IdleMcu = 20
+    Start = 21
+    Running = 22
+    StepTransfer = 23
+    Resume = 24
+    GoPause = 25
+    GoStop = 26
+    GoNextStep = 27
+    OnlineUpdate = 28
+    DaqMemoryUnsafe = 29
+    ACR = 30
+    Suspent = 31
+    TrayControling = 32
+    PreEqualizing = 33
+    MaxCount = 34
+
+class ETimeSensitiveMVUD(SafeIntEnumBase):
+    MVUD1 = 52
+    MVUD2 = 53
+    MVUD3 = 54
+    MVUD4 = 55
+    MVUD5 = 105
+    MVUD6 = 106
+    MVUD7 = 107
+    MVUD8 = 108
+    MVUD9 = 109
+    MVUD10 = 110
+    MVUD11 = 111
+    MVUD12 = 112
+    MVUD13 = 113
+    MVUD14 = 114
+    MVUD15 = 115
+    MVUD16 = 116

@@ -1,6 +1,6 @@
 __doc__ = """"
-Connection
-- CreateArbinClientArgs
+[Connection Arguments]
+CreateArbinClientArgs
 """
 
 from dataclasses import dataclass
