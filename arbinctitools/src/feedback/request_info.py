@@ -18,6 +18,7 @@ Request Info
 - GetChannelsDataMinimalistModeFeedback
 - GetChannelsDataSimpleModeFeedback
 - GetStringLimitLengthFeedback
+- GetChannelInfoExFeedback
 """""""""""""""""""""""""""
 
 class GetChannelDataFeedback(DictReprBase):
@@ -505,3 +506,39 @@ class GetStringLimitLengthFeedback(DictReprBase):
             feedback.StringLimitDatas,
             (GetStringLimitLengthFeedback.ECTIStringLimitLengthType, int)
         )
+
+class GetChannelInfoExFeedback(DictReprBase):
+    class GET_CHANNEL_TYPE(SafeIntEnumBase):
+        ALLCHANNEL = 1,
+        RUNNING = 2,
+        UNSAFE = 3
+
+        def to_cs(self) -> ArbinCTI.ArbinCommandGetChannelInfoExFeed.GET_CHANNEL_TYPE:
+            """Convert to ArbinCTI.Core.ArbinCommandGetChannelInfoExFeed.GET_CHANNEL_TYPE"""
+            return ArbinCTI.ArbinCommandGetChannelInfoExFeed.GET_CHANNEL_TYPE(self.value) 
+    
+    class TestObjectInfo(DictReprBase):
+        def __init__(self, obj):
+            self.test_object_name   = str(obj.TestObjectName)
+            self.min_voltage_charge = float(obj.MinVoltageCharge)
+            self.max_voltage_charge = float(obj.MaxVoltageCharge)
+            self.max_current_charge = float(obj.MaxCurrentCharge)
+            self.nominal_capacity   = float(obj.NorminalCapacity)
+            self.mass               = float(obj.Mass)
+            self.nominal_voltage    = float(obj.NominalVoltage)
+            self.nominal_capacitance = float(obj.NominalCapacitance)
+            self.nominal_ir         = float(obj.NominalIR)
+            self.specific_capacity  = float(obj.SpecificCapacity)
+            self.is_auto_calculate  = bool(obj.IsAutoCalculate)
+
+    class ChannelInfo(DictReprBase):
+        def __init__(self, obj):
+            self.channel_index      = int(obj.ChannelIndex)
+            self.test_object_info   = GetChannelInfoExFeedback.TestObjectInfo(obj.TestObjectInfo)
+            self.chart_name         = str(obj.ChartName)
+
+    def __init__(self, feedback: ArbinCTI.ArbinCommandGetChannelInfoExFeed):
+        if not isinstance(feedback, ArbinCTI.ArbinCommandGetChannelInfoExFeed):
+            raise TypeError(f"'feedback' must be an instance of 'ArbinCTI.Core.ArbinCommandGetChannelInfoExFeed', got '{type(feedback)}'")
+        self.m_channels = [self.ChannelInfo(x) for x in feedback.m_Channels]            
+    

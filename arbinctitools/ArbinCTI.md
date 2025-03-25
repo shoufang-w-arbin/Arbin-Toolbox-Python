@@ -91,6 +91,7 @@ See [EXAMPLE.md](../../../EXAMPLE.md#arbin-feedback-accessing) for detailed usag
 | GetChannelsDataMinimalistModeFeedback | ArbinCommandGetChannelDataMinimalistModeFeed      |
 | GetChannelsDataSimpleModeFeedback     | ArbinCommandGetChannelDataSimpleModeFeed          |
 | GetStringLimitLengthFeedback          | ArbinCommandGetStringLimitLengthFeed              |
+| GetChannelInfoExFeedback              | ArbinCommandGetChannelInfoExFeed                  |
 | ***Miscellaneous***                   |                                                   |
 | SendMsgToCTIFeedback                  | ArbinCommandSendMsgToCTIFeed                      |
 | UnknownCommandFeedback                | ArbinCommandUnknownCommandFeed                    |
