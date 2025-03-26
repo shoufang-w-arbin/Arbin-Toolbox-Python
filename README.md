@@ -1,70 +1,100 @@
-# Arbin Toolbox
-## Table of Contents
-- [About](#about)
-- [Installation](#installation)
-    - [Requirements](#requirements)
-- [Supported Arbin Objects](#supported-arbin-objects)
-- [Usage Examples](#usage-examples)
-- [Development](#Development)
-    - [Testing](#testing)
-    - [To-Do](#to-do)
+# Supported ArbinCTI Objects
+## General Objects
+See [EXAMPLE.md](../../EXAMPLE.md#arbin-object-creation) for detailed usage.
 
-## About
-This toolbox aims to simplify the integration of **ArbinCTI** and **ArbinClient** with Python applications by leveraging `pythonnet`. While `pythonnet` enables the use of C# objects defined in the DLL, interacting with these objects directly can be unintuitive for Python developers. This toolbox provides Python wrappers for these C# objects, offering a more Pythonic and user-friendly interface.
+| Wrapper Class                                | Required By                        | Original Object                                           |
+|----------------------------------------------|------------------------------------|-----------------------------------------------------------|
+| ***Arguments***                              |                                    |                                                           |
+| StartResumeEx                                | *PostStartChannelEx*               | StartResumeEx                                             |
+| MetaVariableInfo                             | *PostGetMetaVariables*             | ArbinCommandGetMetaVariablesFeed.MetaVariableInfo         |
+| MetaVariableInfoEx                           | *PostUpdateMetaVariableAdvancedEx* | MetaVariableInfoEx                                        |
+| AssignBarcodeInfoFeedback.ChannelBarcodeInfo | *PostAssignBarcodeInfo*            | ArbinCommandAssignBarcodeInfoFeed.ChannelBarcodeInfo      |
+| GetBarcodeInfoFeedback.GetChannelBarcodeInfo | *PostGetBarcodeInfo*               | ArbinCommandGetBarcodeInfoFeed.GetChannelBarcodeInfo      |
+| CMetavariableDataCodeApply                   | *PostApplyForUDPCommunication*     | ArbinCommandCMetavariableDataCodeApply                    |
+| TimeSensitiveSetMVArgs                       | *PostTimeSensitiveSetMV*           | ArbinCommandTimeSensitiveSetMVArgs                        |
+| StartChannelAdvancedArgs                     | *PostStartChannelAdvanced*         | Common.Start.StartChannelAdvancedArgs                     |
+| GetMappingAuxArgs                            | *PostGetMappingAux*                | Common.GetMappingAux.GetMappingAuxArgs                    |
+| ModifyScheduleArgs                           | *PostModifySchedule*               | Common.ModifySchedule.ModifyScheduleArgs                  |
+| ***Enum Class***                             |                                    |                                                           |
+| NewOrDeleteFeedback.ENewOrDeleteType         | *PostNewOrDelete*                  | ArbinCommandNewOrDeleteFeed.NEW_OR_DELETE_TYPE            |
+| UploadFileFeedback.UploadFileResult          | *PostUpLoadFile*                   | ArbinCommandUpLoadFileFeed.CUpLoadFileResult              |
+| AssignFileFeedback.EFileKind                 | *PostAssignFile*                   | ArbinCommandAssignFileFeed.EFileKind                      |
+| GetChannelDataFeedback.EGetChannelType       | *PostGetChannelsData*              | ArbinCommandGetChannelFeed.GET_CHANNEL_TYPE               |
+| AssignBarcodeInfoFeedback.EChannelType       | *PostAssignBarcodeInfo*            | ArbinCommandAssignBarcodeInfoFeed.EChannelType            |
+| GetBarcodeInfoFeedback.EChannelType          | *PostGetBarcodeInfo*               | ArbinCommandGetBarcodeInfoFeed.EChannelType               |
 
-For example, to call `PostTimeSensitiveSetMV(IArbinSocket socket, TimeSensitiveSetMVArgs args)` in ArbinCTI:
+### Supplementary Objects
+Additional objects and enums act as arguments to generate the above wrapper classes:
 
-![](resource/compare.png)
+| Wrapper Class                          | Required By                            | Original Object                                      |
+|----------------------------------------|----------------------------------------|------------------------------------------------------|
+| TE_DATA_TYPE                           | MetaVariableInfo, MetaVariableInfoEx, CMetavariableDataCodeApply | TE_DATA_TYPE               |
+| TimeSensitiveSetMV                     | TimeSensitiveSetMVArgs                 | TimeSensitiveSetMV                                   |
+| StartChannelInfo                       | StartChannelAdvancedArgs               | Common.Start.StartChannelInfo                        |
+| TestObjectSetting                      | StartChannelInfo                       | Common.Start.TestObjectSetting                       |
+| ScheduleModifyInfo                     | ModifyScheduleArgs                     | Common.ModifySchedule.ModifyScheduleArgs             |
+| AuxChannelRequirementBase              | ScheduleModifyInfo                     | Common.ModifySchedule.AuxChannelRequirementBase      |
+| AuxChannelRequirement                  | ScheduleModifyInfo                     | Common.ModifySchedule.AuxChannelRequirement          |
+| SafetyScope                            | AuxChannelRequirement, AuxSafetyRequirement | Common.ModifySchedule.SafetyScope               |
 
-By abstracting away C# object interactions, developers can focus on their core application logic rather than wrestling with language-specific intricacies.
+> Ignoring namespace `ArbinCTI.Core` in the third columns for simplicity.
 
-### Additional Benefits
-- **Easy Py-C# Data structure conversions** are backed by `CSConv` in this toolbox.
-- **Beautified feedback objects** with quick inspection methods. 
-- **Support for keyword arguments**, compared to using `pythonnet` directly.
-- **Object attributes are discoverable by Pylance**, reducing human error when programming. \
-    ![](resource/pylance.png)
+## Feedback Objects
+The wrapper classes
+- Convert C# ArbinCTI feedback objects to Python objects, allowing easy access to attributes
+- Offer quick inspection methods for these objects
 
-## Installation
-### Requirements
-- 64-bit Python >= 3.7
-- System
-    - Windows: .NET Framework >=4.7.2
-    - Linux: Mono is used by default
-- ArbinCTI permission on MITS
-### Installation
-- ArbinCTI Users
-    ```bash
-    pip install arbinctitools/dist/arbinctitools-{version}-py3-none-any.whl
-    ```
-- ArbinClient Users
-    ```bash
-    pip install arbinclienttools/dist/arbinclienttools-{version}-py3-none-any.whl
-    ```
+See [EXAMPLE.md](../../../EXAMPLE.md#arbin-feedback-accessing) for detailed usage.
 
-## Supported Arbin Objects
-- For **ArbinCTI** object, see [ArbinCTI.md](arbinctitools/ArbinCTI.md).
-- For **ArbinClient** object, see [ArbinClient.md](arbinclienttools/ArbinClient.md).
+| Wrapper Class                         | Original Object                                   |
+|---------------------------------------|---------------------------------------------------|
+| ***Connection***                      |                                                   |
+| LoginFeedback                         | ArbinCommandLoginFeed                             |
+| LogicConnectFeedback                  | ArbinCommandLogicConnectFeed                      |
+| ***Test Schedule***                   |                                                   |
+| AssignScheduleFeedback                | ArbinCommandAssignScheduleFeed                    |
+| AssignFileFeedback                    | ArbinCommandAssignFileFeed                        |
+| SetMetaVariableFeedback               | ArbinCommandSetMetaVariableFeed                   |
+| SetMetaVariableTimeSensitiveFeedback  | ArbinCommandTimeSensitiveSetMVFeed                |
+| GetMetaVariableFeedback               | ArbinCommandGetMetaVariablesFeed                  |
+| UpdateMetaVariableAdvancedFeedback    | ArbinCommandUpdateMetaVariableAdvancedFeed        |
+| UpdateParameterFeedback               | ArbinCommandUpdateParamenterFeed                  |
+| ModifyScheduleFeedback                | ArbinCommandModifyScheduleFeed                    |
+| AssignBarcodeFeedback                 | ArbinCommandAssignBarcodeInfoFeed                 |
+| GetBarcodeInfoFeedback                | ArbinCommandGetBarcodeInfoFeed                    |
+| GetMachineTypeFeedback                | ArbinCommandGetMachineTypeFeed                    |
+| GetTrayStatusFeedback                 | ArbinCommandGetTrayStatusFeed                     |
+| EngageTrayFeedback                    | ArbinCommandEngageTrayFeed                        |
+| SetIntervalTimeLogDataFeedback        | ArbinCommandSetIntervalTimeLogDataFeed            |
+| ConvertToAnonymousOrNamedTOFeedback   | ArbinCommandConvertToAnonymousOrNamedTOFeed       |
+| ***Channel Control***                 |                                                   |
+| StartChannelFeedback                  | ArbinCommandStartChannelFeed                      |
+| StartChannelAdvancedFeedback          | ArbinCommandStartChannelAdvancedFeed              |
+| StopChannelFeedback                   | ArbinCommandStopChannelFeed                       |
+| ResumeChannelFeedback                 | ArbinCommandResumeChannelFeed                     |
+| JumpChannelFeedback                   | ArbinCommandJumpChannelFeed                       |
+| ContinueChannelFeedback               | ArbinCommandContinueChannelFeed                   |
+| ***File Operation***                  |                                                   |
+| UploadFileFeedback                    | ArbinCommandUpLoadFileFeed                        |
+| DownloadFileFeedback                  | ArbinCommandDownloadFileFeed                      |
+| BrowseDirectoryFeedback               | ArbinCommandBrowseDirectoryFeed                   |
+| CheckFileExistFeedback                | ArbinCommandCheckFileExFeed                       |
+| NewFolderFeedback                     | ArbinCommandNewFolderFeed                         |
+| DeleteFileFeedback                    | ArbinCommandDeleteFileFeed                        |
+| NewOrDeleteFeedback                   | ArbinCommandNewOrDeleteFeed                       |
+| ***Request Information***             |                                                   |
+| GetChannelDataFeedback                | ArbinCommandGetChannelDataFeed                    |
+| GetStartDataFeedback                  | ArbinCommandGetStartDataFeed                      |
+| GetResumeDataFeedback                 | ArbinCommandGetResumeDataFeed                     |
+| GetMappingAuxFeedback                 | ArbinCommandGetMappingAuxFeed                     |
+| GetSerialNumberFeedback               | ArbinCommandGetSerialNumberFeed                   |
+| GetChannelsDataMinimalistModeFeedback | ArbinCommandGetChannelDataMinimalistModeFeed      |
+| GetChannelsDataSimpleModeFeedback     | ArbinCommandGetChannelDataSimpleModeFeed          |
+| GetStringLimitLengthFeedback          | ArbinCommandGetStringLimitLengthFeed              |
+| GetChannelInfoExFeedback              | ArbinCommandGetChannelInfoExFeed                  |
+| ***Miscellaneous***                   |                                                   |
+| SendMsgToCTIFeedback                  | ArbinCommandSendMsgToCTIFeed                      |
+| UnknownCommandFeedback                | ArbinCommandUnknownCommandFeed                    |
+| StartAutomaticCalibrationFeedback     | ArbinCommandStartAutomaticCalibrationFeed         |
 
-## Usage
-See [EXAMPLE.md](EXAMPLE.md).
-
-## Development
-### Testing
-To run unittest
-```sh
-python -m unittest
-```
-
-To view feedback output while running test, set env variable before running unittest:
-- Windows Powershell
-    ```sh
-    $env:UNITTEST_VIEW_DICT="True"
-    ```
-- Linux Cmd
-    ```sh
-    UNITTEST_VIEW_DICT="True"
-    ```
-
-### To-Do
-> We are adding more wrapper classes. If you require immediate implementation of a certain object, please create an issue or submit a pull request with your work.
+> Ignoring namespace `ArbinCTI.Core` in the second column for simplicity.
