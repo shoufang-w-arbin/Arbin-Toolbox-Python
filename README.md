@@ -2,12 +2,9 @@
 ## Table of Contents
 - [About](#about)
 - [Installation](#installation)
-    - [Requirements](#requirements)
 - [Supported Arbin Objects](#supported-arbin-objects)
 - [Usage Examples](#usage-examples)
 - [Development](#Development)
-    - [Testing](#testing)
-    - [To-Do](#to-do)
 
 ## About
 This toolbox aims to simplify the integration of **ArbinCTI** and **ArbinClient** with Python applications by leveraging `pythonnet`. While `pythonnet` enables the use of C# objects defined in the DLL, interacting with these objects directly can be unintuitive for Python developers. This toolbox provides Python wrappers for these C# objects, offering a more Pythonic and user-friendly interface.
@@ -33,21 +30,23 @@ By abstracting away C# object interactions, developers can focus on their core a
     - Linux: Mono is used by default
 - ArbinCTI permission on MITS
 ### Installation
-- ArbinCTI Users
-    ```bash
-    pip install arbinctitools/dist/arbinctitools-{version}-py3-none-any.whl
-    ```
-- ArbinClient Users
-    ```bash
-    pip install arbinclienttools/dist/arbinclienttools-{version}-py3-none-any.whl
-    ```
+- **ArbinCTI** Users
+    1. Switch to branch `arbinctitools`
+    2. Run `pip install dist/arbinctitools-{version}-py3-none-any.whl` in your development environment.
+
+- **ArbinClient** Users
+    1. Switch to branch `arbinclienttools`
+    2. Run `pip install dist/arbinclienttools-{version}-py3-none-any.whl` in your development environment.
 
 ## Supported Arbin Objects
-- For **ArbinCTI** object, see [ArbinCTI.md](arbinctitools/ArbinCTI.md).
-- For **ArbinClient** object, see [ArbinClient.md](arbinclienttools/ArbinClient.md).
+- For **ArbinCTI** object, see [`arbinctitools/README.md`](https://github.com/shoufang-w-arbin/Arbin-Toolbox-Python/blob/arbinctitools/README.md).
+- For **ArbinClient** object, see [`arbinclienttools/README.md`](https://github.com/shoufang-w-arbin/Arbin-Toolbox-Python/blob/arbinclienttools/README.md).
 
 ## Usage
-See [EXAMPLE.md](EXAMPLE.md).
+Refer to [EXAMPLE.md](EXAMPLE.md) for:
+- Basic usage examples
+- An overview of `CSConv` functionality
+- Common pitfalls in `pythonnet` development
 
 ## Development
 ### Testing
