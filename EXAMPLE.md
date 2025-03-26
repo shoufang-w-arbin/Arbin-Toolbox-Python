@@ -59,7 +59,7 @@ control.PostGetChannelsDataMminimalistMode(
 By applying these explicit casts, you can ensure proper data type compatibility between Python and C# when using ArbinCTI.
 
 ## Arbin Object Creation
-Creating **ArbinCTI general objects** ([ArbinCTI](arbinctitools/ArbinCTI.md#general-objects), [ArbinClient](arbinclienttools/ArbinClient.md#general-objects)) is straightforward:
+Creating **ArbinCTI general objects** ([ArbinCTI](https://github.com/shoufang-w-arbin/Arbin-Toolbox-Python/blob/arbinctitools/README.md#general-objects), [ArbinClient](https://github.com/shoufang-w-arbin/Arbin-Toolbox-Python/blob/arbinclienttools/README.md#general-objects)) is straightforward:
 1. Create the corresponding Python wrapper object. 
 2. Convert the object to a C# instance by calling `to_cs`:
 
