@@ -1,70 +1,133 @@
-# Arbin Toolbox
-## Table of Contents
-- [About](#about)
-- [Installation](#installation)
-    - [Requirements](#requirements)
-- [Supported Arbin Objects](#supported-arbin-objects)
-- [Usage Examples](#usage-examples)
-- [Development](#Development)
-    - [Testing](#testing)
-    - [To-Do](#to-do)
+# Supported ArbinCTI Objects
+## General Objects
+See [EXAMPLE.md](../../EXAMPLE.md#arbin-object-creation) for detailed usage.
 
-## About
-This toolbox aims to simplify the integration of **ArbinCTI** and **ArbinClient** with Python applications by leveraging `pythonnet`. While `pythonnet` enables the use of C# objects defined in the DLL, interacting with these objects directly can be unintuitive for Python developers. This toolbox provides Python wrappers for these C# objects, offering a more Pythonic and user-friendly interface.
+### Argument and Feedback Objects
+| Wrapper Class                       | Required By                    | Original Object                                      |
+|-------------------------------------|--------------------------------|------------------------------------------------------|
+| **Connection**                      |                                |                                                      |
+| CreateArbinClientArgs               | Connect                        | ArbinClient.Core.CreateArbinClientArgs               |
+| **Channel Management**              |                                |                                                      |
+| ContinueChannelArgs                 | ContinueChannel                | ChannelManagement.ContinueChannelArgs                |
+| JumpStepArgs                        | JumpStep                       | ChannelManagement.JumpStepArgs                       |
+| ResumeChannelArgs                   | ResumeChannel                  | ChannelManagement.ResumeChannelArgs                  |
+| StartChannelArgs                    | StartChannel                   | ChannelManagement.StartChannelArgs                   |
+| StartChannelAdvancedArgs            | StartChannel                   | ChannelManagement.StartChannelAdvancedArgs           |
+| StopChannelArgs                     | StopChannel                    | ChannelManagement.StopChannelArgs                    |
+| **Formation Management**            |                                |                                                      |
+| EngageTrayArgs                      | EngageTray                     | FormationManagement.EngageTrayArgs                   |
+| GetEngagementStatusArgs             | GetEngagementStatus            | FormationManagement.GetEngagementStatusArgs          |
+| **Request Information**             |                                |                                                      |
+| GetBarcodeInfoArgs                  | GetBarcodeInfo                 | RequestInformation.GetBarcodeInfoArgs                |
+| GetMappingAuxArgs                   | GetMappingAux                  | RequestInformation.GetMappingAuxArgs                 |
+| GetMetaVariablesArgs                | GetMetaVariables               | RequestInformation.GetMetaVariableArgs               |
+| GetMonitorDataArgs                  | GetMonitorData                 | RequestInformation.GetMonitorDataArgs                |
+| GetResumeDataArgs                   | GetResumeData                  | RequestInformation.GetResumeDataArgs                 |
+| GetStartDataArgs                    | GetStartData                   | RequestInformation.GetStartDataArgs                  |
+| SubscribeChannelDataArgs            | SubscribeChannelData           | RequestInformation.SubscribeChannelDataArgs          |
+| SubscribeDiagnosticEventDataArgs    | SubscribeDiagnosticEventData   | RequestInformation.SubscribeDiagnosticEventDataArgs  |
+| SubscribeEventDataArgs              | SubscribeEventData             | RequestInformation.SubscribeEventDataArgs            |
+| SubscribeMonitorDataArgs            | SubscribeMonitorData           | RequestInformation.SubscribeMonitorDataArgs          |
+| SubscribeSPTTEQCELLDataArgs         | SubscribeSPTTEQCELLData        | RequestInformation.SubscribeSPTTEQCELLDataArgs       |
+| SubscribeTestInfoDataArgs           | SubscribeTestInfoData          | RequestInformation.SubscribeTestInfoDataArgs         |
+| **Test Management**                 |                                |                                                      |
+| AssignBarcodeInfoArgs               | AssignBarcodeInfo              | TestManagement.AssignBarcodeInfoArgs                 |
+| AssignFileArgs                      | AssignFile                     | TestManagement.AssignFileArgs                        |
+| BrowseFileListArgs                  | BrowseFileList                 | TestManagement.BrowseFileListArgs                    |
+| ModifyScheduleArgs                  | ModifySchedule                 | TestManagement.ModifySchedule                        |
+| TimeSensitiveSetMVArgs              | TimeSensitiveSetMV             | TestManagement.TimeSensitiveSetMVArgs                |
+| UpdateMetaVariablesArgs             | UpdateMetaVariables            | TestManagement.UpdateMetaVariableArgs                |
+| UploadFileArgs                      | UploadFile                     | TestManagement.UploadFileArgs                        |
 
-For example, to call `PostTimeSensitiveSetMV(IArbinSocket socket, TimeSensitiveSetMVArgs args)` in ArbinCTI:
+> Omitting namespace `Arbin.Library.DataModel` in the third columns for simplicity.
 
-![](resource/compare.png)
+### Supplementary Objects
+Additional objects and enums act as arguments to generate the above wrapper classes:
 
-By abstracting away C# object interactions, developers can focus on their core application logic rather than wrestling with language-specific intricacies.
+| Wrapper Class                          | Required By                            | Original Object                                      |
+|----------------------------------------|----------------------------------------|------------------------------------------------------|
+| Common objects............
+|TimeSensitiveSetMVChannel| TimeSensitiveSetMVArgs| TestManagement.TimeSensitiveSetMVChannel|
+| TimeSensitiveSetMV | TimeSensitiveSetMVChannel |TestManagement.TimeSensitiveSetMV|
+| ChannelResumeData                       | ResumeChannelArgs,StartChannelArgs               | Common.ChannelResumeData                        |
+| SPTTEngageTray                      | EngageTrayArgs                       | FormationManagement.SPTTEngageTray                       |
 
-### Additional Benefits
-- **Easy Py-C# Data structure conversions** are backed by `CSConv` in this toolbox.
-- **Beautified feedback objects** with quick inspection methods. 
-- **Support for keyword arguments**, compared to using `pythonnet` directly.
-- **Object attributes are discoverable by Pylance**, reducing human error when programming. \
-    ![](resource/pylance.png)
+| ScheduleModifyInfo                     | ModifyScheduleArgs                     | Common.ModifySchedule.ModifyScheduleArgs             |
+| AuxChannelRequirementBase              | ScheduleModifyInfo                     | Common.ModifySchedule.AuxChannelRequirementBase      |
+| AuxChannelRequirement                  | ScheduleModifyInfo                     | Common.ModifySchedule.AuxChannelRequirement          |
+| SafetyScope                            | AuxChannelRequirement, AuxSafetyRequirement | Common.ModifySchedule.SafetyScope               |
 
-## Installation
-### Requirements
-- 64-bit Python >= 3.7
-- System
-    - Windows: .NET Framework >=4.7.2
-    - Linux: Mono is used by default
-- ArbinCTI permission on MITS
-### Installation
-- ArbinCTI Users
-    ```bash
-    pip install arbinctitools/dist/arbinctitools-{version}-py3-none-any.whl
-    ```
-- ArbinClient Users
-    ```bash
-    pip install arbinclienttools/dist/arbinclienttools-{version}-py3-none-any.whl
-    ```
+| **Enumeration**                     |                                |                                                      |
 
-## Supported Arbin Objects
-- For **ArbinCTI** object, see [ArbinCTI.md](arbinctitools/ArbinCTI.md).
-- For **ArbinClient** object, see [ArbinClient.md](arbinclienttools/ArbinClient.md).
+    EAIFileTyp| AssignFileArgs, BrowseFileListArgs|EAIFileTyp
+    EBarcodeType|BarcodeInfo, GetBarcodeInfo|EBarcodeType
+    EEngagementResult|SPTTEngageTray|EEngagementResult
+    EFilterMonitorChannelType|GetMonitorDataArgs|EFilterMonitorChannelType
+    EMetaVariableType| AIMetaVariableInfo|EMetaVariableType
+    ETimeSensitiveMVUD |TimeSensitiveSetMV|ETimeSensitiveMVUD
 
-## Usage
-See [EXAMPLE.md](EXAMPLE.md).
 
-## Development
-### Testing
-To run unittest
-```sh
-python -m unittest
-```
+> Omitting namespace `ArbinCTI.Core` in the third columns for simplicity.
 
-To view feedback output while running test, set env variable before running unittest:
-- Windows Powershell
-    ```sh
-    $env:UNITTEST_VIEW_DICT="True"
-    ```
-- Linux Cmd
-    ```sh
-    UNITTEST_VIEW_DICT="True"
-    ```
+## Feedback Objects
+The wrapper classes
+- Convert C# ArbinCTI feedback objects to Python objects, allowing easy access to attributes
+- Offer quick inspection methods for these objects
 
-### To-Do
-> We are adding more wrapper classes. If you require immediate implementation of a certain object, please create an issue or submit a pull request with your work.
+See [EXAMPLE.md](../../../EXAMPLE.md#arbin-feedback-accessing) for detailed usage.
+
+| Wrapper Class                         | Original Object                                   |
+|---------------------------------------|---------------------------------------------------|
+| ***Connection***                      |                                                   |
+| LoginFeedback                         | ArbinCommandLoginFeed                             |
+| LogicConnectFeedback                  | ArbinCommandLogicConnectFeed                      |
+| ***Test Schedule***                   |                                                   |
+| AssignScheduleFeedback                | ArbinCommandAssignScheduleFeed                    |
+| AssignFileFeedback                    | ArbinCommandAssignFileFeed                        |
+| SetMetaVariableFeedback               | ArbinCommandSetMetaVariableFeed                   |
+| SetMetaVariableTimeSensitiveFeedback  | ArbinCommandTimeSensitiveSetMVFeed                |
+| GetMetaVariableFeedback               | ArbinCommandGetMetaVariablesFeed                  |
+| UpdateMetaVariableAdvancedFeedback    | ArbinCommandUpdateMetaVariableAdvancedFeed        |
+| UpdateParameterFeedback               | ArbinCommandUpdateParamenterFeed                  |
+| ModifyScheduleFeedback                | ArbinCommandModifyScheduleFeed                    |
+| AssignBarcodeFeedback                 | ArbinCommandAssignBarcodeInfoFeed                 |
+| GetBarcodeInfoFeedback                | ArbinCommandGetBarcodeInfoFeed                    |
+| GetMachineTypeFeedback                | ArbinCommandGetMachineTypeFeed                    |
+| GetTrayStatusFeedback                 | ArbinCommandGetTrayStatusFeed                     |
+| EngageTrayFeedback                    | ArbinCommandEngageTrayFeed                        |
+| SetIntervalTimeLogDataFeedback        | ArbinCommandSetIntervalTimeLogDataFeed            |
+| ConvertToAnonymousOrNamedTOFeedback   | ArbinCommandConvertToAnonymousOrNamedTOFeed       |
+| ***Channel Control***                 |                                                   |
+| StartChannelFeedback                  | ArbinCommandStartChannelFeed                      |
+| StartChannelAdvancedFeedback          | ArbinCommandStartChannelAdvancedFeed              |
+| StopChannelFeedback                   | ArbinCommandStopChannelFeed                       |
+| ResumeChannelFeedback                 | ArbinCommandResumeChannelFeed                     |
+| JumpChannelFeedback                   | ArbinCommandJumpChannelFeed                       |
+| ContinueChannelFeedback               | ArbinCommandContinueChannelFeed                   |
+| ***File Operation***                  |                                                   |
+| UploadFileFeedback                    | ArbinCommandUpLoadFileFeed                        |
+| DownloadFileFeedback                  | ArbinCommandDownloadFileFeed                      |
+| BrowseDirectoryFeedback               | ArbinCommandBrowseDirectoryFeed                   |
+| CheckFileExistFeedback                | ArbinCommandCheckFileExFeed                       |
+| NewFolderFeedback                     | ArbinCommandNewFolderFeed                         |
+| DeleteFileFeedback                    | ArbinCommandDeleteFileFeed                        |
+| NewOrDeleteFeedback                   | ArbinCommandNewOrDeleteFeed                       |
+| ***Request Information***             |                                                   |
+| GetChannelDataFeedback                | ArbinCommandGetChannelDataFeed                    |
+| GetStartDataFeedback                  | ArbinCommandGetStartDataFeed                      |
+| GetResumeDataFeedback                 | ArbinCommandGetResumeDataFeed                     |
+| GetMappingAuxFeedback                 | ArbinCommandGetMappingAuxFeed                     |
+| GetSerialNumberFeedback               | ArbinCommandGetSerialNumberFeed                   |
+| GetChannelsDataMinimalistModeFeedback | ArbinCommandGetChannelDataMinimalistModeFeed      |
+| GetChannelsDataSimpleModeFeedback     | ArbinCommandGetChannelDataSimpleModeFeed          |
+| GetStringLimitLengthFeedback          | ArbinCommandGetStringLimitLengthFeed              |
+| ***Miscellaneous***                   |                                                   |
+| SendMsgToCTIFeedback                  | ArbinCommandSendMsgToCTIFeed                      |
+| UnknownCommandFeedback                | ArbinCommandUnknownCommandFeed                    |
+| StartAutomaticCalibrationFeedback     | ArbinCommandStartAutomaticCalibrationFeed         |
+
+
+    EBarcodeResult,
+    EUploadFileResult,
+
+> Ignoring namespace `ArbinCTI.Core` in the second column for simplicity.
