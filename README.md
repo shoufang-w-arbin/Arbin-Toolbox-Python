@@ -17,7 +17,7 @@ By abstracting away C# object interactions, developers can focus on their core a
 
 ### Additional Benefits
 - **Easy Py-C# Data structure conversions** are backed by `CSConv` in this toolbox.
-- **Beautified feedback objects** with quick inspection methods. 
+- **Beautified feedback objects** with full serializability and quick inspection method. 
 - **Support for keyword arguments**, compared to using `pythonnet` directly.
 - **Object attributes are discoverable by Pylance**, reducing human error when programming. \
     ![](resource/pylance.png)

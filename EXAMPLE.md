@@ -145,7 +145,7 @@ control.PostUpdateParameters(client, _, _, sorted_dict)
 This method ensures that the key-value pairs are properly converted to the specified C# data types, allowing seamless integration with ArbinCTI methods that require `SortedDictionary` instances.
 
 ## Arbin Feedback Accessing
-When feedback is received, it is a C# instance. You can convert it to a Python object using the feedback wrapper class in `arbintoolbox`, enabling user-friendly access. Additionally, all wrapper classes come with two methods:
+When feedback is received, it is a C# instance. You can convert it to a Python object using the feedback wrapper class in `arbintoolbox`, enabling full serializability. Two methods are provided:
 - `to_dict` converts the object to a serializable format, easily transformable to JSON, with enum objects represented by their names.
 - `__repr__` is defined for quick data inspection.
 
