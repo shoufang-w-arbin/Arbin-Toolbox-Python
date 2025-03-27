@@ -64,6 +64,3 @@ To view feedback output while running test, set env variable before running unit
     ```sh
     UNITTEST_VIEW_DICT="True"
     ```
-
-### To-Do
-> We are adding more wrapper classes. If you require immediate implementation of a certain object, please create an issue or submit a pull request with your work.
