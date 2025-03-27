@@ -22,7 +22,7 @@ from arbinclienttools.src.common.cs_conv import CSConv
 @dataclass
 class ChannelResumeData:
     """
-    Wrapper class of of 'Arbin.Library.DataModel.Common.ChannelResumeData'
+    Wrapper class of of 'Arbin.Library.DataModel.ChannelManagement.ChannelResumeData'
     """
     channel_id:                int    = -1
     test_id:                   int    = -1
@@ -76,8 +76,8 @@ class ChannelResumeData:
     mvud15:                    float  = 0.0
     mvud16:                    float  = 0.0
 
-    def to_cs(self) -> ArbinDataModel.Common.ChannelResumeData:
-        cs_instance = ArbinDataModel.Common.ChannelResumeData()
+    def to_cs(self) -> ArbinDataModel.ChannelManagement.ChannelResumeData:
+        cs_instance = ArbinDataModel.ChannelManagement.ChannelResumeData()
         cs_instance.ChannelID              = CSConv.to_int(self.channel_id)
         cs_instance.TestID                 = CSConv.to_int(self.test_id)
         cs_instance.TestNames              = CSConv.to_list(self.test_names, CSConv.EDataType.STRING)

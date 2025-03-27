@@ -1,23 +1,21 @@
 # Supported ArbinCTI Objects
-## General Objects
-See [EXAMPLE.md](../../EXAMPLE.md#arbin-object-creation) for detailed usage.
-
+## I. General Objects
 ### Argument and Feedback Objects
 | Wrapper Class                       | Required By                    | Original Object                                      |
 |-------------------------------------|--------------------------------|------------------------------------------------------|
-| **Connection**                      |                                |                                                      |
+| ***Connection***                    |                                |                                                      |
 | CreateArbinClientArgs               | Connect                        | ArbinClient.Core.CreateArbinClientArgs               |
-| **Channel Management**              |                                |                                                      |
+| ***Channel Management***            |                                |                                                      |
 | ContinueChannelArgs                 | ContinueChannel                | ChannelManagement.ContinueChannelArgs                |
 | JumpStepArgs                        | JumpStep                       | ChannelManagement.JumpStepArgs                       |
 | ResumeChannelArgs                   | ResumeChannel                  | ChannelManagement.ResumeChannelArgs                  |
 | StartChannelArgs                    | StartChannel                   | ChannelManagement.StartChannelArgs                   |
 | StartChannelAdvancedArgs            | StartChannel                   | ChannelManagement.StartChannelAdvancedArgs           |
 | StopChannelArgs                     | StopChannel                    | ChannelManagement.StopChannelArgs                    |
-| **Formation Management**            |                                |                                                      |
+| ***Formation Management***          |                                |                                                      |
 | EngageTrayArgs                      | EngageTray                     | FormationManagement.EngageTrayArgs                   |
 | GetEngagementStatusArgs             | GetEngagementStatus            | FormationManagement.GetEngagementStatusArgs          |
-| **Request Information**             |                                |                                                      |
+| ***Request Information***           |                                |                                                      |
 | GetBarcodeInfoArgs                  | GetBarcodeInfo                 | RequestInformation.GetBarcodeInfoArgs                |
 | GetMappingAuxArgs                   | GetMappingAux                  | RequestInformation.GetMappingAuxArgs                 |
 | GetMetaVariablesArgs                | GetMetaVariables               | RequestInformation.GetMetaVariableArgs               |
@@ -30,7 +28,7 @@ See [EXAMPLE.md](../../EXAMPLE.md#arbin-object-creation) for detailed usage.
 | SubscribeMonitorDataArgs            | SubscribeMonitorData           | RequestInformation.SubscribeMonitorDataArgs          |
 | SubscribeSPTTEQCELLDataArgs         | SubscribeSPTTEQCELLData        | RequestInformation.SubscribeSPTTEQCELLDataArgs       |
 | SubscribeTestInfoDataArgs           | SubscribeTestInfoData          | RequestInformation.SubscribeTestInfoDataArgs         |
-| **Test Management**                 |                                |                                                      |
+| ***Test Management***               |                                |                                                      |
 | AssignBarcodeInfoArgs               | AssignBarcodeInfo              | TestManagement.AssignBarcodeInfoArgs                 |
 | AssignFileArgs                      | AssignFile                     | TestManagement.AssignFileArgs                        |
 | BrowseFileListArgs                  | BrowseFileList                 | TestManagement.BrowseFileListArgs                    |
@@ -44,90 +42,66 @@ See [EXAMPLE.md](../../EXAMPLE.md#arbin-object-creation) for detailed usage.
 ### Supplementary Objects
 Additional objects and enums act as arguments to generate the above wrapper classes:
 
-| Wrapper Class                          | Required By                            | Original Object                                      |
-|----------------------------------------|----------------------------------------|------------------------------------------------------|
-| Common objects............
-|TimeSensitiveSetMVChannel| TimeSensitiveSetMVArgs| TestManagement.TimeSensitiveSetMVChannel|
-| TimeSensitiveSetMV | TimeSensitiveSetMVChannel |TestManagement.TimeSensitiveSetMV|
-| ChannelResumeData                       | ResumeChannelArgs,StartChannelArgs               | Common.ChannelResumeData                        |
-| SPTTEngageTray                      | EngageTrayArgs                       | FormationManagement.SPTTEngageTray                       |
+| Wrapper Class                | Required By                            | Original Object                          |
+|------------------------------|----------------------------------------|------------------------------------------|
+| AIMetaVariableInfo           | GetMetaVariablesArgs                   | Common.AIMetaVariableInfo                |
+| AuxChannelRequirement        | ScheduleModifyInfo                     | TestManagement.AuxChannelRequirement     |
+| AuxChannelRequirementBase    | ScheduleModifyInfo                     | TestManagement.AuxChannelRequirementBase |
+| AuxSafetyRequirement         | ScheduleModifyInfo                     | TestManagement.AuxSafetyRequirement      |
+| BarcodeInfo                  | AssignBarcodeInfoArgs                  | Common.BarcodeInfo                       |
+| ChannelResumeData            | ResumeChannelArgs, StartChannelArgs    | ChannelManagement.ChannelResumeData      |
+| GetBarcodeInfo               | GetBarcodeInfoArgs                     | Common.BarcodeInfo                       |
+| SafetyScope                  | AuxChannelRequirement, AuxSafetyRequirement | TestManagement.SafetyScope          |
+| ScheduleModifyInfo           | ModifyScheduleArgs                     | TestManagement.ModifyScheduleArgs        |
+| SPTTEngageTray               | EngageTrayArgs                         | FormationManagement.SPTTEngageTray       |
+| TimeSensitiveSetMV           | TimeSensitiveSetMVChannel              | TestManagement.TimeSensitiveSetMV        |
+| TimeSensitiveSetMVChannel    | TimeSensitiveSetMVArgs                 | TestManagement.TimeSensitiveSetMVChannel |
+| ***Enumeration***              |                                        |                                          |
+| EAIFileType                  | AssignFileArgs, BrowseFileListArgs     | EAIFileType                              |
+| EBarcodeType                 | BarcodeInfo, GetBarcodeInfo            | EBarcodeType                             |
+| EEngagementResult            | SPTTEngageTray                         | EEngagementResult                        | 
+| EFilterMonitorChannelType    | GetMonitorDataArgs                     | EFilterMonitorChannelType                |
+| EMetaVariableType            | AIMetaVariableInfo                     | EMetaVariableType                        |
+| ETimeSensitiveMVUD           | TimeSensitiveSetMV                     | ETimeSensitiveMVUD                       |
 
-| ScheduleModifyInfo                     | ModifyScheduleArgs                     | Common.ModifySchedule.ModifyScheduleArgs             |
-| AuxChannelRequirementBase              | ScheduleModifyInfo                     | Common.ModifySchedule.AuxChannelRequirementBase      |
-| AuxChannelRequirement                  | ScheduleModifyInfo                     | Common.ModifySchedule.AuxChannelRequirement          |
-| SafetyScope                            | AuxChannelRequirement, AuxSafetyRequirement | Common.ModifySchedule.SafetyScope               |
+> Omitting namespace `Arbin.Library.DataModel` in the third columns for simplicity.
 
-| **Enumeration**                     |                                |                                                      |
-
-    EAIFileTyp| AssignFileArgs, BrowseFileListArgs|EAIFileTyp
-    EBarcodeType|BarcodeInfo, GetBarcodeInfo|EBarcodeType
-    EEngagementResult|SPTTEngageTray|EEngagementResult
-    EFilterMonitorChannelType|GetMonitorDataArgs|EFilterMonitorChannelType
-    EMetaVariableType| AIMetaVariableInfo|EMetaVariableType
-    ETimeSensitiveMVUD |TimeSensitiveSetMV|ETimeSensitiveMVUD
-
-
-> Omitting namespace `ArbinCTI.Core` in the third columns for simplicity.
-
-## Feedback Objects
+## II. Feedback Objects
 The wrapper classes
 - Convert C# ArbinCTI feedback objects to Python objects, allowing easy access to attributes
-- Offer quick inspection methods for these objects
-
-See [EXAMPLE.md](../../../EXAMPLE.md#arbin-feedback-accessing) for detailed usage.
+- Full serializability with quick inspection methods for these objects
 
 | Wrapper Class                         | Original Object                                   |
 |---------------------------------------|---------------------------------------------------|
 | ***Connection***                      |                                                   |
-| LoginFeedback                         | ArbinCommandLoginFeed                             |
-| LogicConnectFeedback                  | ArbinCommandLogicConnectFeed                      |
-| ***Test Schedule***                   |                                                   |
-| AssignScheduleFeedback                | ArbinCommandAssignScheduleFeed                    |
-| AssignFileFeedback                    | ArbinCommandAssignFileFeed                        |
-| SetMetaVariableFeedback               | ArbinCommandSetMetaVariableFeed                   |
-| SetMetaVariableTimeSensitiveFeedback  | ArbinCommandTimeSensitiveSetMVFeed                |
-| GetMetaVariableFeedback               | ArbinCommandGetMetaVariablesFeed                  |
-| UpdateMetaVariableAdvancedFeedback    | ArbinCommandUpdateMetaVariableAdvancedFeed        |
-| UpdateParameterFeedback               | ArbinCommandUpdateParamenterFeed                  |
-| ModifyScheduleFeedback                | ArbinCommandModifyScheduleFeed                    |
-| AssignBarcodeFeedback                 | ArbinCommandAssignBarcodeInfoFeed                 |
-| GetBarcodeInfoFeedback                | ArbinCommandGetBarcodeInfoFeed                    |
-| GetMachineTypeFeedback                | ArbinCommandGetMachineTypeFeed                    |
-| GetTrayStatusFeedback                 | ArbinCommandGetTrayStatusFeed                     |
-| EngageTrayFeedback                    | ArbinCommandEngageTrayFeed                        |
-| SetIntervalTimeLogDataFeedback        | ArbinCommandSetIntervalTimeLogDataFeed            |
-| ConvertToAnonymousOrNamedTOFeedback   | ArbinCommandConvertToAnonymousOrNamedTOFeed       |
+| LoginFeedback                         | RequestInformation.LoginFDBK                      |
 | ***Channel Control***                 |                                                   |
-| StartChannelFeedback                  | ArbinCommandStartChannelFeed                      |
-| StartChannelAdvancedFeedback          | ArbinCommandStartChannelAdvancedFeed              |
-| StopChannelFeedback                   | ArbinCommandStopChannelFeed                       |
-| ResumeChannelFeedback                 | ArbinCommandResumeChannelFeed                     |
-| JumpChannelFeedback                   | ArbinCommandJumpChannelFeed                       |
-| ContinueChannelFeedback               | ArbinCommandContinueChannelFeed                   |
-| ***File Operation***                  |                                                   |
-| UploadFileFeedback                    | ArbinCommandUpLoadFileFeed                        |
-| DownloadFileFeedback                  | ArbinCommandDownloadFileFeed                      |
-| BrowseDirectoryFeedback               | ArbinCommandBrowseDirectoryFeed                   |
-| CheckFileExistFeedback                | ArbinCommandCheckFileExFeed                       |
-| NewFolderFeedback                     | ArbinCommandNewFolderFeed                         |
-| DeleteFileFeedback                    | ArbinCommandDeleteFileFeed                        |
-| NewOrDeleteFeedback                   | ArbinCommandNewOrDeleteFeed                       |
+| ContinueChannelFeedback               | ChannelManagement.ContinueChannelFDBK             |
+| JumpChannelFeedback                   | ChannelManagement.ResumeChannelFDBK               |
+| ResumeChannelFeedback                 | ChannelManagement.JumpStepFDBK                    |
+| StartChannelFeedback                  | ChannelManagement.StartChannelFDBK                |
+| StopChannelFeedback                   | ChannelManagement.StopChannelFDBK                 |
+| ***Formation Management***            |                                                   |
+| EngageTrayFeedback                    | FormationManagement.EngageTrayFDBK                |
+| GetEngagementStatusFeedback           | FormationManagement.GetEngagementStatusFDBK       |
 | ***Request Information***             |                                                   |
-| GetChannelDataFeedback                | ArbinCommandGetChannelDataFeed                    |
-| GetStartDataFeedback                  | ArbinCommandGetStartDataFeed                      |
-| GetResumeDataFeedback                 | ArbinCommandGetResumeDataFeed                     |
-| GetMappingAuxFeedback                 | ArbinCommandGetMappingAuxFeed                     |
-| GetSerialNumberFeedback               | ArbinCommandGetSerialNumberFeed                   |
-| GetChannelsDataMinimalistModeFeedback | ArbinCommandGetChannelDataMinimalistModeFeed      |
-| GetChannelsDataSimpleModeFeedback     | ArbinCommandGetChannelDataSimpleModeFeed          |
-| GetStringLimitLengthFeedback          | ArbinCommandGetStringLimitLengthFeed              |
-| ***Miscellaneous***                   |                                                   |
-| SendMsgToCTIFeedback                  | ArbinCommandSendMsgToCTIFeed                      |
-| UnknownCommandFeedback                | ArbinCommandUnknownCommandFeed                    |
-| StartAutomaticCalibrationFeedback     | ArbinCommandStartAutomaticCalibrationFeed         |
+| GetBarcodeInfoFeedback                | RequestInformation.GetBarcodeInfoFeedbakc         |
+| GetMappingAuxFeedback                 | RequestInformation.GetMappingAuxFDBK              |
+| GetMonitorDataFeedback                | RequestInformation.GetMonitorDataFDBK             |
+| GetResumeDataFeedback                 | RequestInformation.GetResumeDataFDBK              |
+| GetStartDataFeedback                  | RequestInformation.GetStartDataFDBK               |
+| SubscribeChannelDataFeedback          | RequestInformation.SubscribeChannelDataFDBK       |
+| SubscribeDiagnosticEventDataFeedback  | RequestInformation.SubscribeDiagnosticEventDataFDBK |
+| SubscribeEventDataFeedback            | RequestInformation.SubscribeEventDataFDBK         |
+| SubscribeMonitorDataFeedback          | RequestInformation.SubscribeMonitorDataFDBK       |
+| SubscribeSPTTEQCellDataFeedback       | RequestInformation.SubscribeSPTTEQCellDataFDBK    |
+| SubscribeTestInfoDataFeedback         | RequestInformation.SubscribeTestInfoDataFDBK      |
+| ***Test Managemet***                  |                                                   |
+| AssignBarcodeInfoFeedback             | TestManagement.AssignBarcodeInfoFDBK              |
+| AssignFileFeedback                    | TestManagement.AssignFileFDBK                     |
+| BrowseFileListFeedback                | TestManagement.BrowseFileListFDBK                 |
+| GetMetaVariablesFeedback              | TestManagement.GetMetaVariablesFDBK               |
+| TimeSensitiveSetMVFeedback            | TestManagement.TimeSensitiveSetMVFDBK             |
+| UpdateMetaVariableFeedback            | TestManagement.UpdateMetaVariableFDBK             |
 
-
-    EBarcodeResult,
-    EUploadFileResult,
-
-> Ignoring namespace `ArbinCTI.Core` in the second column for simplicity.
+> Omitting namespace `Arbin.Library.DataModel` in the second column for simplicity.

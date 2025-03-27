@@ -1,12 +1,14 @@
 __doc__ = """
 [Test Management Feedback]
-- UploadFileResult
 - BrowseFileListFeedback
 - AssignFileFeedback
 - UpdateMetaVariableFeedback
 - GetMetaVariablesFeedback
 - AssignBarcodeInfoFeedback
 - TimeSensitiveSetMVFeedback
+
+[Subsidary Classes]
+- UploadFileResult
 """
 
 import Arbin.Library.DataModel as ArbinDataModel # type: ignore
@@ -98,8 +100,8 @@ class TimeSensitiveSetMVFeedback(DictReprBase):
             self.mvud_values    = [float(x) for x in obj.MVUDValues]
 
     def __init__(self, obj):
-        if not isinstance(obj, ArbinDataModel.TestManagement.TimeSensitiveSetMVFeedback):
-            raise ValueError("'obj' must be of type ArbinDataModel.TestManagement.TimeSensitiveSetMVFeedback")
+        if not isinstance(obj, ArbinDataModel.TestManagement.TimeSensitiveSetMVFDBK):
+            raise ValueError("'obj' must be of type ArbinDataModel.TestManagement.TimeSensitiveSetMVFDBK")
         self.sn                     = int(obj.SN)
         self.timeout                = float(obj.Timeout)
         self.set_meta_variable_list = [self.SetMVResult(x) for x in obj.SetMetaVariableList]

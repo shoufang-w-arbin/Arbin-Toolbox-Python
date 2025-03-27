@@ -232,7 +232,7 @@ class SubscribeDiagnosticEventDataFeedback(DictReprBase):
         self.task_id                  = int(feedback.TaskID)
         self.channel_diagnostic_event = [self.ChannelDiagnosticEventData(x) for x in feedback.ChannelDiagnosticEvents]
 
-class SubscribeSPTTEQCELLDataFeedback(DictReprBase):
+class SubscribeSPTTEQCellDataFeedback(DictReprBase):
     class SPTTLogData(DictReprBase):
         def __init__(self, obj):
             self.barcode            = str(obj.Barcode)

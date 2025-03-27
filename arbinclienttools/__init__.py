@@ -2,6 +2,7 @@ import os
 import site
 import shutil
 
+dependencies = ["ArbinDataModel.dll"]
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Search runtime path and add dependent assemblies for dynamic loading
@@ -11,7 +12,7 @@ for site_package_dir in site.getsitepackages():
     if os.path.exists(runtime_path):
         pythonnet_runtime_dir = runtime_path
         break
-dependencies = ["ArbinDataModel.dll"]
+
 for dep in dependencies:
     try:
         shutil.copy2(
@@ -99,17 +100,42 @@ from arbinclienttools.src.argument.formation_management import (
 """
 Wrapper classes for unpacking FDBK 
 """
+from arbinclienttools.src.feedback.channel_management import (
+    StartChannelFeedback,
+    StopChannelFeedback,
+    JumpStepFeedback,
+    ResumeChannelFeedback,
+    ContinueChannelFeedback,
+)
+
+from arbinclienttools.src.feedback.connection import (
+    LoginFeedback,
+)
+
+from arbinclienttools.src.feedback.formation_management import (
+    GetEngagementStatusFeedback,
+    EngageTrayFeedback
+)
+
 from arbinclienttools.src.feedback.request_info import (
-    CANMonitorInfo,
-    SMBMonitorInfo,
-    AuxData,
-    SimulationInfo,
-    AuxMapping,
+    GetStartDataFeedback,
+    GetResumeDataFeedback,
+    GetMonitorDataFeedback,
+    GetBarcodeInfoFeedback,
+    GetMappingAuxFeedback,
     SubscribeMonitorDataFeedback,
     SubscribeChannelDataFeedback,
     SubscribeTestInfoDataFeedback,
     SubscribeEventDataFeedback,
     SubscribeDiagnosticEventDataFeedback,
-    SubscribeSPTTEQCELLDataFeedback
+    SubscribeSPTTEQCellDataFeedback
 )
 
+from arbinclienttools.src.feedback.ttest_management import (
+    BrowseFileListFeedback,
+    AssignFileFeedback,
+    UpdateMetaVariableFeedback,
+    GetMetaVariablesFeedback,
+    AssignBarcodeInfoFeedback,
+    TimeSensitiveSetMVFeedback
+)
