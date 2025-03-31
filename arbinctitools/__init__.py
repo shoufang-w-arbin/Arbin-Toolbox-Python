@@ -9,7 +9,8 @@ clr.AddReference(os.path.join(current_dir, "bin", "ArbinCTI"))
 from arbinctitools.src.common.cs_conv import CSConv
 
 from arbinctitools.src.argument.argument import (
-    TE_DATA_TYPE, 
+    TE_DATA_TYPE,
+    TE_METAVARIABLE_CODE,
     StartResumeEx,
     MetaVariableInfo,
     MetaVariableInfoEx,
