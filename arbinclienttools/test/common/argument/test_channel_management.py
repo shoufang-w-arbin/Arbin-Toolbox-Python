@@ -1,6 +1,10 @@
 import unittest
+import sys
 
-from arbinclienttools.src.argument.channel_management import (
+sys.path.append(r"C:/Users/ArbinLab 6/Desktop/Arbin-Toolbox-Python/arbinclienttools/bin")
+sys.path.append(r"C:/Users/ArbinLab 6/Desktop/Arbin-Toolbox-Python/arbinclienttools/src/argument")
+
+from channel_management import (
     ChannelResumeData,
     StartChannelArgs,
     StopChannelArgs,

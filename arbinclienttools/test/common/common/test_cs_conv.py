@@ -1,4 +1,10 @@
 import unittest
+import clr
+import sys
+clr.AddReference("System")
+
+sys.path.append(r"arbinclienttools")
+clr.AddReference("arbinclientttools")
 
 from System import ( # type: ignore
     Byte,
@@ -12,6 +18,7 @@ from System import ( # type: ignore
     String,
     Array
 )
+
 from System.Collections.Generic import List, SortedDictionary # type: ignore
 
 from arbinclienttools.src.common.cs_conv import CSConv
@@ -85,7 +92,7 @@ class TestCSTypeConverter(unittest.TestCase):
         self.assertEqual(CSConv.to_bool(False), Boolean(False))
         with self.assertRaises(ValueError):
             CSConv.to_bool(1)
-
+ 
     def test_to_string(self):
         self.assertIsInstance(CSConv.to_string("test"), String)
         self.assertEqual(CSConv.to_string("test"), String("test"))
@@ -188,7 +195,7 @@ class TestCSTypeConverter(unittest.TestCase):
         # Test with invalid input: tuples not of length 2
         with self.assertRaises(ValueError):
             CSConv.to_cs_sorted_dict([(1, "one", "extra")], CSConv.EDataType.INT, CSConv.EDataType.STRING)
-
+     
         # Test with invalid key data type
         with self.assertRaises(ValueError):
             CSConv.to_cs_sorted_dict(python_list, "invalid type", CSConv.EDataType.STRING)
