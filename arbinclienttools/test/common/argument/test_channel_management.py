@@ -15,7 +15,7 @@ from channel_management import (
 
 class TestChannelManagementArgs(unittest.TestCase):
 
-    def test_channel_resume_data_to_cs(self):
+    def test_channel_resume_data_to_cs(self): 
         data = ChannelResumeData(
             channel_id=1,
             test_id=123,
