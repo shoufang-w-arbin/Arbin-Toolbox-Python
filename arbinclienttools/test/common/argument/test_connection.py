@@ -1,5 +1,5 @@
 import unittest
-from connection_args import CreateArbinClientArgs
+from arbinclienttools.src.argument.connection import CreateArbinClientArgs
 
 class TestConnectionArgs(unittest.TestCase):
 

@@ -1,6 +1,5 @@
 import unittest
 
-
 from common import AIMetaVariableInfo, BarcodeInfo, GetBarcodeInfo
 from arbinclienttools.src.enumeration import EMetaVariableType, EBarcodeType, EBarcodeResult
 
