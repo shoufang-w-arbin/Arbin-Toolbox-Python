@@ -1,8 +1,7 @@
 import unittest
 from unittest.mock import MagicMock
-from arbinclienttools.src.common.base import DictReprBase
+from arbinclienttools.src.feedback.connection import LoginFeedback
 from arbinclienttools.src.enumeration import ELoginResult
-from arbinclienttools.src.common.cs_conv import CSConv
 
 class TestLoginFeedback(unittest.TestCase):
 
@@ -91,11 +90,10 @@ class TestLoginFeedback(unittest.TestCase):
         # Test for SysCfgCycler (which is not implemented)
         with self.assertRaises(NotImplementedError):
             mock_sys_cfg_file = MagicMock()
-            mock_sys_cfg_file.Cyclers = 'Cyclers data'  # Placeholder for Cyclers
+            mock_sys_cfg_file.Cyclers = 'Cyclers data'
             sys_cfg_file = LoginFeedback.SystemConfigFile(mock_sys_cfg_file)
-            sys_cfg_file.global_config  # Ensure this works, but cyclers should raise NotImplementedError.
+            sys_cfg_file.global_config 
 
-    # Add more test cases as necessary.
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,5 +1,5 @@
 import unittest
-from arbinclienttools.src.argument.test_management_arguments import *
+from arbinclienttools.src.argument.ttest_management import *
 
 class TestSafetyScope(unittest.TestCase):
     def test_to_cs(self):

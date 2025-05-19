@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import MagicMock
-from arbinclienttools.src.feedback.test_management_feedback import (
+from arbinclienttools.src.feedback.ttest_management import (
     UploadFileResult,
     BrowseFileListFeedback,
     AssignFileFeedback,
@@ -12,11 +12,9 @@ from arbinclienttools.src.feedback.test_management_feedback import (
 from arbinclienttools.src.enumeration import (
     EUploadFileResult,
     EBrowseDirectoryResult,
-    EAssignFileResult,
     ECommonResult,
     EChannelStatus,
 )
-from arbinclienttools.src.feedback.common import AIMetaVariableInfo, BarcodeInfo
 
 
 class TestTestManagementFeedback(unittest.TestCase):

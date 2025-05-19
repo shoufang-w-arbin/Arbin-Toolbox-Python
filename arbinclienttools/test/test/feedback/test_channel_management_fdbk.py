@@ -1,13 +1,12 @@
 import unittest
 import os
 from unittest.mock import MagicMock
-from arbinctitools.src.feedback.channel_control import (
+from arbinclienttools.src.feedback.channel_management import (
     StartChannelFeedback,
     StopChannelFeedback,
     ResumeChannelFeedback,
-    JumpChannelFeedback,
+    JumpStepFeedback,
     ContinueChannelFeedback,
-    StartChannelAdvancedFeedback,
 )
 
 UNITTEST_VIEW_DICT = os.getenv("UNITTEST_VIEW_DICT", False)
@@ -52,9 +51,9 @@ class TestChannelControlFeedback(unittest.TestCase):
         cs_instance.Result = 0x14  # CTI_JUMP_SCHEDULE_VALID
         cs_instance.errorChannel = 5
         
-        feedback_instance = JumpChannelFeedback(cs_instance)
+        feedback_instance = JumpStepFeedback(cs_instance)
         
-        self.assertEqual(feedback_instance.result, JumpChannelFeedback.EJumpToken.CTI_JUMP_SCHEDULE_VALID)
+        self.assertEqual(feedback_instance.result, JumpStepFeedback.EJumpToken.CTI_JUMP_SCHEDULE_VALID)
         self.assertEqual(feedback_instance.error_channel, 5)
         
         if UNITTEST_VIEW_DICT:
@@ -85,7 +84,7 @@ class TestChannelControlFeedback(unittest.TestCase):
         cs_instance.TaskID = 123
         cs_instance.SuccessfulChannelIDs = success_list_instance
         cs_instance.FailedResults = failed_results_instance
-        feedback_instance = StartChannelAdvancedFeedback(cs_instance)
+        feedback_instance = StartChannelFeedback(cs_instance)
 
         self.assertEqual(feedback_instance.task_id, 123)
         self.assertEqual(feedback_instance.successful_channel_id, [1])

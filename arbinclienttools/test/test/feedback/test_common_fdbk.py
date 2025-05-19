@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import MagicMock
-from arbinclienttools.src.common.cs_conv import CSConv
+from arbinclienttools.src.feedback.common import CSConv
 from arbinclienttools.src.enumeration import ESPTTCellStatus, EGetDataResult
 
 class TestCANMonitorInfo(unittest.TestCase):

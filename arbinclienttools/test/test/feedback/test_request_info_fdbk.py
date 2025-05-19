@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import MagicMock
-from arbinclienttools.src.feedback.request_information_feedback import (
+from arbinclienttools.src.feedback.request_info import (
     GetStartDataFeedback,
     GetResumeDataFeedback,
     GetMonitorDataFeedback,
@@ -13,8 +13,6 @@ from arbinclienttools.src.feedback.request_information_feedback import (
     SubscribeSPTTEQCellDataFeedback,
 )
 from arbinclienttools.src.enumeration import EGetMonitorDataResult
-from arbinclienttools.src.feedback.common import ResumeDataInfo, ChannelMonitorData, BarcodeInfo
-
 
 class TestRequestInformationFeedback(unittest.TestCase):
 
