@@ -130,9 +130,8 @@ class TestTimeSensitiveSetMVArgs(unittest.TestCase):
         self.assertEqual(cs.SN, "SN123")
 
     def test_channels_validation(self):
-        bad_instance = TimeSensitiveSetMVArgs(channel_list=["not a TimeSensitiveSetMVChannel"])
         with self.assertRaises(ValueError):
-            bad_instance.to_cs()
+            TimeSensitiveSetMVArgs(channel_list=["not a TimeSensitiveSetMVChannel"]).to_cs()
 
 if __name__ == "__main__":
     unittest.main()
