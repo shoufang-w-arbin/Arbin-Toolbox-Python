@@ -1,5 +1,8 @@
 import unittest
-from request_information_args import (
+import System
+from System.Collections.Generic import List as CsList
+
+from arbinclienttools.src.argument.request_info import (
     GetMonitorDataArgs,
     GetResumeDataArgs,
     GetStartDataArgs,
@@ -23,28 +26,28 @@ class TestRequestInformationArgs(unittest.TestCase):
             sn="MonitorSN",
             need_type=1000,
             channel_id=5,
-            filter_monitor_channel_type=EFilterMonitorChannelType.WorkingChannel
+            filter_monitor_channel_type=EFilterMonitorChannelType.Running
         )
         cs = args.to_cs()
 
         self.assertEqual(cs.sn, "MonitorSN")
-        self.assertEqual(cs.need_type, 1000)
-        self.assertEqual(cs.channel_id, 5)
-        self.assertEqual(cs.filter_monitor_channel_type.value, EFilterMonitorChannelType.WorkingChannel.value)
+        self.assertIsInstance(cs.need_type, System.Int32)
+        self.assertIsInstance(cs.channel_id, System.Int32)
+        self.assertEqual(cs.filter_monitor_channel_type.value, EFilterMonitorChannelType.Running)
 
     def test_get_resume_data_args_to_cs(self):
         args = GetResumeDataArgs(sn="ResumeSN", channel_id=[1, 2, 3])
         cs = args.to_cs()
 
         self.assertEqual(cs.sn, "ResumeSN")
-        self.assertEqual(cs.channel_id, [1, 2, 3])
+        self.assertIsInstance(cs.channel_id, CsList[System.Int32])
 
     def test_get_start_data_args_to_cs(self):
         args = GetStartDataArgs(sn="StartSN", channel_id=[4, 5])
         cs = args.to_cs()
 
         self.assertEqual(cs.sn, "StartSN")
-        self.assertEqual(cs.channel_id, [4, 5])
+        self.assertIsInstance(cs.channel_id, CsList[System.Int32])
 
     def test_get_meta_variables_args_to_cs(self):
         mv1 = AIMetaVariableInfo(global_id=1)

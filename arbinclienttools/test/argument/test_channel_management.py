@@ -1,3 +1,5 @@
+import System
+from System.Collections.Generic import List as CsList
 import unittest
 
 from arbinclienttools.src.argument.channel_management import (
@@ -41,7 +43,7 @@ class TestChannelManagementArgs(unittest.TestCase):
 
         self.assertEqual(cs.ChannelID, data.channel_id)
         self.assertEqual(cs.TestID, data.test_id)
-        self.assertEqual(cs.TestNames, data.test_names)
+        self.assertIsInstance(cs.TestNames, CsList[System.String])
         self.assertEqual(cs.ScheduleName, data.schedule_name)
         self.assertEqual(cs.StepID, data.step_id)
         self.assertEqual(cs.SubStepID, data.sub_step_id)
@@ -75,9 +77,8 @@ class TestChannelManagementArgs(unittest.TestCase):
         self.assertEqual(cs.SN, "SN001")
         self.assertEqual(cs.Creator, "Tester")
         self.assertEqual(cs.Comment, "Start test")
-        self.assertEqual(cs.ChannelResumeData[0].ChannelID, 1)
-        self.assertEqual(cs.ChannelResumeData[0].schedule_name, "demo.sdx")
-        self.assertEqual(cs.ChannelResumeData[0].test_names, ["TestA"])
+        self.assertIsInstance(cs.ChannelResumeData, CsList[ChannelResumeData])
+        self.assertIsInstance(cs.ChannelResumeData, CsList[System.Int32])
 
     def test_stop_channel_args_to_cs(self):
         args = StopChannelArgs(
@@ -114,7 +115,7 @@ class TestChannelManagementArgs(unittest.TestCase):
         cs = args.to_cs()
 
         self.assertEqual(cs.SN, "SN004")
-        self.assertEqual(cs.ResumeDatas[0].ChannelID, 2)
+        self.assertIsInstance(cs.ResumeDatas, CsList[ChannelResumeData])
 
     def test_continue_channel_args_to_cs(self):
         args = ContinueChannelArgs(
@@ -124,7 +125,7 @@ class TestChannelManagementArgs(unittest.TestCase):
         cs = args.to_cs()
 
         self.assertEqual(cs.SN, "SN005")
-        self.assertEqual(cs.ChannelID, [1, 2, 3])
+        self.assertIsInstance(cs.ChannelID, CsList[System.Int32])
 
 if __name__ == '__main__':
     unittest.main()

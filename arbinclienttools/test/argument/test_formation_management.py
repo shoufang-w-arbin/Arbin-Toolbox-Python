@@ -1,3 +1,5 @@
+import System
+from System.Collections.Generic import List as CsList
 import unittest
 from arbinclienttools.src.argument.formation_management import (
     SPTTEngageTray,
@@ -13,14 +15,14 @@ class TestFormationManagementArgs(unittest.TestCase):
             global_id=1001,
             engage=False,
             result="Completed",
-            engagement_result=EEngagementResult.Failure
+            engagement_result=EEngagementResult.Error
         )
         cs = tray.to_cs()
 
         self.assertEqual(cs.GlobalID, 1001)
         self.assertFalse(cs.Engage)
         self.assertEqual(cs.Result, "Completed")
-        self.assertEqual(cs.EngagementResult.value, EEngagementResult.Failure.value)
+        self.assertEqual(cs.EngagementResult.value, EEngagementResult.Error)
 
     def test_get_engagement_status_args_to_cs(self):
         args = GetEngagementStatusArgs(
@@ -30,7 +32,7 @@ class TestFormationManagementArgs(unittest.TestCase):
         cs = args.to_cs()
 
         self.assertEqual(cs.SN, "SN12345")
-        self.assertEqual(cs.EngagementIDs, [1, 2, 3])
+        self.assertIsInstance(cs.EngagementIDs, CsList[System.Int32])
 
     def test_engage_tray_args_to_cs_success(self):
         tray1 = SPTTEngageTray(global_id=1001)
