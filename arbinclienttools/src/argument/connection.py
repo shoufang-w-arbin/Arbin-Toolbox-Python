@@ -18,10 +18,10 @@ class CreateArbinClientArgs:
     password:   str = ""
 
     def to_cs(self) -> ArbinClient.CreateArbinClientArgs:
-        return ArbinClient.CreateArbinClientArgs(
-            self.timeout,
-            self.ip_address,
-            self.user_name,
-            self.password
-        )
+        cs_instance = ArbinClient.CreateArbinClientArgs()
+        cs_instance.Timeout     = self.timeout
+        cs_instance.IPAddress   = self.ip_address
+        cs_instance.UserName    = self.user_name
+        cs_instance.Password    = self.password
+        return cs_instance
 
