@@ -274,7 +274,7 @@ class TimeSensitiveSetMVArgs:
     sn          : str   = ""
 
     def to_cs(self) -> ArbinDataModel.TestManagement.TimeSensitiveSetMVArgs:
-        if not all(isinstance(x, TimeSensitiveSetMVChannel) for x in self.channels):
+        if not all(isinstance(x, TimeSensitiveSetMVChannel) for x in self.channel_list):
             raise ValueError("All items in 'channels' must be of type arbinclienttools.TimeSensitiveSetMVChannel")
         instance           = ArbinDataModel.TestManagement.TimeSensitiveSetMVArgs()
         instance.Timeout   = CSConv.to_float(self.timeout)
