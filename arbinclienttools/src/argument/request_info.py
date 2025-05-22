@@ -80,7 +80,7 @@ class GetMetaVariablesArgs:
     """
     Wrapper class of of 'Arbin.Library.DataModel.RequestInformation.GetMetaVariablesArgs'
     """
-    sn:                 int  = 0
+    sn:                 str  = ""
     meta_variable_type: list = field(default_factory=list)
 
     def to_cs(self) -> ArbinDataModel.RequestInformation.GetMetaVariablesArgs:
@@ -88,7 +88,7 @@ class GetMetaVariablesArgs:
             raise TypeError("'meta_variable_type' must be a list of 'arbinclienttools.EMetaVariableType'")
         
         cs_instance = ArbinDataModel.RequestInformation.GetMetaVariablesArgs()
-        cs_instance.SN = CSConv.to_int(self.sn)
+        cs_instance.SN = CSConv.to_string(self.sn)
         cs_instance.MetaVariableTypes = CSConv.to_list(self.meta_variable_type)
         return cs_instance
 
