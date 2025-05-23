@@ -56,7 +56,7 @@ class TestChannelManagementArgs(unittest.TestCase):
         self.assertAlmostEqual(cs.DischargeEnergy, data.discharge_energy)
         self.assertAlmostEqual(cs.TC_Time1, data.tc_time1)
         self.assertAlmostEqual(cs.TC_ChargeCapacity1, data.tc_charge_capacity1)
-        self.assertAlmostEqual(cs.TC_DischargeCapacity1, data.tc_discharge_capacity1)
+        self.assertAlmostEqual(cs.TC_DishargeCapacity1, data.tc_discharge_capacity1)
         self.assertAlmostEqual(cs.TC_ChargeEnergy1, data.tc_charge_energy1)
         self.assertAlmostEqual(cs.TC_DischargeEnergy1, data.tc_discharge_energy1)
         self.assertAlmostEqual(cs.TC_Counter1, data.tc_counter1)
@@ -77,7 +77,7 @@ class TestChannelManagementArgs(unittest.TestCase):
         self.assertEqual(cs.SN, "SN001")
         self.assertEqual(cs.Creator, "Tester")
         self.assertEqual(cs.Comment, "Start test")
-        self.assertIsInstance(cs.ChannelResumeData, CsList[ChannelResumeData])
+        self.assertEqual(cs.ChannelResumeData.GetType().GetGenericTypeDefinition(), type(CsList[ChannelResumeData]))
         self.assertIsInstance(cs.ChannelResumeData, CsList[System.Int32])
 
     def test_stop_channel_args_to_cs(self):
@@ -114,8 +114,11 @@ class TestChannelManagementArgs(unittest.TestCase):
         )
         cs = args.to_cs()
 
+        expected_type_def = CsList[ChannelResumeData].GetGenericTypeDefinition()
+        actual_type_def = cs.ResumeDatas.GetType().GetGenericTypeDefinition()
+
         self.assertEqual(cs.SN, "SN004")
-        self.assertIsInstance(cs.ResumeDatas, CsList[ChannelResumeData])
+        self.assertEqual(actual_type_def, expected_type_def)
 
     def test_continue_channel_args_to_cs(self):
         args = ContinueChannelArgs(

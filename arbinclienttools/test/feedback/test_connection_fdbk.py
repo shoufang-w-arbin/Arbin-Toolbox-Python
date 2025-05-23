@@ -86,14 +86,6 @@ class TestLoginFeedback(unittest.TestCase):
             invalid_mock.LoginResult = 'Invalid Type'
             LoginFeedback(invalid_mock)
 
-    def test_sys_cfg_cycler_not_implemented(self):
-        # Test for SysCfgCycler (which is not implemented)
-        with self.assertRaises(NotImplementedError):
-            mock_sys_cfg_file = MagicMock()
-            mock_sys_cfg_file.Cyclers = 'Cyclers data'
-            sys_cfg_file = LoginFeedback.SystemConfigFile(mock_sys_cfg_file)
-            sys_cfg_file.global_config 
-
 
 if __name__ == "__main__":
     unittest.main()

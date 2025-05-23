@@ -29,7 +29,7 @@ class TestFormationManagementFeedback(unittest.TestCase):
         mock_status.IsEngagementUp = False
         mock_status.IsTrayInserted = True
         mock_status.Result = 'Success'
-        mock_status.EngagementResult = 0  # EEngagementResult.Success
+        mock_status.EngagementResult = 1  # EEngagementResult.Success
         mock_status.EngagementMetaValues = [MagicMock(Value=1.0, AliasName='Meta1', Result='OK')]
 
         status = GetEngagementStatusFeedback.SPTTEngagementStatus(mock_status)

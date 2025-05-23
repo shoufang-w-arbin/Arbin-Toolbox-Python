@@ -22,7 +22,7 @@ class TestFormationManagementArgs(unittest.TestCase):
         self.assertEqual(cs.GlobalID, 1001)
         self.assertFalse(cs.Engage)
         self.assertEqual(cs.Result, "Completed")
-        self.assertEqual(cs.EngagementResult.value, EEngagementResult.Error)
+        self.assertEqual(cs.EngagementResult.value__, EEngagementResult.Error)
 
     def test_get_engagement_status_args_to_cs(self):
         args = GetEngagementStatusArgs(

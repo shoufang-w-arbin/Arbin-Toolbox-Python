@@ -25,17 +25,17 @@ class TestCommonArgs(unittest.TestCase):
             barcode="ABC12345",
             global_id=456,
             info="Test Barcode",
-            result=EBarcodeResult.Failed.name,
+            result="Failed",
             barcode_result=EBarcodeResult.Error
         )
         cs = data.to_cs()
 
-        self.assertEqual(cs.BarcodeType.value, EBarcodeType.IV)
+        self.assertEqual(cs.BarcodeType.value__, EBarcodeType.IV)
         self.assertEqual(cs.Barcode, "ABC12345")
         self.assertEqual(cs.GlobalID, 456)
         self.assertEqual(cs.Info, "Test Barcode")
         self.assertEqual(cs.Result, "Failed")
-        self.assertEqual(cs.BarcodeResult.value, EBarcodeResult.Error)
+        self.assertEqual(cs.BarcodeResult.value__, EBarcodeResult.Error)
 
     def test_get_barcode_info_to_cs(self):
         data = GetBarcodeInfo(
@@ -44,7 +44,7 @@ class TestCommonArgs(unittest.TestCase):
         )
         cs = data.to_cs()
 
-        self.assertEqual(cs.BarcodeType.value, EBarcodeType.IV)
+        self.assertEqual(cs.BarcodeType.value__, EBarcodeType.IV)
         self.assertEqual(cs.GlobalID, 789)
 
 if __name__ == '__main__':

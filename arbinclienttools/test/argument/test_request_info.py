@@ -33,7 +33,7 @@ class TestRequestInformationArgs(unittest.TestCase):
         self.assertEqual(cs.sn, "MonitorSN")
         self.assertIsInstance(cs.need_type, System.Int32)
         self.assertIsInstance(cs.channel_id, System.Int32)
-        self.assertEqual(cs.filter_monitor_channel_type.value, EFilterMonitorChannelType.Running)
+        self.assertEqual(cs.filter_monitor_channel_type.value__, EFilterMonitorChannelType.Running.value)
 
     def test_get_resume_data_args_to_cs(self):
         args = GetResumeDataArgs(sn="ResumeSN", channel_id=[1, 2, 3])
@@ -53,10 +53,10 @@ class TestRequestInformationArgs(unittest.TestCase):
         mv1 = AIMetaVariableInfo(global_id=1)
         mv2 = AIMetaVariableInfo(global_id=2)
 
-        args = GetMetaVariablesArgs(sn=12345, meta_variable_type=[mv1, mv2])
+        args = GetMetaVariablesArgs(sn="12345", meta_variable_type=[mv1, mv2])
         cs = args.to_cs()
 
-        self.assertEqual(cs.SN, 12345)
+        self.assertEqual(cs.SN, "12345")
         self.assertEqual(len(cs.MetaVariableTypes), 2)
 
     def test_get_meta_variables_args_invalid_type(self):
