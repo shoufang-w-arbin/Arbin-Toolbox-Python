@@ -95,7 +95,7 @@ class GetMetaVariablesArgs:
 @dataclass
 class GetBarcodeInfoArgs:
     """
-    Wrapper class of of 'Arbin.Library.DataModel.RequestInformation.GetBarcodeInfoArgs'
+    Wrapper class of of 'Arbin.Library.DataModel.RequestInformation.GetBarcosubscribdeInfoArgs'
     """
     sn:             str  = ""
     barcode_info:   list = field(default_factory=list)
@@ -139,7 +139,7 @@ class SubscribeTestInfoDataArgs:
     Wrapper class of 'Arbin.Library.DataModel.RequestInformation.SubscribeTestInfoDataArgs'
     """
     def to_cs(self) -> ArbinDataModel.RequestInformation.SubscribeTestInfoDataArgs:
-        return ArbinDataModel.RequestInformation.SubscribeTestInfoData()
+        return ArbinDataModel.RequestInformation.SubscribeTestInfoDataArgs()
 
 @dataclass
 class SubscribeEventDataArgs:
