@@ -155,7 +155,7 @@ class SubscribeDiagnosticEventDataArgs:
     Wrapper class of 'Arbin.Library.DataModel.RequestInformation.SubscribeDiagnosticEventDataArgs'
     """
     def to_cs(self) -> ArbinDataModel.RequestInformation.SubscribeDiagnosticEventDataArgs:
-        return ArbinDataModel.RequestInformation.SubscribeDiagnosticEventData()
+        return ArbinDataModel.RequestInformation.SubscribeDiagnosticEventDataArgs()
 
 @dataclass
 class SubscribeSPTTEQCellDataArgs:
