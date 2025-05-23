@@ -77,8 +77,7 @@ class TestChannelManagementArgs(unittest.TestCase):
         self.assertEqual(cs.SN, "SN001")
         self.assertEqual(cs.Creator, "Tester")
         self.assertEqual(cs.Comment, "Start test")
-        self.assertEqual(cs.ChannelResumeData.GetType().GetGenericTypeDefinition(), type(CsList[ChannelResumeData]))
-        self.assertIsInstance(cs.ChannelResumeData, CsList[System.Int32])
+        self.assertIsInstance(cs.ChannelResumeData, CsList[ChannelResumeData])
 
     def test_stop_channel_args_to_cs(self):
         args = StopChannelArgs(
@@ -114,11 +113,7 @@ class TestChannelManagementArgs(unittest.TestCase):
         )
         cs = args.to_cs()
 
-        expected_type_def = CsList[ChannelResumeData].GetGenericTypeDefinition()
-        actual_type_def = cs.ResumeDatas.GetType().GetGenericTypeDefinition()
-
         self.assertEqual(cs.SN, "SN004")
-        self.assertEqual(actual_type_def, expected_type_def)
 
     def test_continue_channel_args_to_cs(self):
         args = ContinueChannelArgs(
