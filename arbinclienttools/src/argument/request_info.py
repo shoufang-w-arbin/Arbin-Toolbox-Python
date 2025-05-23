@@ -115,7 +115,7 @@ class GetMappingAuxArgs:
     Wrapper class of of 'Arbin.Library.DataModel.RequestInformation.GetMappingAuxArgs'
     """
     def to_cs(self) -> ArbinDataModel.RequestInformation.GetMappingAuxArgs:
-        return ArbinDataModel.RequestInformation.GetMappingAux()
+        return ArbinDataModel.RequestInformation.GetMappingAuxArgs()
 
 @dataclass
 class SubscribeMonitorDataArgs:
