@@ -123,7 +123,7 @@ class SubscribeMonitorDataArgs:
     Wrapper class of 'Arbin.Library.DataModel.RequestInformation.SubscribeMonitorDataArgs'
     """
     def to_cs(self) -> ArbinDataModel.RequestInformation.SubscribeMonitorDataArgs:
-        return ArbinDataModel.RequestInformation.SubscribeMonitorData()
+        return ArbinDataModel.RequestInformation.SubscribeMonitorDataArgs()
 
 @dataclass
 class SubscribeChannelDataArgs:
@@ -131,7 +131,7 @@ class SubscribeChannelDataArgs:
     Wrapper class of 'Arbin.Library.DataModel.RequestInformation.SubscribeChannelDataArgs'
     """
     def to_cs(self) -> ArbinDataModel.RequestInformation.SubscribeChannelDataArgs:
-        return ArbinDataModel.RequestInformation.SubscribeChannelData()
+        return ArbinDataModel.RequestInformation.SubscribeChannelDataArgs()
 
 @dataclass
 class SubscribeTestInfoDataArgs:
@@ -147,7 +147,7 @@ class SubscribeEventDataArgs:
     Wrapper class of 'Arbin.Library.DataModel.RequestInformation.SubscribeEventDataArgs'
     """
     def to_cs(self) -> ArbinDataModel.RequestInformation.SubscribeEventDataArgs:
-        return ArbinDataModel.RequestInformation.SubscribeEventData()
+        return ArbinDataModel.RequestInformation.SubscribeEventDataArgs()
 
 @dataclass
 class SubscribeDiagnosticEventDataArgs:
