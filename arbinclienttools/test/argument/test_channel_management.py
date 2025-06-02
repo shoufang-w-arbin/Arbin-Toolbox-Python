@@ -77,7 +77,9 @@ class TestChannelManagementArgs(unittest.TestCase):
         self.assertEqual(cs.SN, "SN001")
         self.assertEqual(cs.Creator, "Tester")
         self.assertEqual(cs.Comment, "Start test")
-        self.assertIsInstance(cs.ChannelResumeData, CsList[ChannelResumeData])
+        self.assertEqual(cs.ChannelResumeData[0].ChannelID, 1)
+        self.assertEqual(cs.ChannelResumeData[0].ScheduleName, "demo.sdx")
+        self.assertIsInstance(cs.ChannelResumeData[0].TestNames, CsList[System.String])
 
     def test_stop_channel_args_to_cs(self):
         args = StopChannelArgs(

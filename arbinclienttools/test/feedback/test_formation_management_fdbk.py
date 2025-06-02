@@ -1,4 +1,5 @@
 import unittest
+import Arbin.Library.DataModel as ArbinDataModel # type: ignore
 from unittest.mock import MagicMock
 from arbinclienttools.src.enumeration import EEngagementResult
 from arbinclienttools.src.feedback.formation_management import (
@@ -10,7 +11,7 @@ class TestFormationManagementFeedback(unittest.TestCase):
 
     def test_sptt_engagement_meta_value_initialization(self):
         # Create a mock object for SPTTEngagementMetaValue
-        mock_meta_value = MagicMock()
+        mock_meta_value = ArbinDataModel.FormationManagement.GetEngagementStatusFDBK()
         mock_meta_value.Value = 1.23
         mock_meta_value.AliasName = 'TestAlias'
         mock_meta_value.Result = 'Success'
@@ -47,9 +48,8 @@ class TestFormationManagementFeedback(unittest.TestCase):
 
     def test_get_engagement_status_feedback_initialization(self):
         # Create a mock object for GetEngagementStatusFeedback
-        mock_feedback = MagicMock()
+        mock_feedback = ArbinDataModel.FormationManagement.GetEngagementStatusFDBK()
         mock_feedback.SN = '12345'
-        mock_feedback.EngagementStatus = MagicMock()
 
         feedback = GetEngagementStatusFeedback(mock_feedback)
 
@@ -64,33 +64,44 @@ class TestFormationManagementFeedback(unittest.TestCase):
 
     def test_sptt_engage_tray_initialization(self):
         # Create a mock object for SPTTEngageTray
-        mock_tray = MagicMock()
+        mock_tray = ArbinDataModel.FormationManagement.EngageTrayFDBK()
         mock_tray.GlobalID = 202
         mock_tray.Engage = True
         mock_tray.Result = 'Engaged'
-        mock_tray.EngagementResult = 1  # EEngagementResult.Failed
+        mock_tray.EngagementResult = 1
 
         engage_tray = EngageTrayFeedback.SPTTEngageTray(mock_tray)
 
         self.assertEqual(engage_tray.global_id, 202)
         self.assertTrue(engage_tray.engage)
         self.assertEqual(engage_tray.result, 'Engaged')
-        self.assertEqual(engage_tray.engagement_result, EEngagementResult.Failed)
+        self.assertEqual(engage_tray.engagement_result, EEngagementResult.Success)
 
     def test_engage_tray_feedback_initialization(self):
-        # Create a mock object for EngageTrayFeedback
-        mock_feedback = MagicMock()
+        # Create a real EngageTrayFDBK instance
+        mock_feedback = ArbinDataModel.FormationManagement.EngageTrayFDBK()
         mock_feedback.SN = '67890'
-        mock_feedback.EngageTrays = [MagicMock(GlobalID=202, Engage=True, Result='Engaged', EngagementResult=1)]
 
+        # Add a real EngageTray result
+        tray_result = ArbinDataModel.FormationManagement.SPTTEngageTray()
+        tray_result.GlobalID = 101
+        tray_result.Engage = True
+        tray_result.Result = "OK"
+        tray_result.EngagementResult = ArbinDataModel.EEngagementResult.Success
+        mock_feedback.EngageTrays.Add(tray_result)
+
+        # Instantiate feedback wrapper
         feedback = EngageTrayFeedback(mock_feedback)
 
+        # Assertions
         self.assertEqual(feedback.sn, '67890')
         self.assertEqual(len(feedback.engage_trays), 1)
-        self.assertEqual(feedback.engage_trays[0].global_id, 202)
-        self.assertTrue(feedback.engage_trays[0].engage)
-        self.assertEqual(feedback.engage_trays[0].result, 'Engaged')
-        self.assertEqual(feedback.engage_trays[0].engagement_result, EEngagementResult.Failed)
+
+        tray = feedback.engage_trays[0]
+        self.assertEqual(tray.global_id, 101)
+        self.assertTrue(tray.engage)
+        self.assertEqual(tray.result, "OK")
+        self.assertEqual(tray.engagement_result.value, ArbinDataModel.EEngagementResult.Success.value__)
 
     def test_invalid_engage_tray_feedback_type(self):
         # Test for invalid type of feedback object

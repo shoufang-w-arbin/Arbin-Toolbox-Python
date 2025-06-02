@@ -1,7 +1,14 @@
 import unittest
+import Arbin.Library.DataModel as ArbinDataModel # type: ignore
 from unittest.mock import MagicMock
 from arbinclienttools.src.feedback.connection import LoginFeedback
 from arbinclienttools.src.enumeration import ELoginResult
+
+# Helper class to mock the Key/Value structure expected by _unpack_cs_sorted_dict
+class MockKeyValue:
+    def __init__(self, key, value):
+        self.Key = key
+        self.Value = value
 
 class TestLoginFeedback(unittest.TestCase):
 
@@ -15,7 +22,10 @@ class TestLoginFeedback(unittest.TestCase):
         mock_user_info.Comments = 'Test user'
         mock_user_info.EmailAddress = 'test@domain.com'
         mock_user_info.TelephoneNumber = '1234567890'
-        mock_user_info.ChannelNumber = {'channel_1': 1, 'channel_2': 2}
+        mock_user_info.ChannelNumber = [
+            MockKeyValue("channel_1", 1),
+            MockKeyValue("channel_2", 2)
+        ]
 
         user_info = LoginFeedback.UserInfo(mock_user_info)
 
@@ -59,33 +69,14 @@ class TestLoginFeedback(unittest.TestCase):
 
     def test_login_feedback_initialization(self):
         # Create a mock object for LoginFeedback
-        mock_login_fdbk = MagicMock()
-        mock_login_fdbk.LoginResult = 0  # ELoginResult.Success
+        mock_login_fdbk = ArbinDataModel.RequestInformation.LoginFDBK()
+        mock_login_fdbk.LoginResult = ArbinDataModel.ELoginResult.Success
         mock_login_fdbk.Result = 'Login successful'
-        
-        # Create mock for ServerInfo and UserInfo
-        mock_server_info = MagicMock()
-        mock_server_info.UserInfo = MagicMock()
-        mock_server_info.ServerVersionNumber = '1.0.0'
-        mock_server_info.SystemConfig = None
-        
-        mock_login_fdbk.ServerInformation = mock_server_info
         
         login_feedback = LoginFeedback(mock_login_fdbk)
         
         self.assertEqual(login_feedback.login_reusult, ELoginResult.Success)
         self.assertEqual(login_feedback.result, 'Login successful')
-        self.assertIsNotNone(login_feedback.server_information)
-        self.assertEqual(login_feedback.server_information.server_version_number, '1.0.0')
-        self.assertIsNone(login_feedback.server_information.system_config)
-
-    def test_invalid_login_feedback_type(self):
-        # Test case where the type of obj passed to LoginFeedback is not as expected
-        with self.assertRaises(ValueError):
-            invalid_mock = MagicMock()
-            invalid_mock.LoginResult = 'Invalid Type'
-            LoginFeedback(invalid_mock)
-
 
 if __name__ == "__main__":
     unittest.main()

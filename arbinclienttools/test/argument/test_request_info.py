@@ -2,6 +2,7 @@ import unittest
 import System
 from System.Collections.Generic import List as CsList
 
+
 from arbinclienttools.src.argument.request_info import (
     GetMonitorDataArgs,
     GetResumeDataArgs,
@@ -18,6 +19,7 @@ from arbinclienttools.src.argument.request_info import (
 )
 from arbinclienttools.src.argument.common import AIMetaVariableInfo, GetBarcodeInfo
 from arbinclienttools.src.enumeration import EFilterMonitorChannelType
+import Arbin.Library.DataModel as ArbinDataModel # type: ignore
 
 class TestRequestInformationArgs(unittest.TestCase):
 
@@ -66,8 +68,8 @@ class TestRequestInformationArgs(unittest.TestCase):
             args.to_cs()
 
     def test_get_barcode_info_args_to_cs(self):
-        bc1 = GetBarcodeInfo(barcode_type=1, global_id=1)
-        bc2 = GetBarcodeInfo(barcode_type=2, global_id=2)
+        bc1 = GetBarcodeInfo(barcode_type=ArbinDataModel.EBarcodeType.IV, global_id=1)
+        bc2 = GetBarcodeInfo(barcode_type=ArbinDataModel.EBarcodeType.IV, global_id=2)
 
         args = GetBarcodeInfoArgs(sn="BarcodeSN", barcode_info=[bc1, bc2])
         with self.assertRaises(TypeError):

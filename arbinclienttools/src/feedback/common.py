@@ -212,7 +212,7 @@ class ResumeDataInfo(DictReprBase):
     Wrapper class of of 'Arbin.Library.DataModel.RequestInformation.ResumeDataInfo'
     """
     def __init__(self, obj):
-        self.creator         = str(obj.Creator)
+        self.creator         = str(obj.Createor)
         self.comment         = str(obj.Comment)
         self.start_time      = str(obj.StartTime)
         self.step_labels     = list(obj.StepLabels)

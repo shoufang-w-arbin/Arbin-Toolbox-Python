@@ -1,6 +1,6 @@
 import unittest
 import os
-from unittest.mock import MagicMock
+import Arbin.Library.DataModel as ArbinDataModel # type: ignore
 from arbinclienttools.src.feedback.channel_management import (
     StartChannelFeedback,
     StopChannelFeedback,
@@ -13,89 +13,97 @@ UNITTEST_VIEW_DICT = os.getenv("UNITTEST_VIEW_DICT", False)
 
 class TestChannelControlFeedback(unittest.TestCase):
 
-    def test_StartChannelFeedback_instantiation(self):
-        cs_instance = MagicMock()
-        cs_instance.Result = 0x17  # CTI_START_POWER_PROTECTED
-        
-        feedback_instance = StartChannelFeedback(cs_instance)
+    def test_start_channel_feedback_success(self):
+        fdbk = ArbinDataModel.ChannelManagement.StartChannelFDBK()
+        fdbk.SuccessfulChannelIDs.Add(1)
+        fdbk.SN = "123456"
 
-        self.assertEqual(feedback_instance.result, StartChannelFeedback.EStartToken.CTI_START_POWER_PROTECTED)
+        # Create and add a failed result
+        fail_result = ArbinDataModel.ChannelManagement.StartChannelResult()
+        fail_result.ChannelID = 102
+        fail_result.Result = "Error"
+        fail_result.StartResult = ArbinDataModel.EStartChannelResult.Success
+        fail_result.Message = "Failed to start channel"
+        fdbk.FailedResults.Add(fail_result)
 
-        if UNITTEST_VIEW_DICT:
-            print("StartChannelFeedback:", feedback_instance.to_dict())
+        # Act
+        feedback = StartChannelFeedback(fdbk)
+
+        # Assert
+        self.assertEqual(feedback.successful_channel_id, [1])
+        self.assertEqual(feedback.sn, 123456)
+        self.assertEqual(len(feedback.failed_result), 1)
+        self.assertEqual(feedback.failed_result[0].channel_id, 102)
+        self.assertEqual(feedback.failed_result[0].result, "Error")
+        self.assertEqual(feedback.failed_result[0].start_result.value, ArbinDataModel.EStartChannelResult.Success.value__)
+        self.assertEqual(feedback.failed_result[0].message, "Failed to start channel")
 
     def test_StopChannelFeedback_instantiation(self):
-        cs_instance = MagicMock()
-        cs_instance.Result = 0x13  # STOP_CHANNEL_NOT_CONNECT
+        cs_instance = ArbinDataModel.ChannelManagement.StopChannelFDBK()
+        cs_instance.Result = "ChannelNotConnectError"
+        cs_instance.StopResult = ArbinDataModel.EStopChannelResult.ChannelNotConnectError
+        cs_instance.SN = "123456"
         
         feedback_instance = StopChannelFeedback(cs_instance)
 
-        self.assertEqual(feedback_instance.result, StopChannelFeedback.EStopToken.STOP_CHANNEL_NOT_CONNECT)
-
-        if UNITTEST_VIEW_DICT:
-            print("StopChannelFeedback:", feedback_instance.to_dict())
+        self.assertEqual(feedback_instance.result, "ChannelNotConnectError")
+        self.assertEqual(feedback_instance.stop_channel_result.value, ArbinDataModel.EStopChannelResult.ChannelNotConnectError.value__)
+        self.assertEqual(feedback_instance.sn, 123456)
 
     def test_ResumeChannelFeedback_instantiation(self):
-        cs_instance = MagicMock()
-        cs_instance.Result = 0x12  # RESUME_CHANNEL_RUNNING
+        cs_instance = ArbinDataModel.ChannelManagement.ResumeChannelFDBK()
+        cs_instance.SN = "12345"
+
+        fail_result = ArbinDataModel.ChannelManagement.ResumeChannelResult()
+        fail_result.ResumeResult = ArbinDataModel.EResumeChannelResult.Success
+        cs_instance.FailedResults.Add(fail_result)
         
         feedback_instance = ResumeChannelFeedback(cs_instance)
         
-        self.assertEqual(feedback_instance.result, ResumeChannelFeedback.EResumeToken.RESUME_CHANNEL_RUNNING)
+        self.assertEqual(feedback_instance.failed_result[0].resume_result.value, ArbinDataModel.EResumeChannelResult.Success.value__)
+        self.assertEqual(feedback_instance.sn, 12345)
         
-        if UNITTEST_VIEW_DICT:
-            print("ResumeChannelFeedback:", feedback_instance.to_dict())
 
     def test_JumpChannelFeedback_instantiation(self):
-        cs_instance = MagicMock()
-        cs_instance.Result = 0x14  # CTI_JUMP_SCHEDULE_VALID
-        cs_instance.errorChannel = 5
+        cs_instance = ArbinDataModel.ChannelManagement.JumpStepFDBK()
+        cs_instance.ChannelID = 1
+        cs_instance.Result = "Success"
+        cs_instance.JumpStepResult = ArbinDataModel.EJumpStepResult.Success
+        cs_instance.SN = "12345"
+
         
         feedback_instance = JumpStepFeedback(cs_instance)
         
-        self.assertEqual(feedback_instance.result, JumpStepFeedback.EJumpToken.CTI_JUMP_SCHEDULE_VALID)
-        self.assertEqual(feedback_instance.error_channel, 5)
+        self.assertEqual(feedback_instance.jump_step_result.value, ArbinDataModel.EJumpStepResult.Success.value__)
+        self.assertEqual(feedback_instance.result, "Success")
+        self.assertEqual(feedback_instance.sn, 12345)
+        self.assertEqual(feedback_instance.channel_id, 1)
         
         if UNITTEST_VIEW_DICT:
             print("JumpChannelFeedback:", feedback_instance.to_dict())
 
     def test_ContinueChannelFeedback_instantiation(self):
-        cs_instance = MagicMock()
-        cs_instance.Result = 0x14  # CTI_CONTINUE_CHANNEL_CALIBRATING
-        
+        cs_instance = ArbinDataModel.ChannelManagement.ContinueChannelFDBK()
+        cs_instance.SuccessfulChannelIDs.Add(10)
+        cs_instance.SN = "7890"
+
+        # Populate a failed result
+        fail_result = ArbinDataModel.ChannelManagement.ContinueChannelResult()
+        fail_result.ChannelID = 0
+        fail_result.Result = "SomeError"
+        fail_result.ContinueResult = ArbinDataModel.EContinueChannelResult.Success
+        fail_result.Message = "Channel resumed with warning"
+        cs_instance.FailedResults.Add(fail_result)
+
         feedback_instance = ContinueChannelFeedback(cs_instance)
 
-        self.assertEqual(feedback_instance.result, ContinueChannelFeedback.EContinueToken.CTI_CONTINUE_CHANNEL_CALIBRATING)
-        
-        if UNITTEST_VIEW_DICT:
-            print("ContinueChannelFeedback:", feedback_instance.to_dict())
-
-    def test_StartChannelAdvancedFeedback_instantiation(self):
-        result_instance = MagicMock()
-        result_instance.ChannelIndex = 1
-        result_instance.StartResult = 0x0  # CTI_START_SUCCESS
-        result_instance.Message = "Success"
-
-        success_list_instance = [1]
-
-        failed_results_instance = [result_instance]
-
-        cs_instance = MagicMock()
-        cs_instance.TaskID = 123
-        cs_instance.SuccessfulChannelIDs = success_list_instance
-        cs_instance.FailedResults = failed_results_instance
-        feedback_instance = StartChannelFeedback(cs_instance)
-
-        self.assertEqual(feedback_instance.task_id, 123)
-        self.assertEqual(feedback_instance.successful_channel_id, [1])
+        self.assertEqual(feedback_instance.successful_channel_id, [10])
+        self.assertEqual(feedback_instance.sn, 7890)
         self.assertEqual(len(feedback_instance.failed_result), 1)
-        self.assertEqual(feedback_instance.failed_result[0].channel_index, 1)
-        self.assertEqual(feedback_instance.failed_result[0].result, StartChannelFeedback.EStartToken.CTI_START_SUCCESS)
-        self.assertEqual(feedback_instance.failed_result[0].message, "Success")
-        self.assertFalse(feedback_instance.is_success)
-
-        if UNITTEST_VIEW_DICT:
-            print("StartChannelAdvancedFeedback:", feedback_instance.to_dict())
+        self.assertEqual(feedback_instance.failed_result[0].channel_id, 0)
+        self.assertEqual(feedback_instance.failed_result[0].result, "SomeError")
+        self.assertEqual(feedback_instance.failed_result[0].continue_result.value, ArbinDataModel.EContinueChannelResult.Success.value__)
+        self.assertEqual(feedback_instance.failed_result[0].message, "Channel resumed with warning")
 
 if __name__ == "__main__":
     unittest.main()

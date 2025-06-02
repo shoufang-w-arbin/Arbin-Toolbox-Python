@@ -67,7 +67,7 @@ class GetMonitorDataFeedback(DictReprBase):
 
 class GetBarcodeInfoFeedback(DictReprBase):
     def __init__(self, obj):
-        if not isinstance(obj, ArbinDataModel.RequestInformation.GetBarcodeInfoFeedbakc):
+        if not isinstance(obj, ArbinDataModel.RequestInformation.GetBarcodeInfoFDBK):
             raise ValueError("'obj' must be of type ArbinDataModel.RequestInformation.GetBarcodeInfoFeedbakc")
         self.barcode_info = [BarcodeInfo(x) for x in obj.BarcodeInfos]
         self.sn     = int(obj.SN)
@@ -174,8 +174,8 @@ class SubscribeTestInfoDataFeedback(DictReprBase):
             self.simulation_file_names   = [SimulationInfo(x) for x in data.SimulationFileNames]
             self.mappings                = [AuxMapping(x) for x in data.Mappings]
             self.engagements             = [self.TestInfoSPTTEngagement(x) for x in data.Engagements]
-            self.eq_datas                = [self.TestInfoSPTTEQ(x) for x in data.EQDatas]
-            self.cell_datas              = [self.TestInfoSPTTCell(x) for x in data.CellDatas]
+            self.eq_datas                = [self.TestInfoSPTTEQ(x) for x in data.EQs]
+            self.cell_datas              = [self.TestInfoSPTTCell(x) for x in data.Cells]
 
     def __init__(self, feedback: ArbinDataModel.RequestInformation.SubscribeTestInfoDataFDBK):
         if not isinstance(feedback, ArbinDataModel.RequestInformation.SubscribeTestInfoDataFDBK):
