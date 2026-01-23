@@ -3,3 +3,4 @@ __pycache__/
 *.egg-info/
 .~c9_invoke_*.py
 venv/
+.vs/
