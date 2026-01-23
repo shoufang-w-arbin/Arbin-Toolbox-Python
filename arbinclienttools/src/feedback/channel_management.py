@@ -79,7 +79,9 @@ class ContinueChannelFeedback(DictReprBase):
         def __init__(self, obj):
             self.channel_id    = int(obj.ChannelID)
             self.result        = str(obj.Result)
-            self.resume_result = EContinueChannelResult(int(obj.ContinueResult))
+
+            self.continue_result = EContinueChannelResult(int(obj.ContinueResult))
+
             self.message       = str(obj.Message)
 
     def __init__(self, obj):

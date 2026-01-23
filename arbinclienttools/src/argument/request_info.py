@@ -81,6 +81,7 @@ class GetMetaVariablesArgs:
     Wrapper class of of 'Arbin.Library.DataModel.RequestInformation.GetMetaVariablesArgs'
     """
     sn:                 str  = ""
+    sn:                 str  = ""
     meta_variable_type: list = field(default_factory=list)
 
     def to_cs(self) -> ArbinDataModel.RequestInformation.GetMetaVariablesArgs:
@@ -88,6 +89,7 @@ class GetMetaVariablesArgs:
             raise TypeError("'meta_variable_type' must be a list of 'arbinclienttools.EMetaVariableType'")
         
         cs_instance = ArbinDataModel.RequestInformation.GetMetaVariablesArgs()
+        cs_instance.SN = CSConv.to_string(self.sn)
         cs_instance.SN = CSConv.to_string(self.sn)
         cs_instance.MetaVariableTypes = CSConv.to_list(self.meta_variable_type)
         return cs_instance
@@ -116,6 +118,7 @@ class GetMappingAuxArgs:
     """
     def to_cs(self) -> ArbinDataModel.RequestInformation.GetMappingAuxArgs:
         return ArbinDataModel.RequestInformation.GetMappingAuxArgs()
+        return ArbinDataModel.RequestInformation.GetMappingAuxArgs()
 
 @dataclass
 class SubscribeMonitorDataArgs:
@@ -124,6 +127,7 @@ class SubscribeMonitorDataArgs:
     """
     def to_cs(self) -> ArbinDataModel.RequestInformation.SubscribeMonitorDataArgs:
         return ArbinDataModel.RequestInformation.SubscribeMonitorDataArgs()
+        return ArbinDataModel.RequestInformation.SubscribeMonitorDataArgs()
 
 @dataclass
 class SubscribeChannelDataArgs:
@@ -131,6 +135,7 @@ class SubscribeChannelDataArgs:
     Wrapper class of 'Arbin.Library.DataModel.RequestInformation.SubscribeChannelDataArgs'
     """
     def to_cs(self) -> ArbinDataModel.RequestInformation.SubscribeChannelDataArgs:
+        return ArbinDataModel.RequestInformation.SubscribeChannelDataArgs()
         return ArbinDataModel.RequestInformation.SubscribeChannelDataArgs()
 
 @dataclass
@@ -147,7 +152,7 @@ class SubscribeEventDataArgs:
     Wrapper class of 'Arbin.Library.DataModel.RequestInformation.SubscribeEventDataArgs'
     """
     def to_cs(self) -> ArbinDataModel.RequestInformation.SubscribeEventDataArgs:
-        return ArbinDataModel.RequestInformation.SubscribeEventDataArgs()
+        return ArbinDataModel.RequestInformation.SubscribeChannelDataArgs()
 
 @dataclass
 class SubscribeDiagnosticEventDataArgs:
@@ -155,6 +160,7 @@ class SubscribeDiagnosticEventDataArgs:
     Wrapper class of 'Arbin.Library.DataModel.RequestInformation.SubscribeDiagnosticEventDataArgs'
     """
     def to_cs(self) -> ArbinDataModel.RequestInformation.SubscribeDiagnosticEventDataArgs:
+        return ArbinDataModel.RequestInformation.SubscribeDiagnosticEventDataArgs()
         return ArbinDataModel.RequestInformation.SubscribeDiagnosticEventDataArgs()
 
 @dataclass

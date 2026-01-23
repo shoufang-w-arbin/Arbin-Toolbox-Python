@@ -68,7 +68,9 @@ class AssignFileFeedback(DictReprBase):
 class UpdateMetaVariablesFeedback(DictReprBase):
     def __init__(self, obj):
         if not isinstance(obj, ArbinDataModel.TestManagement.UpdateMetaVariablesFDBK):
+
             raise ValueError("'obj' must be of type ArbinDataModel.TestManagement.UpdateMetaVariablesFDBK")
+
         self.meta_variable_info = [AIMetaVariableInfo(x) for x in obj.MetaVariableInfos]
         self.sn                 = int(obj.SN)
 

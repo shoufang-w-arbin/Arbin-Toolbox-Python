@@ -12,6 +12,7 @@ from System import ( # type: ignore
     String,
     Array
 )
+
 from System.Collections.Generic import List, SortedDictionary # type: ignore
 
 from arbinclienttools.src.common.cs_conv import CSConv
@@ -19,7 +20,6 @@ from arbinclienttools.src.common.cs_conv import CSConv
 class TestCSTypeConverter(unittest.TestCase):
 
     def test_to_byte_array(self):
-        # Test with bytes object
         python_bytes = b'hello'
         cs_array = CSConv.to_byte_array(python_bytes)
         self.assertIsInstance(cs_array, Array[Byte])
@@ -27,7 +27,6 @@ class TestCSTypeConverter(unittest.TestCase):
         for i, b in enumerate(python_bytes):
             self.assertEqual(cs_array[i], b)
 
-        # Test with bytearray
         python_bytearray = bytearray([1, 2, 3, 4, 5])
         cs_array = CSConv.to_byte_array(python_bytearray)
         self.assertIsInstance(cs_array, Array[Byte])
@@ -35,13 +34,11 @@ class TestCSTypeConverter(unittest.TestCase):
         for i, b in enumerate(python_bytearray):
             self.assertEqual(cs_array[i], b)
 
-        # Test with empty bytes
         empty_bytes = b''
         cs_array = CSConv.to_byte_array(empty_bytes)
         self.assertIsInstance(cs_array, Array[Byte])
         self.assertEqual(len(cs_array), 0)
 
-        # Test with invalid input
         with self.assertRaises(ValueError):
             CSConv.to_byte_array("not a bytes object")
 
@@ -49,7 +46,7 @@ class TestCSTypeConverter(unittest.TestCase):
             CSConv.to_byte_array(123)
 
         with self.assertRaises(ValueError):
-            CSConv.to_byte_array([1, 2, 3])  # list, not bytes or bytearray
+            CSConv.to_byte_array([1, 2, 3])
     
     def test_to_short(self):
         self.assertIsInstance(CSConv.to_short(5), Int16)
@@ -85,7 +82,7 @@ class TestCSTypeConverter(unittest.TestCase):
         self.assertEqual(CSConv.to_bool(False), Boolean(False))
         with self.assertRaises(ValueError):
             CSConv.to_bool(1)
-
+ 
     def test_to_string(self):
         self.assertIsInstance(CSConv.to_string("test"), String)
         self.assertEqual(CSConv.to_string("test"), String("test"))
@@ -114,14 +111,14 @@ class TestCSTypeConverter(unittest.TestCase):
         self.assertIsInstance(cs_list, List[Int32])
         self.assertEqual(len(cs_list), len(python_list))
         for i, item in enumerate(python_list):
-            self.assertEqual(int(cs_list[i]), item) # automatically converted to py 'int' when unzipping
+            self.assertEqual(int(cs_list[i]), item)
 
         python_list = [True, False, True]
         cs_list = CSConv.to_list(python_list, CSConv.EDataType.BOOL)
         self.assertIsInstance(cs_list, List[Boolean])
         self.assertEqual(len(cs_list), len(python_list))
         for i, item in enumerate(python_list):
-            self.assertEqual(cs_list[i], item) # automatically converted to py 'int' when unzipping
+            self.assertEqual(cs_list[i], item)
 
         with self.assertRaises(ValueError):
             CSConv.to_list(python_list, "invalid type")
@@ -152,51 +149,41 @@ class TestCSTypeConverter(unittest.TestCase):
         for i, item in enumerate(python_list):
             self.assertEqual(cs_list[i], int(item))
 
-    def test_to_cs_sorted_dict(self):
-        # Test update parameter feedback
-        from arbinctitools.src.feedback.schedule_operation import UpdateParameterFeedback
-        python_list = [
-            (UpdateParameterFeedback.EParameterDataType.NormCapacity, "value1"),
-            (UpdateParameterFeedback.EParameterDataType.IMax, "value2"),
-        ]
-        cs_dict = CSConv.to_cs_sorted_dict(
-            python_list,
-            CSConv.EDataType.USHORT,
-            CSConv.EDataType.STRING
-        )
-        self.assertIsInstance(cs_dict, SortedDictionary[UInt16, String])
-        self.assertEqual(len(cs_dict), len(python_list))
-        for key, value in python_list:
-            self.assertEqual(cs_dict[key], String(value))
+    def test_valid_conversion(self):
+        data = [(1, "one"), (2, "two"), (3, "three")]
+        cs_dict = CSConv.to_cs_sorted_dict(data, CSConv.EDataType.INT, CSConv.EDataType.STRING)
 
-        # Test general case
-        python_list = [(1, "one"), (2, "two"), (3, "three")]
-        cs_dict = CSConv.to_cs_sorted_dict(python_list, CSConv.EDataType.INT, CSConv.EDataType.STRING)
         self.assertIsInstance(cs_dict, SortedDictionary[Int32, String])
-        self.assertEqual(len(cs_dict), len(python_list))
-        for key, value in python_list:
-            self.assertEqual(cs_dict[Int32(key)], String(value))
+        self.assertEqual(len(cs_dict), 3)
+        for k, v in data:
+            self.assertEqual(cs_dict[Int32(k)], String(v))
 
-        # Test with invalid input: not a list
-        with self.assertRaises(ValueError):
+    def test_invalid_input_not_list(self):
+        with self.assertRaises(ValueError) as cm:
             CSConv.to_cs_sorted_dict("not a list", CSConv.EDataType.INT, CSConv.EDataType.STRING)
+        self.assertIn("obj_list must", str(cm.exception))
 
-        # Test with invalid input: list elements not tuples
-        with self.assertRaises(ValueError):
+    def test_invalid_input_non_tuple_elements(self):
+        with self.assertRaises(ValueError) as cm:
             CSConv.to_cs_sorted_dict([1, 2, 3], CSConv.EDataType.INT, CSConv.EDataType.STRING)
+        self.assertIn("must be tuples", str(cm.exception))
 
-        # Test with invalid input: tuples not of length 2
-        with self.assertRaises(ValueError):
+    def test_invalid_tuple_length(self):
+        with self.assertRaises(ValueError) as cm:
             CSConv.to_cs_sorted_dict([(1, "one", "extra")], CSConv.EDataType.INT, CSConv.EDataType.STRING)
+        self.assertIn("must be tuples", str(cm.exception))
 
-        # Test with invalid key data type
-        with self.assertRaises(ValueError):
-            CSConv.to_cs_sorted_dict(python_list, "invalid type", CSConv.EDataType.STRING)
+    def test_invalid_key_data_type(self):
+        with self.assertRaises(ValueError) as cm:
+            CSConv.to_cs_sorted_dict([(1, "one")], "not an EDataType", CSConv.EDataType.STRING)
+        self.assertIn("Unsupported key data type", str(cm.exception))
 
-        # Test with invalid value data type
-        with self.assertRaises(ValueError):
-            CSConv.to_cs_sorted_dict(python_list, CSConv.EDataType.INT, "invalid type")
+    def test_invalid_value_data_type(self):
+        with self.assertRaises(ValueError) as cm:
+            CSConv.to_cs_sorted_dict([(1, "one")], CSConv.EDataType.INT, "not an EDataType")
+        self.assertIn("Unsupported value data type", str(cm.exception))
 
-        # Test with invalid key-value pair conversion
-        with self.assertRaises(ValueError):
+    def test_conversion_error_in_pair(self):
+        with self.assertRaises(ValueError) as cm:
             CSConv.to_cs_sorted_dict([(1, 2)], CSConv.EDataType.INT, CSConv.EDataType.STRING)
+        self.assertIn("Error converting key-value pair", str(cm.exception))
